@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import type { View, Product, CartItem } from './components/types';
 import type { Currency } from './components/currency';
 import { blogPosts } from './components/blogData';
@@ -15,9 +14,9 @@ import CatalogPage from './components/CatalogPage';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
 import QuickViewModal from './components/QuickViewModal';
-import Breadcrumbs, { type BreadcrumbItem } from './components/Breadcrumbs';
 import CheckoutPage from './components/CheckoutPage';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
+import BottomNavBar from './components/BottomNavBar';
 
 type AppView = {
     current: View;
@@ -31,82 +30,84 @@ const App: React.FC = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
+    // Carga robusta del carrito
     useEffect(() => {
         try {
-            const storedCart = localStorage.getItem('vellaperfumeria_cart');
+            const storedCart = localStorage.getItem('vellaperfumeria_cart_v4');
             if (storedCart) {
-                setCartItems(JSON.parse(storedCart));
+                const parsed = JSON.parse(storedCart);
+                if (Array.isArray(parsed)) setCartItems(parsed);
             }
-        } catch (error) {
-            console.error("Failed to load cart", error);
+        } catch (e) {
+            console.error("Cart load error:", e);
         }
     }, []);
 
+    // Guardado robusto del carrito
     useEffect(() => {
         try {
-            localStorage.setItem('vellaperfumeria_cart', JSON.stringify(cartItems));
-        } catch (error) {
-            console.error("Failed to save cart", error);
+            localStorage.setItem('vellaperfumeria_cart_v4', JSON.stringify(cartItems));
+        } catch (e) {
+            console.error("Cart save error:", e);
         }
     }, [cartItems]);
     
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [view]);
+    }, [view.current]);
 
     const handleNavigate = useCallback((newView: View, payload?: any) => {
         setView({ current: newView, payload });
     }, []);
 
-    const handleProductSelect = (product: Product) => {
+    const handleProductSelect = useCallback((product: Product) => {
         handleNavigate('productDetail', product);
-    };
+    }, [handleNavigate]);
 
-    const handleAddToCart = (product: Product, buttonElement: HTMLButtonElement | null, selectedVariant: Record<string, string> | null) => {
+    const handleAddToCart = useCallback((product: Product, buttonElement: HTMLButtonElement | null, selectedVariant: Record<string, string> | null) => {
         const cartItemId = selectedVariant 
             ? `${product.id}-${Object.values(selectedVariant).join('-')}`
             : `${product.id}`;
             
-        const existingItem = cartItems.find(item => item.id === cartItemId);
-
-        if (existingItem) {
-            setCartItems(cartItems.map(item =>
-                item.id === cartItemId ? { ...item, quantity: item.quantity + 1 } : item
-            ));
-        } else {
-            setCartItems([...cartItems, { id: cartItemId, product, quantity: 1, selectedVariant }]);
-        }
+        setCartItems(prev => {
+            const existingItem = prev.find(item => item.id === cartItemId);
+            if (existingItem) {
+                return prev.map(item =>
+                    item.id === cartItemId ? { ...item, quantity: item.quantity + 1 } : item
+                );
+            }
+            return [...prev, { id: cartItemId, product, quantity: 1, selectedVariant }];
+        });
         
         setIsCartOpen(true);
-    };
+    }, []);
     
-    const handleQuickAddToCart = (product: Product, buttonElement: HTMLButtonElement | null, selectedVariant: Record<string, string> | null) => {
+    const handleQuickAddToCart = useCallback((product: Product, buttonElement: HTMLButtonElement | null, selectedVariant: Record<string, string> | null) => {
         handleAddToCart(product, buttonElement, selectedVariant);
-        if (!isCartOpen) setIsCartOpen(true);
-    };
+    }, [handleAddToCart]);
 
-    const handleUpdateQuantity = (cartItemId: string, newQuantity: number) => {
+    const handleUpdateQuantity = useCallback((cartItemId: string, newQuantity: number) => {
         if (newQuantity <= 0) {
-            setCartItems(cartItems.filter(item => item.id !== cartItemId));
+            setCartItems(prev => prev.filter(item => item.id !== cartItemId));
         } else {
-            setCartItems(cartItems.map(item =>
+            setCartItems(prev => prev.map(item =>
                 item.id === cartItemId ? { ...item, quantity: newQuantity } : item
             ));
         }
-    };
+    }, []);
 
-    const handleRemoveItem = (cartItemId: string) => {
-        setCartItems(cartItems.filter(item => item.id !== cartItemId));
-    };
+    const handleRemoveItem = useCallback((cartItemId: string) => {
+        setCartItems(prev => prev.filter(item => item.id !== cartItemId));
+    }, []);
 
-    const renderContent = () => {
+    const content = useMemo(() => {
         switch (view.current) {
             case 'home':
                 return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
             case 'products':
                 return <ShopPage initialCategory={view.payload || 'all'} currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
             case 'productDetail':
-                return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
+                return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} onProductSelect={handleProductSelect} />;
             case 'ofertas':
                 return <OfertasPage currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
             case 'ia':
@@ -122,23 +123,33 @@ const App: React.FC = () => {
             default:
                 return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
         }
-    };
+    }, [view, handleNavigate, handleProductSelect, handleAddToCart, handleQuickAddToCart, currency, cartItems]);
 
     return (
-        <div className="flex flex-col min-h-screen bg-white font-sans selection:bg-[#fbc5fa] selection:text-black">
+        <div className="flex flex-col min-h-screen bg-white font-sans selection:bg-[#fbc5fa] selection:text-black antialiased overflow-x-hidden">
+            {/* Cabecera Principal */}
             <Header
                 onNavigate={handleNavigate}
                 currency={currency}
-                onCurrencyChange={setCurrency}
                 cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
                 onCartClick={() => setIsCartOpen(true)}
             />
-             <main className="flex-grow">
-                {renderContent()}
+            
+            {/* Área de Contenido Principal - Forzamos Blanco */}
+            <main className="flex-grow bg-white relative z-10 w-full">
+                <div className="bg-white min-h-[500px]">
+                    {content}
+                </div>
             </main>
-            <Footer onNavigate={handleNavigate} />
-            <FloatingWhatsApp />
 
+            {/* Footer */}
+            <Footer onNavigate={handleNavigate} />
+            
+            {/* Elementos Flotantes e Inferiores */}
+            <FloatingWhatsApp />
+            <BottomNavBar onNavigate={handleNavigate} currentView={view.current} currentCategory={view.payload || 'all'} />
+
+            {/* Modales y Overlays */}
             <CartSidebar
                 isOpen={isCartOpen}
                 onClose={() => setIsCartOpen(false)}
@@ -169,11 +180,15 @@ const App: React.FC = () => {
                 :root {
                     --color-primary: #000000;
                     --color-accent: #fbc5fa;
-                    --color-whatsapp: #25D366;
                 }
-                body { overflow-x: hidden; }
-                .animate-fade-in { animation: fadeIn 0.5s ease-out; }
-                @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                body { background-color: white !important; margin: 0; padding: 0; padding-bottom: 80px; }
+                @media (min-width: 768px) { body { padding-bottom: 0; } }
+                
+                /* Reset general para visibilidad */
+                #root { background-color: white; width: 100%; }
+                
+                /* Smooth Scroll */
+                html { scroll-behavior: smooth; }
             `}</style>
         </div>
     );

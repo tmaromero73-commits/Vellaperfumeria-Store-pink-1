@@ -1,5 +1,7 @@
 {
-  "name": "Copy of Copy of Copy of Vellaperfumeria Store UI",
-  "description": "el color y el timeline stylo al  realizar los estilismos con el color y galeria de cosmeticos.Proveedor de cosmetica y wellnes ",
-  "requestFramePermissions": []
+  "name": "Vellaperfumeria Store UI - Luxury Edition",
+  "description": "Tienda de cosmética y bienestar premium con catálogo extendido de 300+ productos y asistente IA.",
+  "requestFramePermissions": [
+    "camera"
+  ]
 }

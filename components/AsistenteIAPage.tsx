@@ -1,7 +1,5 @@
-
-
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI, Chat } from "@google/genai";
+import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
 interface Message {
     role: 'user' | 'model';
@@ -9,7 +7,7 @@ interface Message {
 }
 
 const SparklesIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-purple-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#fbc5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m1-9l2-2 2 2m-2 4v6m2-6l2 2-2 2M15 3l2 2-2 2m-2-4v4m2 4l2 2-2 2m-8 4h12" />
     </svg>
 );
@@ -19,7 +17,6 @@ const UserIcon = () => (
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
     </svg>
 );
-
 
 const AsistenteIAPage: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -31,180 +28,97 @@ const AsistenteIAPage: React.FC = () => {
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Initialize the AI chat session
-        try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const newChat = ai.chats.create({
-                model: 'gemini-2.5-flash',
-                config: {
-                    systemInstruction: 'Eres un asistente de belleza y experto en perfumes para la tienda online "Vellaperfumeria". Tu objetivo es ayudar a los clientes a encontrar los productos perfectos. Sé amable, servicial y conocedor de los productos de la tienda. Ofrece recomendaciones personalizadas basadas en las preferencias del cliente. Utiliza un lenguaje cercano y profesional. Bajo ninguna circunstancia menciones marcas de la competencia o productos que no se vendan en Vellaperfumeria. Céntrate exclusivamente en el catálogo de Vellaperfumeria.',
-                },
-            });
-            setChat(newChat);
-        } catch (e) {
-            console.error("Error initializing Gemini:", e);
-            setError("No se pudo inicializar el asistente de IA. Por favor, contacta con el soporte.");
-        }
+        const initChat = async () => {
+            try {
+                const apiKey = process.env.API_KEY;
+                if (!apiKey) throw new Error("API Key missing");
+
+                const ai = new GoogleGenAI({ apiKey });
+                const newChat = ai.chats.create({
+                    model: 'gemini-3-flash-preview',
+                    config: {
+                        systemInstruction: 'Eres el concierge de lujo de Vellaperfumeria. Tu tono es sofisticado, experto y muy servicial. Ayudas a los clientes a elegir entre los 400 productos de nuestro catálogo. Recomiendas rutinas faciales, tonos de maquillaje y fragancias europeas.',
+                    },
+                });
+                setChat(newChat);
+            } catch (e) {
+                console.error("Gemini Error:", e);
+                setError("El servicio de IA está experimentando alta demanda. Inténtalo de nuevo.");
+            }
+        };
+        initChat();
     }, []);
 
     useEffect(() => {
-        // Scroll to the bottom of the chat on new message
         if (chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     }, [messages, isProcessing]);
 
     const handleSendMessage = async (messageText: string) => {
-        if (!messageText.trim() || isProcessing || !chat) {
-            if (!chat) setError("El asistente no está disponible en este momento.");
-            return;
-        }
+        if (!messageText.trim() || isProcessing || !chat) return;
 
-        const userMessage: Message = { role: 'user', text: messageText };
-        setMessages(prev => [...prev, userMessage, { role: 'model', text: '' }]);
+        const userMsg: Message = { role: 'user', text: messageText };
+        setMessages(prev => [...prev, userMsg, { role: 'model', text: '' }]);
         setInput('');
         setIsProcessing(true);
-        setError(null);
 
         try {
             const responseStream = await chat.sendMessageStream({ message: messageText });
-
             for await (const chunk of responseStream) {
-                const chunkText = chunk.text;
+                const c = chunk as GenerateContentResponse;
                 setMessages(prev => {
                     const newMessages = [...prev];
-                    const lastMessage = newMessages[newMessages.length - 1];
-                    lastMessage.text += chunkText;
+                    newMessages[newMessages.length - 1].text += (c.text || '');
                     return newMessages;
                 });
             }
         } catch (e) {
-            console.error("Error sending message to Gemini:", e);
-            const errorMessage = "Lo siento, ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.";
-            setError(errorMessage);
-            setMessages(prev => {
-                const newMessages = [...prev];
-                const lastMessage = newMessages[newMessages.length - 1];
-                lastMessage.text = errorMessage;
-                return newMessages;
-            });
+            setError("Error de conexión con la IA.");
         } finally {
             setIsProcessing(false);
         }
     };
     
-    const handleFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        handleSendMessage(input);
-    };
-
-    const examplePrompts = [
-        "Recomiéndame un perfume para una cita",
-        "¿Qué rutina de skincare es mejor para piel grasa?",
-        "Busco un regalo para mi madre",
-        "¿Cuál es el labial más vendido?",
-    ];
-
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="text-center mb-10">
-                <img src="https://i0.wp.com/vellaperfumeria.com/wp-content/uploads/2025/06/1000003724-removebg-preview.png" alt="Logo de Vellaperfumeria" className="w-auto h-24 mx-auto mb-4" />
-                <h1 className="text-4xl font-extrabold text-black tracking-tight">Asistente de Belleza IA</h1>
-                <p className="mt-2 text-lg text-gray-600">¿Necesitas ayuda? Pide recomendaciones y consejos sobre nuestros productos.</p>
-            </div>
-
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col h-[70vh]">
-                <div ref={chatContainerRef} className="flex-grow p-6 overflow-y-auto space-y-6">
-                    {messages.length === 0 && !isProcessing && (
-                         <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-purple/30 flex items-center justify-center">
-                                <SparklesIcon />
-                            </div>
-                            <div className="max-w-md p-4 rounded-2xl bg-brand-purple/20 text-gray-800 rounded-bl-none">
-                                <p>¡Hola! Soy tu asistente de belleza personal de Vellaperfumeria. ¿En qué puedo ayudarte hoy?</p>
-                            </div>
-                        </div>
-                    )}
-
-                    {messages.map((msg, index) => {
-                        const isLastMessage = index === messages.length - 1;
-                        return (
-                            <div key={index} className={`flex items-start gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
-                                 {msg.role === 'model' && (
-                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-purple/30 flex items-center justify-center">
-                                        <SparklesIcon />
-                                    </div>
-                                )}
-                                <div className={`max-w-md p-4 rounded-2xl ${msg.role === 'user' ? 'bg-gray-100 text-gray-800 rounded-br-none' : 'bg-brand-purple/20 text-gray-800 rounded-bl-none'}`}>
-                                     {isProcessing && isLastMessage && msg.text === '' ? (
-                                         <div className="flex items-center space-x-2">
-                                            <div className="w-2 h-2 bg-brand-purple rounded-full animate-pulse"></div>
-                                            <div className="w-2 h-2 bg-brand-purple rounded-full animate-pulse [animation-delay:0.2s]"></div>
-                                            <div className="w-2 h-2 bg-brand-purple rounded-full animate-pulse [animation-delay:0.4s]"></div>
-                                        </div>
-                                    ) : (
-                                         <p className="whitespace-pre-wrap">{msg.text}</p>
-                                    )}
-                                </div>
-                                {msg.role === 'user' && (
-                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                                        <UserIcon />
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
-                    
-                    {error && messages.length === 0 && (
-                         <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                                <SparklesIcon />
-                            </div>
-                            <div className="max-w-md p-4 rounded-2xl bg-red-50 text-red-700 rounded-bl-none">
-                                <p>{error}</p>
-                            </div>
-                        </div>
-                    )}
+        <div className="container mx-auto px-6 py-12">
+            <div className="max-w-3xl mx-auto flex flex-col h-[75vh] bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+                <div className="bg-black p-6 flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><SparklesIcon /></div>
+                    <div>
+                        <h2 className="text-white font-black uppercase text-sm tracking-widest">AI Beauty Concierge</h2>
+                        <p className="text-[#fbc5fa] text-[10px] uppercase font-bold tracking-widest">Expertise en Vellaperfumeria</p>
+                    </div>
                 </div>
 
-                {messages.length === 0 && !isProcessing && (
-                    <div className="p-6 pt-0 text-center text-gray-500">
-                        <p className="mb-4 text-sm">O prueba con una de estas sugerencias:</p>
-                        <div className="flex flex-wrap justify-center gap-2">
-                            {examplePrompts.map(prompt => (
-                                <button
-                                    key={prompt}
-                                    onClick={() => handleSendMessage(prompt)}
-                                    className="bg-gray-100 hover:bg-gray-200 text-sm px-3 py-1.5 rounded-full transition-colors"
-                                >
-                                    "{prompt}"
-                                </button>
-                            ))}
+                <div ref={chatContainerRef} className="flex-grow p-8 overflow-y-auto space-y-6 bg-gray-50/50">
+                    {messages.map((msg, idx) => (
+                        <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-gray-200' : 'bg-black'}`}>
+                                {msg.role === 'user' ? <UserIcon /> : <SparklesIcon />}
+                            </div>
+                            <div className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed ${
+                                msg.role === 'user' ? 'bg-black text-white rounded-tr-none' : 'bg-white text-gray-800 rounded-tl-none border shadow-sm'
+                            }`}>
+                                {msg.text || (isProcessing && idx === messages.length - 1 ? 'Analizando...' : '')}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    ))}
+                    {error && <p className="text-red-500 text-xs text-center font-bold">{error}</p>}
+                </div>
 
-
-                <div className="p-4 border-t bg-gray-50">
-                    <form onSubmit={handleFormSubmit} className="flex items-center gap-3">
+                <div className="p-6 bg-white border-t">
+                    <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(input); }} className="flex gap-4">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="Escribe tu mensaje..."
-                            aria-label="Escribe tu mensaje"
-                            className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-brand-purple-dark"
+                            placeholder="¿Qué producto buscas hoy?"
+                            className="flex-grow px-6 py-4 bg-gray-100 rounded-full focus:ring-2 focus:ring-black transition-all outline-none"
                             disabled={isProcessing}
                         />
-                        <button 
-                            type="submit" 
-                            disabled={isProcessing || !input.trim()}
-                            className="bg-black text-white font-semibold rounded-full p-2.5 shadow-sm hover:bg-gray-800 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                            aria-label="Enviar mensaje"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
+                        <button type="submit" disabled={isProcessing} className="bg-black text-white font-bold rounded-full px-8 py-4 hover:bg-[#fbc5fa] hover:text-black transition-all disabled:opacity-50">
+                            Enviar
                         </button>
                     </form>
                 </div>

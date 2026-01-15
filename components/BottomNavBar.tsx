@@ -1,8 +1,6 @@
-
 import React from 'react';
 import type { View } from './types';
 
-// Icons
 const HomeIcon = ({ isActive }: { isActive: boolean }) => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={isActive ? 2.5 : 2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -39,55 +37,35 @@ interface BottomNavBarProps {
     currentCategory: string;
 }
 
-interface NavItem {
-    view: View;
-    label: string;
-    icon: React.FC<{ isActive: boolean }>;
-    payload?: any;
-    isExternal?: boolean;
-    href?: string;
-}
-
-const BottomNavBar: React.FC<BottomNavBarProps> = ({ onNavigate, currentView, currentCategory }) => {
+const BottomNavBar: React.FC<BottomNavBarProps> = ({ onNavigate, currentView }) => {
     
-    const navItems: NavItem[] = [
-        { view: 'home', label: 'Inicio', icon: HomeIcon, payload: undefined, isExternal: true, href: 'https://vellaperfumeria.com' },
-        { view: 'products', label: 'Tienda', icon: ShopIcon, payload: 'all' },
-        { view: 'ofertas', label: 'Ofertas', icon: GiftIcon, payload: undefined },
-        { view: 'catalog', label: 'Catálogo', icon: CatalogIcon, payload: undefined },
-        { view: 'contact', label: 'Ayuda', icon: HelpIcon, payload: undefined },
+    const navItems = [
+        { view: 'home' as View, label: 'Inicio', icon: HomeIcon },
+        { view: 'products' as View, label: 'Tienda', icon: ShopIcon, payload: 'all' },
+        { view: 'catalog' as View, label: 'Catálogo', icon: CatalogIcon },
+        { view: 'ofertas' as View, label: 'Ofertas', icon: GiftIcon },
+        { view: 'ia' as View, label: 'Ayuda IA', icon: HelpIcon },
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-2px_5px_rgba(0,0,0,0.05)] z-30">
-            <nav className="flex justify-around items-center h-16">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] z-[90]">
+            <nav className="flex justify-around items-center h-20 px-2 pb-2">
                 {navItems.map(item => {
-                    const isActive = item.view === 'products'
-                        ? (currentView === 'products' || currentView === 'productDetail')
-                        : currentView === item.view;
-                        
+                    const isActive = currentView === item.view;
                     const Icon = item.icon;
-
-                    const handleClick = () => {
-                         if (item.isExternal && item.href) {
-                            window.location.href = item.href;
-                         } else {
-                            onNavigate(item.view, item.payload);
-                         }
-                    };
 
                     return (
                         <button
                             key={item.label}
-                            onClick={handleClick}
-                            className={`flex flex-col items-center justify-center text-xs font-medium w-full h-full transition-colors ${
-                                isActive ? 'text-brand-purple-dark' : 'text-gray-500 hover:text-brand-purple-dark'
+                            onClick={() => onNavigate(item.view, item.payload)}
+                            className={`flex flex-col items-center justify-center text-[10px] font-black uppercase tracking-widest w-full h-full transition-all duration-300 ${
+                                isActive ? 'text-black' : 'text-gray-300'
                             }`}
-                            aria-label={item.label}
-                            aria-current={isActive ? 'page' : undefined}
                         >
-                            <Icon isActive={isActive} />
-                            <span>{item.label}</span>
+                            <div className={`p-1.5 rounded-2xl transition-all ${isActive ? 'bg-[#fbc5fa]/20' : ''}`}>
+                                <Icon isActive={isActive} />
+                            </div>
+                            <span className="mt-1">{item.label}</span>
                         </button>
                     )
                 })}

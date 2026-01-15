@@ -1,4 +1,3 @@
-
 // Variant types, used in Product
 export interface VariantOption {
     value: string;
@@ -22,9 +21,9 @@ export interface Product {
     description: string;
     howToUse?: string;
     stock: number;
-    category: 'perfume' | 'hair' | 'makeup' | 'skincare' | 'personal-care' | 'men' | 'wellness' | 'accessories';
-    subCategory?: 'Giordani Gold' | 'THE ONE' | 'OnColour';
-    productType?: 'Base' | 'Corrector' | 'Máscara' | 'Colorete y Bronceador' | 'Labial' | 'Accesorio de Maquillaje' | 'Cremas BB y CC';
+    category: 'perfume' | 'hair' | 'makeup' | 'skincare' | 'personal-care' | 'men' | 'wellness' | 'accessories' | 'gifts';
+    subCategory?: string;
+    productType?: string;
     tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'ULTIMAS UNIDADES';
     statusLabel?: string;
     rating?: number;

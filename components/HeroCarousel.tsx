@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import type { View } from './types';
 
@@ -9,24 +8,24 @@ interface HeroCarouselProps {
 const slides = [
     {
         imageUrl: 'https://media-cdn.oriflame.com/digitalPromotionsMedia/images/banner-media/ES/20899847/20866148.jpg',
-        title: 'Un aroma muy femenino para vivir la noche',
-        subtitle: '¡NUEVO! EAU DE PARFUM DIVINE DARK VELVET',
+        title: 'Elegancia y Brillo para tu Piel',
+        subtitle: 'DESCUBRE LA COLECCIÓN DIVINE DARK VELVET',
         buttonText: 'VER AHORA',
-        view: 'fragrance' as View,
+        view: 'products' as View,
     },
     {
         imageUrl: 'https://media-cdn.oriflame.com/digitalPromotionsMedia/images/banner-media/ES/20900001/20866153.jpg',
-        title: 'La mejor belleza para lucirte',
-        subtitle: '¡Favoritos con hasta un 50% dto!',
+        title: 'Envío Gratis a Domicilio',
+        subtitle: 'DISFRUTA DE TU PEDIDO SIN COSTES DE ENVÍO DESDE 35€',
         buttonText: 'VER LOS PRODUCTOS',
         view: 'ofertas' as View,
     },
     {
         imageUrl: 'https://media-cdn.oriflame.com/digitalPromotionsMedia/images/banner-media/ES/20899692/21035391.jpg',
-        title: '12 días. 12 sorpresas. La emoción de la Navidad',
-        subtitle: 'Calendario de Adviento 2025',
-        buttonText: 'Comprar',
-        view: 'ofertas' as View,
+        title: 'Novedades de Campaña 2026',
+        subtitle: 'LAS ÚLTIMAS TENDENCIAS EN COSMÉTICA SUECA',
+        buttonText: 'COMPRAR',
+        view: 'catalog' as View,
     },
 ];
 
@@ -74,7 +73,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ onNavigate }) => {
                                 <p className="mt-4 text-lg md:text-xl drop-shadow-md" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.6)'}}>{slide.subtitle}</p>
                                 <button
                                     onClick={() => onNavigate(slide.view)}
-                                    className="mt-8 bg-white text-brand-primary font-bold py-3 px-8 rounded-lg shadow-md hover:bg-brand-purple-dark hover:text-white transition-all duration-300 transform hover:scale-105"
+                                    className="mt-8 bg-white text-black font-bold py-3 px-8 rounded-lg shadow-md hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-105"
                                 >
                                     {slide.buttonText}
                                 </button>
