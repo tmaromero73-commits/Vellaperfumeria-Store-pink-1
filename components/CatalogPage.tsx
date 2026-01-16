@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { allProducts } from './products';
 import { ProductCard } from './ProductCard';
@@ -38,8 +39,8 @@ const CatalogPage: React.FC<{
             <div className="bg-white border-b border-gray-200 py-6">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="text-center md:text-left">
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#008c8c] mb-2 block">Campaña Actual 2026</span>
-                        <h1 className="text-3xl md:text-4xl font-black text-black uppercase tracking-tighter">Catálogo Interactivo</h1>
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#008c8c] mb-2 block">CATÁLOGO VIGENTE 2026</span>
+                        <h1 className="text-3xl md:text-4xl font-black text-black uppercase tracking-tighter">Campaña 1 - 2026</h1>
                     </div>
                     
                     <form onSubmit={handleQuickAdd} className="flex gap-3 w-full md:w-auto">
@@ -65,7 +66,7 @@ const CatalogPage: React.FC<{
             <div className="flex-grow relative bg-black">
                 <iframe
                     src={INTERACTIVE_CATALOG_URL}
-                    title="Catálogo 2026 Oriflame"
+                    title="Catálogo 2026 Campaña 1 Oriflame"
                     className="w-full h-[85vh] border-none"
                     allowFullScreen
                     loading="lazy"
@@ -74,8 +75,8 @@ const CatalogPage: React.FC<{
 
             <div className="container mx-auto px-6 py-20">
                 <div className="text-center mb-14">
-                    <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Favoritos de la Campaña</h2>
-                    <p className="text-gray-500 max-w-xl mx-auto">Selección exclusiva de los productos más vendidos en cuidado facial y fragancias.</p>
+                    <h2 className="text-4xl font-black uppercase tracking-tighter mb-4">Favoritos de Campaña 1</h2>
+                    <p className="text-gray-500 max-w-xl mx-auto">Selección exclusiva de los productos más vendidos para empezar el año con lo mejor de la cosmética sueca.</p>
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
                     {allProducts.filter(p => p.category === 'skincare').slice(0, 4).map(product => (

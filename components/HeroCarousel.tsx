@@ -2,35 +2,45 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { View } from './types';
 
-interface HeroCarouselProps {
-    onNavigate: (view: View) => void;
+interface HeroSlide {
+    imageUrl: string;
+    title?: string;
+    subtitle?: string;
+    buttonText?: string;
+    view?: View;
+    showBanner: boolean;
+    bannerType?: 'standard' | 'colonial' | 'transparent';
 }
 
-const slides = [
+const slides: HeroSlide[] = [
     {
-        imageUrl: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?auto=format&fit=crop&w=1600&q=80',
-        title: 'Ciencia Sueca',
-        subtitle: 'NOVAGE+: TRATAMIENTO FACIAL DE ALTA PRECISIÓN',
-        buttonText: 'DESCUBRIR NOVAGE',
-        view: 'products' as View,
+        // Diapositiva 1: Modelo Pelirroja + Banner Blue Colonial (SIN ROJO)
+        imageUrl: 'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&w=2000&q=90',
+        title: 'LUJO EN CADA DETALLE',
+        subtitle: 'DESCUBRE EL RELOJ WILLWOOD Y LOS NUEVOS ENVOLTORIOS PREMIUM • CAMPAÑA 1 - 2026',
+        buttonText: 'VER NOVEDADES',
+        view: 'catalog',
+        showBanner: true,
+        bannerType: 'colonial'
     },
     {
-        imageUrl: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1600&q=80',
-        title: 'Color de Temporada',
-        subtitle: 'GIORDANI GOLD & THE ONE: ELEGANCIA EUROPEA',
-        buttonText: 'VER MAQUILLAJE',
-        view: 'products' as View,
+        // Diapositiva 2: Novage+ Innovation
+        imageUrl: 'https://images.unsplash.com/photo-1556228852-6d45a7d8a341?auto=format&fit=crop&w=2000&q=90',
+        showBanner: false,
     },
     {
-        imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1600&q=80',
-        title: 'Equilibrio Vital',
-        subtitle: 'WELLOSOPHY: BELLEZA DESDE EL INTERIOR',
-        buttonText: 'SABER MÁS',
-        view: 'wellness' as View,
+        // Diapositiva 3: All or Nothing Amplified Focus
+        imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2000&q=90',
+        title: 'ALL OR NOTHING AMPLIFIED',
+        subtitle: 'SIENTE EL PODER DE LA FRAGANCIA FLORAL AMBARINA • AHORA 62.99€',
+        buttonText: 'COMPRAR AHORA',
+        view: 'products',
+        showBanner: true,
+        bannerType: 'transparent'
     },
 ];
 
-const HeroCarousel: React.FC<HeroCarouselProps> = ({ onNavigate }) => {
+const HeroCarousel: React.FC<{ onNavigate: (view: View) => void }> = ({ onNavigate }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = useCallback(() => {
@@ -54,48 +64,81 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ onNavigate }) => {
                     className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[2000ms] ease-out ${index === currentIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
                     style={{ backgroundImage: `url(${slide.imageUrl})` }}
                 >
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                        <div className="text-center text-white px-6 max-w-5xl">
-                            <span className="text-[11px] font-bold tracking-[0.6em] uppercase mb-8 block animate-fade-up">ORIFLAME • SWEDEN</span>
-                            <h2 className="text-6xl md:text-[100px] font-serif font-black mb-10 animate-fade-up [animation-delay:200ms] leading-[0.9] tracking-tighter uppercase">{slide.title}</h2>
-                            <p className="text-sm md:text-xl tracking-[0.3em] font-medium mb-16 uppercase animate-fade-up [animation-delay:400ms] opacity-90 drop-shadow-md">{slide.subtitle}</p>
-                            <button
-                                onClick={() => onNavigate(slide.view)}
-                                className="bg-white text-black font-black py-6 px-16 rounded-none hover:bg-[#fbc5fa] hover:text-black transition-all duration-700 transform hover:scale-105 animate-fade-up [animation-delay:600ms] tracking-[0.4em] text-[11px] shadow-2xl"
-                            >
-                                {slide.buttonText}
-                            </button>
+                    {slide.showBanner && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/5">
+                            
+                            {/* BLUE COLONIAL BANNER - NO RED, GOLD ACCENTS */}
+                            <div className={`relative px-10 py-16 max-w-4xl w-full mx-6 transition-all duration-1000 transform ${index === currentIndex ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'} ${
+                                slide.bannerType === 'colonial' 
+                                ? 'bg-gradient-to-br from-[#002d40]/90 to-[#005c7a]/90 border-4 border-[#d4af37] shadow-[0_0_80px_rgba(0,0,0,0.6)] backdrop-blur-md' 
+                                : 'bg-black/40 backdrop-blur-xl border border-white/20 shadow-2xl'
+                            }`}>
+                                
+                                {/* Golden Sparkles / Accents (CSS) */}
+                                {slide.bannerType === 'colonial' && (
+                                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                        <div className="absolute top-4 right-8 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
+                                        <div className="absolute bottom-10 left-10 w-1 h-1 bg-white rounded-full animate-pulse"></div>
+                                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,_rgba(212,175,55,0.4)_1px,_transparent_1px)] bg-[length:30px_30px]"></div>
+                                    </div>
+                                )}
+
+                                <div className="relative z-10 flex flex-col items-center">
+                                    {/* Imagen de los Envoltorios de Regalo - Sin rastro de rojo */}
+                                    <div className="mb-8 relative">
+                                        <img 
+                                            src="https://media-cdn.oriflame.com/contentImage?externalMediaId=86cb5734-1101-4601-8161-e170f0cfbdd0&name=Promo_split_single_3&inputFormat=jpg" 
+                                            alt="Envoltorios Premium Vella"
+                                            className="h-36 md:h-52 object-contain rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-white/20"
+                                        />
+                                        <div className="absolute -bottom-4 -right-4 bg-[#d4af37] text-black text-[9px] font-black px-4 py-2 uppercase tracking-widest shadow-lg">
+                                            CALIDAD SUECA
+                                        </div>
+                                    </div>
+
+                                    <span className="text-[10px] font-black tracking-[0.7em] uppercase mb-4 block text-[#fbc5fa]">
+                                        ORIFLAME • SWEDEN
+                                    </span>
+                                    
+                                    <h2 className="text-3xl md:text-6xl font-serif font-black mb-6 leading-none tracking-tighter uppercase text-center text-white">
+                                        {slide.title}
+                                    </h2>
+                                    
+                                    <p className="text-[9px] md:text-xs tracking-[0.45em] font-bold mb-10 uppercase text-center max-w-2xl leading-relaxed text-white/80">
+                                        {slide.subtitle}
+                                    </p>
+                                    
+                                    <button
+                                        onClick={() => slide.view && onNavigate(slide.view)}
+                                        className="py-5 px-16 transition-all duration-700 transform hover:scale-105 tracking-[0.5em] text-[10px] font-black shadow-2xl bg-[#d4af37] text-black hover:bg-white"
+                                    >
+                                        {slide.buttonText}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             ))}
             
             {/* Arrows */}
-            <button onClick={prevSlide} className="absolute left-10 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-20">
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 19l-7-7 7-7" /></svg>
+            <button onClick={prevSlide} className="absolute left-10 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors z-20">
+                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 19l-7-7 7-7" /></svg>
             </button>
-            <button onClick={nextSlide} className="absolute right-10 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-20">
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 5l7 7-7 7" /></svg>
+            <button onClick={nextSlide} className="absolute right-10 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors z-20">
+                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 5l7 7-7 7" /></svg>
             </button>
 
             {/* Pagination Lines */}
-            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex space-x-10">
+            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex space-x-10">
                 {slides.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-16 h-[2px] transition-all duration-1000 ${index === currentIndex ? 'bg-white' : 'bg-white/20'}`}
+                        className={`w-12 h-[2px] transition-all duration-1000 ${index === currentIndex ? 'bg-white' : 'bg-white/10'}`}
                     />
                 ))}
             </div>
-            
-            <style>{`
-                @keyframes fade-up {
-                    from { opacity: 0; transform: translateY(40px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fade-up { animation: fade-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-            `}</style>
         </div>
     );
 };

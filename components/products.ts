@@ -1,96 +1,201 @@
 
 import type { Product } from './types';
 
-// Large scale Oriflame product generator
-const ORIFLAME_BRANDS = ["Novage+", "Giordani Gold", "THE ONE", "Love Nature", "Wellosophy", "Optimals", "Beautanicals", "Eclat", "Possess"];
-
-const CATEGORY_DATA = {
-    skincare: {
-        names: ["Serum Renovador", "Crema de Día SPF 30", "Contorno de Ojos Lift", "Limpiadora Oleosa", "Mascarilla de Noche", "Tratamiento Anti-imperfecciones", "Protector Solar 50+", "Peeling AHA 6%", "Bruma Hidratante", "Crema de Noche Restauradora"],
-        images: [
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F41035%2F41035_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F44098%2F44098_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F41070%2F41070_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F41032%2F41032_1.png"
-        ]
-    },
-    makeup: {
-        names: ["Barra de Labios Iconic", "Máscara de Pestañas 5 en 1", "Base de Maquillaje Everlasting", "Perlas Bronceadoras", "Corrector con Serum", "Paleta de Sombras Nude", "Delineador Líquido Precision", "Iluminador en Stick", "Polvos Traslúcidos", "Esmalte de Uñas Gloss"],
-        images: [
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F46901%2F46901_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F47188%2F47188_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F46134%2F46134_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F42121%2F42121_1.png"
-        ]
-    },
-    perfume: {
-        names: ["Eau de Parfum Eclat Nuit", "Possess Absolute", "Mister Giordani Aqua", "Miss Giordani Floral", "Amber Elixir", "Infini", "Venture Beyond", "Nordic Waters", "Signature", "Divine Exclusive"],
-        images: [
-            "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80"
-        ]
-    },
-    wellness: {
-        names: ["WellnessPack Mujer", "Batido Natural Balance Vainilla", "Astaxantina & Extracto de Arándano", "Omega 3 Calidad Sueca", "Calcio Marino & Vitamina D", "Proteína en Polvo", "WellnessPack Hombre", "Sustitutivo de Comidas Chocolate"],
-        images: [
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F47847%2F47847_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F47785%2F47785_1.png"
-        ]
-    },
-    'personal-care': {
-        names: ["Crema Universal Original", "Gel de Ducha Love Nature Coco", "Crema de Manos Hidratante", "Loción Corporal Energizante", "Champú Anticaspa de Bardana", "Jabón en Barra Refrescante", "Pasta de Dientes Optifresh"],
-        images: [
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F48649%2F48649_1.png",
-            "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F47439%2F47439_1.png"
-        ]
-    }
-};
-
-const createOriflameCatalog = (): Product[] => {
+const createVellaperfumeriaCatalog = (): Product[] => {
     const products: Product[] = [];
-    let idCounter = 40000;
 
-    // Generate ~650 products
-    const categories: (keyof typeof CATEGORY_DATA)[] = ['skincare', 'makeup', 'perfume', 'wellness', 'personal-care'];
-    
-    categories.forEach(cat => {
-        const data = CATEGORY_DATA[cat];
-        // Distribute items across categories
-        const itemsPerCategory = cat === 'skincare' ? 200 : cat === 'makeup' ? 150 : 100;
+    // 1. PRODUCTOS ESPECÍFICOS SOLICITADOS (CAMPAÑA 1 - 2026)
+    const specificItems: Partial<Product>[] = [
+        // FRAGANCIAS PREMIUM
+        {
+            id: 38497,
+            name: "Eau de Parfum Divine",
+            price: 19.99,
+            regularPrice: 38.40,
+            category: 'perfume',
+            brand: 'Oriflame',
+            description: "Magnífico ramo de flores blancas que te elevará a la estrella. Pruébalo y disfruta de su aroma celestial. 50ml.",
+            tag: 'OFERTA'
+        },
+        { 
+            id: 40683, 
+            name: "Perfume Giordani Gold Essenza Supreme", 
+            price: 49.12, 
+            category: 'perfume', 
+            brand: 'Giordani Gold',
+            description: "Máxima sofisticación y concentración. Evolución del icono con mayor profundidad. El máximo lujo sueco.",
+            tag: 'PREMIUM'
+        },
 
-        for (let i = 0; i < itemsPerCategory; i++) {
-            const id = idCounter++;
-            const brand = ORIFLAME_BRANDS[Math.floor(Math.random() * ORIFLAME_BRANDS.length)];
-            const baseName = data.names[i % data.names.length];
-            const name = `${baseName} ${brand} #${i + 1}`;
-            const price = 10 + Math.random() * 80;
-            const isOffer = Math.random() > 0.8;
-
-            // EXCLUSION LOGIC: Skip hair removal related terms
-            const forbiddenTerms = ["depilación", "cera", "máquina de afeitar", "vello", "epilator", "razor", "depilatorio"];
-            if (forbiddenTerms.some(term => name.toLowerCase().includes(term) || baseName.toLowerCase().includes(term))) {
-                continue;
+        // LÍNEA THE ONE - MAQUILLAJE
+        {
+            id: 41989,
+            name: "Corrector Everlasting THE ONE",
+            price: 8.99,
+            category: 'makeup',
+            brand: 'THE ONE',
+            description: "Acabado fresco y mate. Larga duración de 30 horas. Resistente al agua.",
+            variants: {
+                "Tono": [
+                    { value: "41989 Porcelain Cool", variationId: 41989 },
+                    { value: "41990 Light Beige Natural", variationId: 41990 },
+                    { value: "41991 Warm Sand", variationId: 41991 }
+                ]
             }
+        },
+        {
+            id: 34647,
+            name: "Polvos Compactos Everlasting THE ONE",
+            price: 13.99,
+            category: 'makeup',
+            brand: 'THE ONE',
+            description: "Acabado mate de larga duración hasta 10 horas. Refina líneas finas e imperfecciones.",
+            variants: {
+                "Tono": [
+                    { value: "34647 Light Plus", variationId: 34647 },
+                    { value: "34648 Medium", variationId: 34648 }
+                ]
+            }
+        },
+        {
+            id: 45361,
+            name: "Sombra de Ojos Líquida Metálica THE ONE",
+            price: 8.49,
+            regularPrice: 12.99,
+            category: 'makeup',
+            brand: 'THE ONE',
+            description: "Acabados metálicos y brillantes de larga duración con manteca de karité nutritiva.",
+            variants: {
+                "Tono": [
+                    { value: "45361 Soft Pink", variationId: 45361 },
+                    { value: "45362 Rosy Peach", variationId: 45362 },
+                    { value: "45364 Beige", variationId: 45364 }
+                ]
+            },
+            tag: 'OFERTA'
+        },
+        {
+            id: 37750,
+            name: "Delineador de Ojos Waterproof THE ONE",
+            price: 7.49,
+            category: 'makeup',
+            brand: 'THE ONE',
+            description: "Delineador resistente al agua de aplicación suave. No se corre ni crea grumos.",
+            variants: {
+                "Tono": [
+                    { value: "37750 Black Ink", variationId: 37750 },
+                    { value: "47704 Black", variationId: 47704 },
+                    { value: "47705 Grey", variationId: 47705 },
+                    { value: "47706 Blue", variationId: 47706 },
+                    { value: "47707 Brown", variationId: 47707 },
+                    { value: "47708 Emerald Green", variationId: 47708 }
+                ]
+            }
+        },
+        {
+            id: 47189,
+            name: "Labial Larga Duración Love It THE ONE",
+            price: 8.49,
+            category: 'makeup',
+            brand: 'THE ONE',
+            description: "Color intenso que dura todo el día. Enriquecido con manteca de karité.",
+            variants: {
+                "Tono": [
+                    { value: "47189 Starlet Kiss", variationId: 47189 },
+                    { value: "47190 Timeless Magic", variationId: 47190 },
+                    { value: "47191 Midnight Light", variationId: 47191 },
+                    { value: "47192 Shimmering Snow", variationId: 47192 }
+                ]
+            }
+        },
+        {
+            id: 10390,
+            name: "Máscara de Pestañas Lash Transformer 5-en-1 THE ONE",
+            price: 10.39,
+            regularPrice: 12.99,
+            category: 'makeup',
+            brand: 'THE ONE',
+            description: "Transforma tus pestañas: volumen, longitud, curvatura, cuidado y definición en un solo paso.",
+            tag: 'OFERTA'
+        },
 
-            products.push({
-                id,
-                name,
-                brand,
-                price,
-                regularPrice: isOffer ? price * 1.4 : undefined,
-                imageUrl: data.images[i % data.images.length],
-                description: `Producto premium de la línea ${brand} diseñado con tecnología sueca. Fórmula de alta eficacia probada dermatológicamente.`,
-                stock: Math.floor(Math.random() * 200),
-                category: cat as any,
-                tag: isOffer ? 'OFERTA' : (Math.random() > 0.9 ? 'NOVEDAD' : undefined),
-                rating: 4 + Math.random(),
-                reviewCount: Math.floor(Math.random() * 100)
-            });
+        // GIORDANI GOLD - MAQUILLAJE DE LUJO
+        {
+            id: 43243,
+            name: "Maquillaje Eternal Glow SPF 25 Giordani Gold",
+            price: 32.00,
+            category: 'makeup',
+            brand: 'Giordani Gold',
+            description: "Piel libre de estrés. Base hidratante con SPF 25 que proporciona un resplandor eterno.",
+            variants: {
+                "Tono": [
+                    { value: "43243 Vanilla Neutral", variationId: 43243 },
+                    { value: "43244 Porcelain One", variationId: 43244 },
+                    { value: "43245 Light Beige Nude", variationId: 43245 },
+                    { value: "43247 Ivory Neutral", variationId: 43247 },
+                    { value: "43248 Natural Base", variationId: 43248 }
+                ]
+            }
+        },
+
+        // ACCESORIOS & RELOJES
+        { 
+            id: 48030, 
+            name: "Reloj Willwood para Él", 
+            price: 48.03, 
+            category: 'accessories', 
+            brand: 'Willwood',
+            description: "Elegancia atemporal en tu muñeca. Un accesorio de lujo indispensable.",
+            tag: 'PREMIUM'
+        },
+        { 
+            id: 42490, 
+            name: "Eau de Toilette Ascend", 
+            price: 42.49, 
+            category: 'perfume', 
+            brand: 'Ascend',
+            description: "La fuerza que hay en ti. Fragancia energizante para el hombre moderno.",
+            tag: 'NOVEDAD'
         }
+    ];
+
+    specificItems.forEach(item => {
+        products.push({
+            id: item.id!,
+            name: item.name!,
+            brand: item.brand || 'Oriflame Sweden',
+            price: item.price!,
+            regularPrice: item.regularPrice || item.price! * 1.5,
+            imageUrl: item.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F${item.id}%2F${item.id}_1.png`,
+            description: item.description || "Excelencia sueca con estándares de calidad europeos.",
+            category: item.category as any,
+            tag: item.tag as any,
+            stock: 100,
+            rating: 4.9,
+            variants: item.variants,
+            reviewCount: 45
+        });
     });
+
+    // Relleno catálogo (optimizado)
+    const fillerCats: ('skincare' | 'makeup' | 'perfume' | 'wellness' | 'personal-care' | 'accessories')[] = ['skincare', 'makeup', 'perfume', 'wellness', 'personal-care', 'accessories'];
+    for (let i = products.length; i < 40; i++) {
+        const cat = fillerCats[i % fillerCats.length];
+        const id = 71000 + i;
+        products.push({
+            id,
+            name: `Luxury ${cat.charAt(0).toUpperCase() + cat.slice(1)} Essence`,
+            brand: "Vella Perfumería",
+            price: 25 + Math.random() * 75,
+            imageUrl: "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F44098%2F44098_1.png",
+            description: "Eficacia probada y elegancia en cada gota.",
+            stock: 50,
+            category: cat as any,
+            rating: 4.5
+        });
+    }
 
     return products;
 };
 
-export const allProducts: Product[] = createOriflameCatalog();
+export const allProducts: Product[] = createVellaperfumeriaCatalog();

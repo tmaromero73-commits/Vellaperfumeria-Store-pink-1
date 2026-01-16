@@ -99,7 +99,8 @@ const App: React.FC = () => {
             switch (view.current) {
                 case 'home': return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
                 case 'products': return <ShopPage initialCategory={view.payload || 'all'} currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
-                case 'productDetail': return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} onProductSelect={handleProductSelect} />;
+                // Fix: Removed onProductSelect from ProductDetailPage as it's not defined in its props interface and not used in the component
+                case 'productDetail': return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} />;
                 case 'ofertas': return <OfertasPage currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
                 case 'ia': return <AsistenteIAPage />;
                 case 'catalog': return <CatalogPage onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} currency={currency} />;
