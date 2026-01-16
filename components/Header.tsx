@@ -18,53 +18,46 @@ const Header: React.FC<{
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
     const categories = [
-        { key: 'perfume', label: 'Perfumería', sub: 'Fragancias de Lujo' },
-        { key: 'makeup', label: 'Maquillaje', sub: 'The One & Giordani' },
-        { key: 'skincare', label: 'Cuidado Facial', sub: 'Novage+ & Optimals' },
+        { key: 'perfume', label: 'Fragancias', sub: 'Lujo' },
+        { key: 'skincare', label: 'Cuidado Facial', sub: 'Biotecnología' },
+        { key: 'makeup', label: 'Maquillaje', sub: 'Waunt' },
         { key: 'wellness', label: 'Bienestar', sub: 'Wellosophy' },
-        { key: 'personal-care', label: 'Higiene', sub: 'Cuidado Diario' },
-        { key: 'accessories', label: 'Accesorios', sub: 'Moda y Joyas' }
+        { key: 'personal-care', label: 'Corporal', sub: 'Esencia' },
+        { key: 'accessories', label: 'Accesorios', sub: 'Profesional' }
     ];
 
     return (
         <header className="w-full z-[100] relative bg-white">
-            {/* Promotion Bar - Orchid Pink (#fbc5fa) */}
-            <div className="bg-[#fbc5fa] py-3 text-black w-full border-b border-black/5">
-                <div className="container mx-auto px-6 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.3em]">
-                    <div className="flex items-center gap-6">
-                        <a href="https://instagram.com/bellaperfumeria" target="_blank" className="flex items-center gap-2 hover:opacity-70 transition-all">
-                            <InstagramIcon /> <span className="hidden md:inline">@bellaperfumeria</span>
-                        </a>
-                    </div>
-                    <span className="text-center font-bold tracking-[0.4em] hidden sm:block">Envío Gratis en pedidos +35€ • Regalo de Cortesía</span>
-                    <div className="flex items-center gap-4">
-                        <span className="hidden lg:inline">WhatsApp: +34 661 202 616</span>
-                    </div>
-                </div>
+            {/* Promo Bar */}
+            <div className="bg-[#fbc5fa] py-2 text-black w-full text-[10px] font-black uppercase tracking-[0.3em] flex justify-center items-center gap-6 shadow-sm">
+                <span className="hidden sm:inline">Regalo de Cortesía + Envío Gratis desde 35€</span>
+                <span className="sm:hidden text-[8px]">Envío Gratis desde 35€ + Regalo VIP</span>
             </div>
 
-            {/* Logo Section - Centered on White Background */}
-            <div className="py-10 md:py-16 w-full bg-white flex flex-col items-center justify-center relative">
+            {/* Logo Section */}
+            <div className="py-10 md:py-16 bg-white flex flex-col items-center border-b border-gray-50 relative">
                 <button onClick={() => onNavigate('home')} className="flex flex-col items-center group transition-all duration-700">
                     <img 
-                        src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
-                        alt="Vella Perfumería Logo Centrado" 
-                        className="h-28 md:h-36 object-contain mb-4 transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundColor: 'transparent' }}
+                        src="https://raw.githubusercontent.com/vella-perfumeria/assets/main/logo_vp_v1.png" 
+                        alt="Logo Vella Perfumería VP" 
+                        className="h-28 md:h-36 object-contain mb-6 transition-all duration-1000 group-hover:scale-105"
+                        onError={(e) => {
+                            e.currentTarget.src = "https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png";
+                        }}
                     />
-                    <h1 className="text-4xl md:text-5xl font-serif font-black tracking-tighter leading-none group-hover:tracking-widest transition-all duration-1000 text-black uppercase">
+                    <h1 className="text-3xl md:text-5xl font-serif font-black tracking-tighter text-black uppercase group-hover:tracking-widest transition-all duration-1000">
                         VELLA PERFUMERIA
                     </h1>
                 </button>
                 
-                {/* Cart Icon */}
-                <div className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 flex items-center">
-                    <button onClick={onCartClick} className="relative group p-2">
-                        <svg className="h-8 w-8 text-black group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                {/* Carrito */}
+                <div className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2">
+                    <button onClick={onCartClick} className="relative group p-3 bg-black rounded-full shadow-2xl transition-all hover:scale-110 active:scale-95">
+                        <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                         {cartCount > 0 && (
-                            <span className="absolute top-0 right-0 bg-black text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">
+                            <span className="absolute -top-1 -right-1 bg-[#fbc5fa] text-black text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center ring-2 ring-white">
                                 {cartCount}
                             </span>
                         )}
@@ -73,71 +66,67 @@ const Header: React.FC<{
             </div>
 
             {/* FULL WIDTH BLACK MENU */}
-            <nav className="bg-black w-full relative h-16 shadow-2xl">
-                <div className="container mx-auto h-full">
-                    <div className="flex items-center justify-center h-full overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap px-4">
+            <nav className="bg-black w-full relative h-16 shadow-2xl overflow-visible flex justify-center border-b border-white/5">
+                <div className="container mx-auto h-full flex justify-center">
+                    <div className="flex items-center justify-center h-full overflow-x-auto no-scrollbar whitespace-nowrap px-4 w-full">
                         {categories.map((cat) => (
                             <button
                                 key={cat.key}
                                 onMouseEnter={() => setActiveMenu(cat.key)}
                                 onMouseLeave={() => setActiveMenu(null)}
                                 onClick={() => onNavigate('products', cat.key)}
-                                className={`flex-shrink-0 px-6 md:px-10 text-white text-[11px] font-black uppercase tracking-[0.3em] h-full flex flex-col items-center justify-center transition-all relative group`}
+                                className={`px-6 md:px-12 text-white text-[11px] font-black uppercase tracking-[0.25em] h-full flex flex-col items-center justify-center transition-all relative group hover:bg-white/5`}
                             >
                                 <span className="relative z-10 group-hover:text-[#fbc5fa] transition-colors">{cat.label}</span>
-                                <span className="text-[7px] text-white/30 uppercase tracking-widest mt-1 block">{cat.sub}</span>
-                                <span className={`absolute bottom-0 left-0 w-full h-1 bg-[#fbc5fa] transform origin-left transition-transform duration-300 ${activeMenu === cat.key ? 'scale-x-100' : 'scale-x-0'}`}></span>
+                                <span className="text-[7px] text-white/30 tracking-[0.3em] mt-1 block uppercase">{cat.sub}</span>
+                                <span className={`absolute bottom-0 left-0 w-full h-1 bg-[#fbc5fa] transform origin-left transition-transform duration-500 ${activeMenu === cat.key ? 'scale-x-100' : 'scale-x-0'}`}></span>
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* BLACK DROPDOWN MENU */}
+                {/* BLACK DROPDOWN */}
                 {activeMenu && (
                     <div 
-                        className="absolute top-full left-0 w-full bg-black z-[150] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border-t border-white/5 animate-fade-in-menu py-12"
+                        className="absolute top-full left-0 w-full bg-black z-[150] shadow-[0_30px_60px_rgba(0,0,0,0.8)] border-t border-white/10 animate-fade-in-menu py-12"
                         onMouseEnter={() => setActiveMenu(activeMenu)}
                         onMouseLeave={() => setActiveMenu(null)}
                     >
-                        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-white text-center">
-                            <div className="space-y-4">
-                                <h4 className="text-[#fbc5fa] text-[12px] font-black uppercase tracking-[0.4em] mb-6">Novedades Campaña 1</h4>
-                                <ul className="space-y-3 text-[10px] uppercase font-bold tracking-[0.3em] text-white/50">
-                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('products', activeMenu)}>Ver Colección Completa</li>
+                        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 text-white">
+                            <div className="space-y-6">
+                                <h4 className="text-[#fbc5fa] text-[12px] font-black uppercase tracking-[0.4em] mb-4">Descubrir {activeMenu}</h4>
+                                <ul className="space-y-4 text-[10px] uppercase font-bold tracking-[0.25em] text-white/50">
+                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('products', activeMenu)}>Novedades 2026</li>
                                     <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('ofertas')}>Mejores Ofertas</li>
-                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('ia')}>Asistente IA VIP</li>
+                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('catalog')}>Ver Catálogo Completo</li>
                                 </ul>
                             </div>
                             
-                            <div className="hidden md:flex flex-col items-center justify-center border-x border-white/5 px-8">
-                                <p className="text-[11px] font-medium italic text-white/40 leading-relaxed mb-6">
-                                    "La belleza sueca se encuentra con la elegancia italiana. Productos biotecnológicos de alta gama directamente en tu hogar."
+                            <div className="hidden md:flex flex-col items-center justify-center border-x border-white/5 px-10">
+                                <p className="text-[11px] italic text-white/40 text-center leading-relaxed font-medium">
+                                    "Excelencia en cada detalle. Lo mejor de la cosmética sueca ahora a tu alcance."
                                 </p>
-                                <div className="w-10 h-px bg-[#fbc5fa]"></div>
                             </div>
 
-                            <div className="space-y-6">
-                                <h4 className="text-[#fbc5fa] text-[12px] font-black uppercase tracking-[0.4em] mb-6">Vella Premium</h4>
+                            <div className="flex flex-col items-center md:items-end justify-center">
                                 <button 
-                                    onClick={() => onNavigate('catalog')} 
-                                    className="bg-white text-black text-[9px] font-black uppercase tracking-[0.5em] px-8 py-4 hover:bg-[#fbc5fa] transition-all w-full max-w-xs mx-auto"
+                                    onClick={() => onNavigate('ia')} 
+                                    className="bg-white text-black text-[10px] font-black uppercase tracking-[0.4em] px-12 py-5 hover:bg-[#fbc5fa] transition-all shadow-2xl active:scale-95"
                                 >
-                                    Catálogo Interactivo
+                                    Beauty Concierge IA
                                 </button>
-                                <p className="text-[8px] text-white/20 uppercase tracking-widest mt-4">Swedish Beauty Excellence Since 1967</p>
+                                <p className="text-[8px] text-white/20 uppercase tracking-[0.5em] mt-5 font-bold">Atención VIP 24/7</p>
                             </div>
                         </div>
                     </div>
                 )}
             </nav>
             <style>{`
-                @keyframes fade-in-menu {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
+                @keyframes fade-in-menu { 
+                    from { opacity: 0; transform: translateY(15px); } 
+                    to { opacity: 1; transform: translateY(0); } 
                 }
-                .animate-fade-in-menu {
-                    animation: fade-in-menu 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                }
+                .animate-fade-in-menu { animation: fade-in-menu 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
                 .no-scrollbar::-webkit-scrollbar { display: none; }
                 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>

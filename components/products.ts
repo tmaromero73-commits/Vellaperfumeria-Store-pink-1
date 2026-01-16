@@ -4,196 +4,94 @@ import type { Product } from './types';
 const createVellaperfumeriaCatalog = (): Product[] => {
     const products: Product[] = [];
 
-    // 1. PRODUCTOS ESPECÍFICOS SOLICITADOS (CAMPAÑA 1 - 2026)
     const specificItems: Partial<Product>[] = [
-        // FRAGANCIAS PREMIUM
-        {
-            id: 38497,
-            name: "Eau de Parfum Divine",
-            price: 19.99,
-            regularPrice: 38.40,
-            category: 'perfume',
-            brand: 'Oriflame',
-            description: "Magnífico ramo de flores blancas que te elevará a la estrella. Pruébalo y disfruta de su aroma celestial. 50ml.",
-            tag: 'OFERTA'
-        },
-        { 
-            id: 40683, 
-            name: "Perfume Giordani Gold Essenza Supreme", 
-            price: 49.12, 
-            category: 'perfume', 
-            brand: 'Giordani Gold',
-            description: "Máxima sofisticación y concentración. Evolución del icono con mayor profundidad. El máximo lujo sueco.",
-            tag: 'PREMIUM'
-        },
+        // --- LÍNEA WAUNT (WOUND) ---
+        { id: 41365, name: "Crema de Día Super Recover Waunt", price: 10.99, category: 'skincare', brand: 'Waunt', description: "Recuperación instantánea de la barrera cutánea. Hidratación profunda." },
+        { id: 41353, name: "Contorno de Ojos 8 horas Sleep Waunt", price: 18.99, category: 'skincare', brand: 'Waunt', description: "Efecto '8 horas de sueño' inmediato. Difumina ojeras y fatiga." },
+        { id: 41373, name: "Mascarilla Nutritiva Sleeping Beauty Waunt", price: 19.99, category: 'skincare', brand: 'Waunt', description: "Tratamiento nocturno intensivo para una piel radiante al despertar." },
+        { id: 40670, name: "Prebase Perfeccionadora Wake Up Like This Waunt", price: 28.00, category: 'makeup', brand: 'Waunt', description: "Elimina impurezas y alisa la textura en una semana. 99% de acuerdo." },
+        { id: 47180, name: "Bálsamo de Labios Smooth Like Butter Waunt", price: 16.00, category: 'makeup', brand: 'Waunt', variants: { "Tono": [{ value: "Light Pink", variationId: 47180 }, { value: "Soft Beige", variationId: 47181 }, { value: "Peach Pink", variationId: 47182 }] } },
 
-        // LÍNEA THE ONE - MAQUILLAJE
-        {
-            id: 41989,
-            name: "Corrector Everlasting THE ONE",
-            price: 8.99,
-            category: 'makeup',
-            brand: 'THE ONE',
-            description: "Acabado fresco y mate. Larga duración de 30 horas. Resistente al agua.",
-            variants: {
-                "Tono": [
-                    { value: "41989 Porcelain Cool", variationId: 41989 },
-                    { value: "41990 Light Beige Natural", variationId: 41990 },
-                    { value: "41991 Warm Sand", variationId: 41991 }
-                ]
-            }
-        },
-        {
-            id: 34647,
-            name: "Polvos Compactos Everlasting THE ONE",
-            price: 13.99,
-            category: 'makeup',
-            brand: 'THE ONE',
-            description: "Acabado mate de larga duración hasta 10 horas. Refina líneas finas e imperfecciones.",
-            variants: {
-                "Tono": [
-                    { value: "34647 Light Plus", variationId: 34647 },
-                    { value: "34648 Medium", variationId: 34648 }
-                ]
-            }
-        },
-        {
-            id: 45361,
-            name: "Sombra de Ojos Líquida Metálica THE ONE",
-            price: 8.49,
-            regularPrice: 12.99,
-            category: 'makeup',
-            brand: 'THE ONE',
-            description: "Acabados metálicos y brillantes de larga duración con manteca de karité nutritiva.",
-            variants: {
-                "Tono": [
-                    { value: "45361 Soft Pink", variationId: 45361 },
-                    { value: "45362 Rosy Peach", variationId: 45362 },
-                    { value: "45364 Beige", variationId: 45364 }
-                ]
-            },
-            tag: 'OFERTA'
-        },
-        {
-            id: 37750,
-            name: "Delineador de Ojos Waterproof THE ONE",
-            price: 7.49,
-            category: 'makeup',
-            brand: 'THE ONE',
-            description: "Delineador resistente al agua de aplicación suave. No se corre ni crea grumos.",
-            variants: {
-                "Tono": [
-                    { value: "37750 Black Ink", variationId: 37750 },
-                    { value: "47704 Black", variationId: 47704 },
-                    { value: "47705 Grey", variationId: 47705 },
-                    { value: "47706 Blue", variationId: 47706 },
-                    { value: "47707 Brown", variationId: 47707 },
-                    { value: "47708 Emerald Green", variationId: 47708 }
-                ]
-            }
-        },
-        {
-            id: 47189,
-            name: "Labial Larga Duración Love It THE ONE",
-            price: 8.49,
-            category: 'makeup',
-            brand: 'THE ONE',
-            description: "Color intenso que dura todo el día. Enriquecido con manteca de karité.",
-            variants: {
-                "Tono": [
-                    { value: "47189 Starlet Kiss", variationId: 47189 },
-                    { value: "47190 Timeless Magic", variationId: 47190 },
-                    { value: "47191 Midnight Light", variationId: 47191 },
-                    { value: "47192 Shimmering Snow", variationId: 47192 }
-                ]
-            }
-        },
-        {
-            id: 10390,
-            name: "Máscara de Pestañas Lash Transformer 5-en-1 THE ONE",
-            price: 10.39,
-            regularPrice: 12.99,
-            category: 'makeup',
-            brand: 'THE ONE',
-            description: "Transforma tus pestañas: volumen, longitud, curvatura, cuidado y definición en un solo paso.",
-            tag: 'OFERTA'
-        },
+        // --- LÍNEA PURESKIN (CARBÓN ACTIVO) ---
+        { id: 42881, name: "Mascarilla Purificante con Carbón Activo Pureskin", price: 9.99, category: 'skincare', brand: 'Pureskin', description: "Elimina puntos negros y exceso de grasa. Piel limpia y mate." },
+        { id: 41671, name: "Tónico Purificante Pureskin", price: 9.99, category: 'skincare', brand: 'Pureskin', description: "Combate imperfecciones y minimiza poros dilatados." },
+        { id: 41675, name: "Exfoliante Facial Suavizante Pureskin", price: 9.99, category: 'skincare', brand: 'Pureskin' },
+        { id: 41674, name: "Mascarilla de Arcilla Matificante Pureskin", price: 9.99, category: 'skincare', brand: 'Pureskin' },
+        { id: 41676, name: "Gel Anti-imperfecciones Pureskin", price: 18.00, category: 'skincare', brand: 'Pureskin' },
+        { id: 41670, name: "Limpiadora Facial Intensiva Pureskin", price: 18.00, category: 'skincare', brand: 'Pureskin' },
+        { id: 41672, name: "Loción Facial Matificante Pureskin", price: 18.00, category: 'skincare', brand: 'Pureskin' },
 
-        // GIORDANI GOLD - MAQUILLAJE DE LUJO
-        {
-            id: 43243,
-            name: "Maquillaje Eternal Glow SPF 25 Giordani Gold",
-            price: 32.00,
-            category: 'makeup',
-            brand: 'Giordani Gold',
-            description: "Piel libre de estrés. Base hidratante con SPF 25 que proporciona un resplandor eterno.",
-            variants: {
-                "Tono": [
-                    { value: "43243 Vanilla Neutral", variationId: 43243 },
-                    { value: "43244 Porcelain One", variationId: 43244 },
-                    { value: "43245 Light Beige Nude", variationId: 43245 },
-                    { value: "43247 Ivory Neutral", variationId: 43247 },
-                    { value: "43248 Natural Base", variationId: 43248 }
-                ]
-            }
-        },
+        // --- WELLOSOPHY / BIENESTAR ---
+        { id: 38599, name: "Multivitaminas y Minerales Woman Wellosophy", price: 22.99, category: 'wellness', brand: 'Wellosophy' },
+        { id: 38597, name: "Multivitaminas y Minerales Man Wellosophy", price: 22.99, category: 'wellness', brand: 'Wellosophy' },
+        { id: 38595, name: "Multivitaminas y Minerales Kids Wellosophy", price: 24.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 38556, name: "Omega-3 Wellosophy Premium", price: 24.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 32557, name: "Extracto de Arándano y Astaxantina Wellosophy", price: 32.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 37289, name: "Batido Natural Balance Chocolate", price: 48.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 37285, name: "Batido Natural Balance Fresa", price: 48.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 37290, name: "Batido Natural Balance Vainilla", price: 48.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 45147, name: "Bebida de Fibra Prebiótica", price: 26.95, category: 'wellness', brand: 'Wellosophy' },
+        { id: 38836, name: "Wellness Pack Man", price: 38.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 38838, name: "Wellness Pack Woman", price: 38.00, category: 'wellness', brand: 'Wellosophy' },
+        { id: 44221, name: "Magnesio Marino y Vitamina B6", price: 12.99, category: 'wellness', brand: 'Wellosophy' },
 
-        // ACCESORIOS & RELOJES
-        { 
-            id: 48030, 
-            name: "Reloj Willwood para Él", 
-            price: 48.03, 
-            category: 'accessories', 
-            brand: 'Willwood',
-            description: "Elegancia atemporal en tu muñeca. Un accesorio de lujo indispensable.",
-            tag: 'PREMIUM'
-        },
-        { 
-            id: 42490, 
-            name: "Eau de Toilette Ascend", 
-            price: 42.49, 
-            category: 'perfume', 
-            brand: 'Ascend',
-            description: "La fuerza que hay en ti. Fragancia energizante para el hombre moderno.",
-            tag: 'NOVEDAD'
-        }
+        // --- LOVE NATURE (ORGÁNICOS) ---
+        { id: 46072, name: "Mascarilla Aloe Vera y Piña Love Nature", price: 8.49, category: 'skincare', brand: 'Love Nature' },
+        { id: 47003, name: "Tónico Aloe Vera y Piña Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 46071, name: "Crema Aloe Vera y Piña Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 46070, name: "Gel Limpiador Aloe Vera y Piña Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 46919, name: "Mascarilla Calmante Kiwi Love Nature", price: 2.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 46922, name: "Mascarilla Iluminadora Mango Love Nature", price: 2.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 34849, name: "Aceite Árbol de Té y Lima Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 34845, name: "Loción Multimatificante Árbol de Té y Lima Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 35576, name: "Mascarilla y Exfoliante Árbol de Té y Lima Love Nature", price: 8.49, category: 'skincare', brand: 'Love Nature' },
+        { id: 34843, name: "Tónico Árbol de Té y Lima Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+        { id: 34841, name: "Limpiador Árbol de Té y Lima Love Nature", price: 9.99, category: 'skincare', brand: 'Love Nature' },
+
+        // --- OPTIMALS & ACCESORIOS ---
+        { id: 45001, name: "Contorno de Ojos y Labios Hydra 48h Optimals", price: 12.99, category: 'skincare', brand: 'Optimals', description: "Hidrata al instante y mantiene la humedad durante 48 horas." },
+        { id: 45326, name: "Crema Hidratante Optimals SPF 25", price: 22.99, category: 'skincare', brand: 'Optimals' },
+        { id: 47419, name: "Brocha Exclusiva Serum y Crema", price: 5.99, category: 'accessories', brand: 'Vella' },
+        { id: 47880, name: "Esponja con Té Verde", price: 3.49, category: 'accessories', brand: 'Vella', tag: 'ULTIMAS UNIDADES' },
+        { id: 47524, name: "Banda para el pelo Vella", price: 2.99, category: 'accessories', brand: 'Vella' },
+        { id: 47517, name: "Limpiadora Facial Silicona", price: 1.99, category: 'accessories', brand: 'Vella' },
+        { id: 46543, name: "Limpiadora Foaming Gel Optimals", price: 11.99, category: 'skincare', brand: 'Optimals' },
+
+        // --- NOVAGE+ (ALTA GAMA) ---
+        { id: 41051, name: "Fluido Ultraligero SPF 50+ Proceuticals", price: 21.99, category: 'skincare', brand: 'Novage+' },
+        { id: 48678, name: "Parches Exfoliantes Proceuticals", price: 4.99, category: 'skincare', brand: 'Novage+' },
+        { id: 45923, name: "Rutina Restore Novage+ (Menopausia)", price: 141.00, category: 'skincare', brand: 'Novage+', tag: 'SET' },
+        { id: 45590, name: "Rutina Antiarrugas Novage+", price: 130.00, category: 'skincare', brand: 'Novage+', tag: 'SET' },
+        { id: 48114, name: "Cápsulas Restauradoras Novage+", price: 39.99, category: 'skincare', brand: 'Novage+' },
+        { id: 47292, name: "Retinol Power Proceuticals", price: 29.99, category: 'skincare', brand: 'Novage+' },
+        { id: 47510, name: "Masajeador Facial Novage+", price: 42.99, category: 'accessories', brand: 'Novage+' },
+
+        // --- PERFUMERÍA ---
+        { id: 46045, name: "Perfume Mr. Jordani", price: 26.99, category: 'perfume', brand: 'Giordani Gold' },
+        { id: 48028, name: "Eau de Parfum Jordani Gold White", price: 27.99, category: 'perfume', brand: 'Giordani Gold' },
+        { id: 47513, name: "Eau de Parfum Miss Jordani", price: 26.99, category: 'perfume', brand: 'Giordani Gold' },
+        { id: 35653, name: "Eau de Parfum Infinita", price: 26.99, category: 'perfume', brand: 'Infinita' },
+        { id: 46217, name: "Eau de Toilette Eclat Mademoiselle", price: 27.99, category: 'perfume', brand: 'Eclat' },
+        { id: 46792, name: "Eau de Toilette Eclat Femme Weekend", price: 27.99, category: 'perfume', brand: 'Eclat' },
+        { id: 42514, name: "Eau de Parfum Volare", price: 22.99, category: 'perfume', brand: 'Volare' }
     ];
 
     specificItems.forEach(item => {
         products.push({
             id: item.id!,
             name: item.name!,
-            brand: item.brand || 'Oriflame Sweden',
+            brand: item.brand || 'Vella Premium',
             price: item.price!,
-            regularPrice: item.regularPrice || item.price! * 1.5,
-            imageUrl: item.imageUrl || `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F${item.id}%2F${item.id}_1.png`,
-            description: item.description || "Excelencia sueca con estándares de calidad europeos.",
+            regularPrice: item.regularPrice || item.price! * 1.35,
+            imageUrl: `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F${item.id}%2F${item.id}_1.png`,
+            description: item.description || "Producto formulado con biotecnología europea avanzada para resultados profesionales.",
             category: item.category as any,
             tag: item.tag as any,
             stock: 100,
             rating: 4.9,
-            variants: item.variants,
-            reviewCount: 45
+            variants: item.variants
         });
     });
-
-    // Relleno catálogo (optimizado)
-    const fillerCats: ('skincare' | 'makeup' | 'perfume' | 'wellness' | 'personal-care' | 'accessories')[] = ['skincare', 'makeup', 'perfume', 'wellness', 'personal-care', 'accessories'];
-    for (let i = products.length; i < 40; i++) {
-        const cat = fillerCats[i % fillerCats.length];
-        const id = 71000 + i;
-        products.push({
-            id,
-            name: `Luxury ${cat.charAt(0).toUpperCase() + cat.slice(1)} Essence`,
-            brand: "Vella Perfumería",
-            price: 25 + Math.random() * 75,
-            imageUrl: "https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F44098%2F44098_1.png",
-            description: "Eficacia probada y elegancia en cada gota.",
-            stock: 50,
-            category: cat as any,
-            rating: 4.5
-        });
-    }
 
     return products;
 };

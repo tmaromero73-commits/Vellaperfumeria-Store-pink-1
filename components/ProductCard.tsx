@@ -18,9 +18,9 @@ export const ProductCard: React.FC<{
     const variantOptions = variantKey ? product.variants![variantKey] : [];
 
     const handleCardAction = (e: React.MouseEvent) => {
-        // Direct add to cart
+        // Al hacer clic, añadimos directamente para agilizar la compra
         if (variantOptions.length > 0 && !selectedVariant) {
-            onQuickView(product); // Needs variant selection
+            onQuickView(product); // Si requiere variante, abrimos vista rápida
         } else {
             onAddToCart(product, null, selectedVariant ? { [variantKey!]: selectedVariant } : null);
         }
@@ -28,7 +28,7 @@ export const ProductCard: React.FC<{
 
     return (
         <div 
-            className="group flex flex-col h-full bg-white transition-all duration-500 cursor-pointer overflow-hidden border border-transparent hover:border-gray-100"
+            className="group flex flex-col h-full bg-white transition-all duration-500 cursor-pointer overflow-hidden border border-transparent hover:border-gray-100 shadow-sm hover:shadow-xl"
             onClick={handleCardAction}
         >
             <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 flex items-center justify-center">
@@ -45,10 +45,11 @@ export const ProductCard: React.FC<{
                     </div>
                 )}
 
-                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-end pb-4 px-4">
+                {/* Overlay de Cesta */}
+                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-end pb-4 px-4">
                     <div className="bg-white/95 backdrop-blur-sm p-4 w-full shadow-2xl flex flex-col gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform">
                         {variantOptions.length > 0 && (
-                            <div className="w-full overflow-x-auto no-scrollbar py-2" onClick={(e) => e.stopPropagation()}>
+                            <div className="w-full overflow-x-auto no-scrollbar py-1" onClick={(e) => e.stopPropagation()}>
                                 <div className="flex gap-2 min-w-max pb-1">
                                     {variantOptions.map(option => (
                                         <button
@@ -74,13 +75,13 @@ export const ProductCard: React.FC<{
 
             <div className="flex flex-col p-4 pt-6">
                 <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mb-1">{product.brand}</span>
-                <h3 className="text-[12px] font-black text-black leading-snug mb-2 font-serif tracking-tight uppercase">
+                <h3 className="text-[12px] font-black text-black leading-snug mb-3 font-serif tracking-tight uppercase min-h-[2.5rem]">
                     {product.name}
                 </h3>
 
                 <div className="flex items-center gap-3">
                     <p className="text-sm font-black text-black">{formatCurrency(product.price, currency)}</p>
-                    {isDiscounted && <p className="text-[11px] text-gray-400 line-through font-medium">{formatCurrency(product.regularPrice!, currency)}</p>}
+                    {isDiscounted && <p className="text-[11px] text-gray-300 line-through font-medium">{formatCurrency(product.regularPrice!, currency)}</p>}
                 </div>
             </div>
             <style>{`
