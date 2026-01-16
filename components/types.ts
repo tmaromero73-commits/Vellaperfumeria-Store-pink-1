@@ -1,3 +1,4 @@
+
 // Variant types, used in Product
 export interface VariantOption {
     value: string;
@@ -21,10 +22,11 @@ export interface Product {
     description: string;
     howToUse?: string;
     stock: number;
-    category: 'perfume' | 'hair' | 'makeup' | 'skincare' | 'personal-care' | 'men' | 'wellness' | 'accessories' | 'gifts';
+    // Categories specific to Oriflame lines
+    category: 'skincare' | 'makeup' | 'perfume' | 'wellness' | 'personal-care' | 'hair' | 'accessories';
     subCategory?: string;
     productType?: string;
-    tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'ULTIMAS UNIDADES';
+    tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'ULTIMAS UNIDADES' | 'PREMIUM';
     statusLabel?: string;
     rating?: number;
     reviewCount?: number;

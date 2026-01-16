@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import type { View } from './types';
 
@@ -7,40 +8,27 @@ interface HeroCarouselProps {
 
 const slides = [
     {
-        imageUrl: 'https://media-cdn.oriflame.com/digitalPromotionsMedia/images/banner-media/ES/20899847/20866148.jpg',
-        title: 'Elegancia y Brillo para tu Piel',
-        subtitle: 'DESCUBRE LA COLECCIÓN DIVINE DARK VELVET',
-        buttonText: 'VER AHORA',
+        imageUrl: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc2069?auto=format&fit=crop&w=1600&q=80',
+        title: 'Ciencia Sueca',
+        subtitle: 'NOVAGE+: TRATAMIENTO FACIAL DE ALTA PRECISIÓN',
+        buttonText: 'DESCUBRIR NOVAGE',
         view: 'products' as View,
     },
     {
-        imageUrl: 'https://media-cdn.oriflame.com/digitalPromotionsMedia/images/banner-media/ES/20900001/20866153.jpg',
-        title: 'Envío Gratis a Domicilio',
-        subtitle: 'DISFRUTA DE TU PEDIDO SIN COSTES DE ENVÍO DESDE 35€',
-        buttonText: 'VER LOS PRODUCTOS',
-        view: 'ofertas' as View,
+        imageUrl: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1600&q=80',
+        title: 'Color de Temporada',
+        subtitle: 'GIORDANI GOLD & THE ONE: ELEGANCIA EUROPEA',
+        buttonText: 'VER MAQUILLAJE',
+        view: 'products' as View,
     },
     {
-        imageUrl: 'https://media-cdn.oriflame.com/digitalPromotionsMedia/images/banner-media/ES/20899692/21035391.jpg',
-        title: 'Novedades de Campaña 2026',
-        subtitle: 'LAS ÚLTIMAS TENDENCIAS EN COSMÉTICA SUECA',
-        buttonText: 'COMPRAR',
-        view: 'catalog' as View,
+        imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1600&q=80',
+        title: 'Equilibrio Vital',
+        subtitle: 'WELLOSOPHY: BELLEZA DESDE EL INTERIOR',
+        buttonText: 'SABER MÁS',
+        view: 'wellness' as View,
     },
 ];
-
-const ChevronLeftIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-    </svg>
-);
-
-const ChevronRightIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-    </svg>
-);
-
 
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ onNavigate }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -54,55 +42,60 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ onNavigate }) => {
     };
 
     useEffect(() => {
-        const slideInterval = setInterval(nextSlide, 5000);
+        const slideInterval = setInterval(nextSlide, 8000);
         return () => clearInterval(slideInterval);
     }, [nextSlide]);
     
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-             <div className="w-full h-[60vh] max-h-[500px] m-auto relative group rounded-lg overflow-hidden shadow-lg">
-                {slides.map((slide, index) => (
-                    <div
-                        key={index}
-                        className={`absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'}`}
-                        style={{ backgroundImage: `url(${slide.imageUrl})` }}
-                    >
-                        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                            <div className="text-center text-white p-4">
-                                <h2 className="text-4xl md:text-5xl font-extrabold font-heading drop-shadow-lg" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.6)'}}>{slide.title}</h2>
-                                <p className="mt-4 text-lg md:text-xl drop-shadow-md" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.6)'}}>{slide.subtitle}</p>
-                                <button
-                                    onClick={() => onNavigate(slide.view)}
-                                    className="mt-8 bg-white text-black font-bold py-3 px-8 rounded-lg shadow-md hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-105"
-                                >
-                                    {slide.buttonText}
-                                </button>
-                            </div>
+        <div className="w-full relative h-[85vh] overflow-hidden bg-white">
+            {slides.map((slide, index) => (
+                <div
+                    key={index}
+                    className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[2000ms] ease-out ${index === currentIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
+                    style={{ backgroundImage: `url(${slide.imageUrl})` }}
+                >
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <div className="text-center text-white px-6 max-w-5xl">
+                            <span className="text-[11px] font-bold tracking-[0.6em] uppercase mb-8 block animate-fade-up">ORIFLAME • SWEDEN</span>
+                            <h2 className="text-6xl md:text-[100px] font-serif font-black mb-10 animate-fade-up [animation-delay:200ms] leading-[0.9] tracking-tighter uppercase">{slide.title}</h2>
+                            <p className="text-sm md:text-xl tracking-[0.3em] font-medium mb-16 uppercase animate-fade-up [animation-delay:400ms] opacity-90 drop-shadow-md">{slide.subtitle}</p>
+                            <button
+                                onClick={() => onNavigate(slide.view)}
+                                className="bg-white text-black font-black py-6 px-16 rounded-none hover:bg-[#fbc5fa] hover:text-black transition-all duration-700 transform hover:scale-105 animate-fade-up [animation-delay:600ms] tracking-[0.4em] text-[11px] shadow-2xl"
+                            >
+                                {slide.buttonText}
+                            </button>
                         </div>
                     </div>
-                ))}
-                
-                {/* Left Arrow */}
-                <div className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer hover:bg-black/40 transition-colors">
-                    <button onClick={prevSlide} aria-label="Anterior diapositiva"><ChevronLeftIcon /></button>
                 </div>
-                {/* Right Arrow */}
-                <div className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer hover:bg-black/40 transition-colors">
-                    <button onClick={nextSlide} aria-label="Siguiente diapositiva"><ChevronRightIcon /></button>
-                </div>
+            ))}
+            
+            {/* Arrows */}
+            <button onClick={prevSlide} className="absolute left-10 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-20">
+                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <button onClick={nextSlide} className="absolute right-10 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors z-20">
+                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 5l7 7-7 7" /></svg>
+            </button>
 
-                {/* Dots */}
-                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
-                    {slides.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentIndex(index)}
-                            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'}`}
-                            aria-label={`Ir a diapositiva ${index + 1}`}
-                        />
-                    ))}
-                </div>
+            {/* Pagination Lines */}
+            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex space-x-10">
+                {slides.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`w-16 h-[2px] transition-all duration-1000 ${index === currentIndex ? 'bg-white' : 'bg-white/20'}`}
+                    />
+                ))}
             </div>
+            
+            <style>{`
+                @keyframes fade-up {
+                    from { opacity: 0; transform: translateY(40px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-up { animation: fade-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+            `}</style>
         </div>
     );
 };

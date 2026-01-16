@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import type { Product } from './types';
 import { type Currency, formatCurrency } from './currency';
@@ -9,83 +10,108 @@ interface ProductDetailPageProps {
 }
 
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product, currency, onAddToCart }) => {
-    const [selectedVariant, setSelectedVariant] = useState<Record<string, string> | null>(null);
-    const [currentImageUrl, setCurrentImageUrl] = useState(product.imageUrl);
+    const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const sizes = ["S", "M", "L", "XL"];
 
     useEffect(() => {
-        // Reiniciar estado al cambiar de producto
-        if (product.variants && Object.keys(product.variants).length > 0) {
-            const firstKey = Object.keys(product.variants)[0];
-            const firstOption = product.variants[firstKey][0];
-            setSelectedVariant({ [firstKey]: firstOption.value });
-            if (firstOption.imageUrl) setCurrentImageUrl(firstOption.imageUrl);
-        } else {
-            setSelectedVariant(null);
-            setCurrentImageUrl(product.imageUrl);
-        }
+        window.scrollTo(0, 0);
     }, [product]);
 
-    const handleToneChange = (type: string, option: any) => {
-        setSelectedVariant({ [type]: option.value });
-        if (option.imageUrl) {
-            setCurrentImageUrl(option.imageUrl);
-        }
-    };
-
     return (
-        <div className="container mx-auto px-6 py-12">
-            <div className="grid md:grid-cols-2 gap-16 bg-white p-10 rounded-[2.5rem] shadow-xl border border-gray-100">
+        <div className="container mx-auto px-6 py-12 md:py-24">
+            <div className="grid md:grid-cols-12 gap-12 lg:gap-24">
                 {/* Visual Area */}
-                <div className="flex justify-center items-center bg-gray-50 rounded-3xl p-10 min-h-[400px]">
-                    <img 
-                        src={currentImageUrl} 
-                        alt={product.name} 
-                        className="max-h-[500px] object-contain transition-all duration-500 ease-in-out transform hover:scale-105" 
-                    />
+                <div className="md:col-span-7 flex flex-col gap-6">
+                    <div className="aspect-[3/4] bg-gray-50 overflow-hidden">
+                        <img 
+                            src={product.imageUrl} 
+                            alt={product.name} 
+                            className="w-full h-full object-cover" 
+                        />
+                    </div>
+                    {/* Additional Images Placeholder */}
+                    <div className="grid grid-cols-2 gap-6">
+                         <div className="aspect-[3/4] bg-gray-50"></div>
+                         <div className="aspect-[3/4] bg-gray-50"></div>
+                    </div>
                 </div>
 
                 {/* Info Area */}
-                <div className="flex flex-col">
-                    <span className="text-gray-400 uppercase tracking-widest text-[10px] font-black mb-4">{product.brand}</span>
-                    <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-none">{product.name}</h1>
+                <div className="md:col-span-5 flex flex-col sticky top-32 h-fit">
+                    <nav className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-8">
+                        Home / {product.category} / {product.name}
+                    </nav>
+
+                    <span className="text-gray-400 uppercase tracking-[0.4em] text-[11px] font-bold mb-4">{product.brand}</span>
+                    <h1 className="text-4xl md:text-6xl font-serif font-light mb-8 leading-tight tracking-tight">{product.name}</h1>
                     
-                    <div className="flex items-center gap-4 mb-8">
-                        <p className="text-3xl font-bold text-black">{formatCurrency(product.price, currency)}</p>
+                    <div className="flex items-center gap-6 mb-12">
+                        <p className="text-3xl font-light text-black">{formatCurrency(product.price, currency)}</p>
                         {product.regularPrice && (
-                            <p className="text-xl text-gray-400 line-through">{formatCurrency(product.regularPrice, currency)}</p>
+                            <p className="text-xl text-gray-300 line-through font-light">{formatCurrency(product.regularPrice, currency)}</p>
                         )}
                     </div>
                     
-                    <p className="text-gray-600 mb-10 text-lg leading-relaxed font-light">{product.description}</p>
+                    <div className="space-y-12 border-t border-gray-100 pt-12">
+                        <div>
+                            <p className="text-gray-600 text-sm leading-loose font-light">
+                                {product.description || "Prenda confeccionada con materiales de la más alta calidad, siguiendo procesos artesanales europeos para garantizar un ajuste perfecto y una durabilidad excepcional."}
+                            </p>
+                        </div>
 
-                    {/* Tones Selection */}
-                    {product.variants && Object.entries(product.variants).map(([type, options]) => (
-                        <div key={type} className="mb-10">
-                            <h3 className="text-[11px] font-black uppercase tracking-widest mb-4">Elige tu {type}: <span className="text-gray-400 font-bold">{selectedVariant?.[type]}</span></h3>
-                            <div className="flex flex-wrap gap-4">
-                                {(options as any[]).map(option => (
+                        {/* Size Selection */}
+                        <div>
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="text-[11px] font-bold uppercase tracking-widest">Talla: <span className="text-gray-400">{selectedSize || "Selecciona"}</span></h3>
+                                <button className="text-[10px] underline tracking-widest uppercase text-gray-400 hover:text-black">Guía de tallas</button>
+                            </div>
+                            <div className="grid grid-cols-4 gap-4">
+                                {sizes.map(size => (
                                     <button
-                                        key={option.value}
-                                        onClick={() => handleToneChange(type, option)}
-                                        className={`group relative w-12 h-12 rounded-full border-2 transition-all duration-300 ${selectedVariant?.[type] === option.value ? 'border-black scale-110 shadow-lg' : 'border-transparent hover:scale-105'}`}
-                                        style={{ backgroundColor: option.colorCode }}
-                                        title={option.value}
+                                        key={size}
+                                        onClick={() => setSelectedSize(size)}
+                                        className={`py-4 text-xs font-bold border transition-all ${selectedSize === size ? 'bg-black text-white border-black' : 'border-gray-200 hover:border-black'}`}
                                     >
-                                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[9px] px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold uppercase tracking-widest pointer-events-none">
-                                            {option.value}
-                                        </span>
+                                        {size}
                                     </button>
                                 ))}
                             </div>
                         </div>
-                    ))}
 
-                    <button
-                        onClick={() => onAddToCart(product, null, selectedVariant)}
-                        className="w-full bg-black text-white font-black py-6 rounded-full hover:bg-gray-800 transition-all uppercase tracking-[0.2em] text-xs shadow-2xl transform hover:-translate-y-1 active:scale-95"
-                    >
-                        Añadir al Carrito
-                    </button>
+                        <button
+                            onClick={() => {
+                                if (!selectedSize) {
+                                    alert("Por favor selecciona una talla");
+                                    return;
+                                }
+                                onAddToCart(product, null, { "Talla": selectedSize });
+                            }}
+                            className="w-full bg-black text-white font-bold py-6 rounded-none hover:bg-gray-800 transition-all uppercase tracking-[0.3em] text-[11px] shadow-2xl active:scale-95"
+                        >
+                            Añadir a la Cesta
+                        </button>
+
+                        <div className="space-y-4 pt-6 border-t border-gray-100">
+                             <details className="group">
+                                <summary className="flex justify-between items-center cursor-pointer list-none py-2">
+                                    <span className="text-[11px] font-bold uppercase tracking-widest">Composición y Cuidados</span>
+                                    <span className="transition-transform group-open:rotate-180">+</span>
+                                </summary>
+                                <div className="text-[12px] leading-relaxed text-gray-500 py-4 font-light">
+                                    Lana virgen 100%. Limpieza en seco recomendada. Planchado a baja temperatura.
+                                </div>
+                             </details>
+                             <details className="group">
+                                <summary className="flex justify-between items-center cursor-pointer list-none py-2 border-t border-gray-50 pt-4">
+                                    <span className="text-[11px] font-bold uppercase tracking-widest">Envío y Devoluciones</span>
+                                    <span className="transition-transform group-open:rotate-180">+</span>
+                                </summary>
+                                <div className="text-[12px] leading-relaxed text-gray-500 py-4 font-light">
+                                    Envío estándar gratuito. Devoluciones permitidas en un plazo de 30 días.
+                                </div>
+                             </details>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

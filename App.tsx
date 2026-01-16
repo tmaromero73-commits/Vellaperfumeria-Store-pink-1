@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import type { View, Product, CartItem } from './components/types';
-import type { Currency } from './components/currency';
+import type { Currency } from './currency';
 import { blogPosts } from './components/blogData';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -30,26 +31,20 @@ const App: React.FC = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
-    // Carga robusta del carrito
     useEffect(() => {
         try {
-            const storedCart = localStorage.getItem('vellaperfumeria_cart_v4');
+            const storedCart = localStorage.getItem('vellapremium_cart_v1');
             if (storedCart) {
                 const parsed = JSON.parse(storedCart);
                 if (Array.isArray(parsed)) setCartItems(parsed);
             }
-        } catch (e) {
-            console.error("Cart load error:", e);
-        }
+        } catch (e) { console.error("Error loading cart", e); }
     }, []);
 
-    // Guardado robusto del carrito
     useEffect(() => {
         try {
-            localStorage.setItem('vellaperfumeria_cart_v4', JSON.stringify(cartItems));
-        } catch (e) {
-            console.error("Cart save error:", e);
-        }
+            localStorage.setItem('vellapremium_cart_v1', JSON.stringify(cartItems));
+        } catch (e) { console.error("Error saving cart", e); }
     }, [cartItems]);
     
     useEffect(() => {
@@ -78,7 +73,6 @@ const App: React.FC = () => {
             }
             return [...prev, { id: cartItemId, product, quantity: 1, selectedVariant }];
         });
-        
         setIsCartOpen(true);
     }, []);
     
@@ -101,33 +95,26 @@ const App: React.FC = () => {
     }, []);
 
     const content = useMemo(() => {
-        switch (view.current) {
-            case 'home':
-                return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
-            case 'products':
-                return <ShopPage initialCategory={view.payload || 'all'} currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
-            case 'productDetail':
-                return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} onProductSelect={handleProductSelect} />;
-            case 'ofertas':
-                return <OfertasPage currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
-            case 'ia':
-                return <AsistenteIAPage />;
-            case 'catalog':
-                return <CatalogPage onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} currency={currency} />;
-            case 'blog':
-                 return <BlogPage posts={blogPosts} onSelectPost={(p) => handleNavigate('blogPost', p)} />;
-            case 'blogPost':
-                 return <BlogPostPage post={view.payload} allPosts={blogPosts} onSelectPost={(p) => handleNavigate('blogPost', p)} onBack={() => handleNavigate('blog')} />;
-            case 'checkout':
-                return <CheckoutPage cartItems={cartItems} currency={currency} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
-            default:
-                return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
+        try {
+            switch (view.current) {
+                case 'home': return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
+                case 'products': return <ShopPage initialCategory={view.payload || 'all'} currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
+                case 'productDetail': return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} onProductSelect={handleProductSelect} />;
+                case 'ofertas': return <OfertasPage currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
+                case 'ia': return <AsistenteIAPage />;
+                case 'catalog': return <CatalogPage onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} currency={currency} />;
+                case 'blog': return <BlogPage posts={blogPosts} onSelectPost={(p) => handleNavigate('blogPost', p)} />;
+                case 'blogPost': return <BlogPostPage post={view.payload} allPosts={blogPosts} onSelectPost={(p) => handleNavigate('blogPost', p)} onBack={() => handleNavigate('blog')} />;
+                case 'checkout': return <CheckoutPage cartItems={cartItems} currency={currency} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
+                default: return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
+            }
+        } catch (e) {
+            return <div className="p-20 text-center bg-white text-black font-bold">Error al cargar el contenido. Por favor, recarga.</div>;
         }
     }, [view, handleNavigate, handleProductSelect, handleAddToCart, handleQuickAddToCart, currency, cartItems]);
 
     return (
-        <div className="flex flex-col min-h-screen bg-white font-sans selection:bg-[#fbc5fa] selection:text-black antialiased overflow-x-hidden">
-            {/* Cabecera Principal */}
+        <div className="flex flex-col min-h-screen bg-white font-sans text-black antialiased">
             <Header
                 onNavigate={handleNavigate}
                 currency={currency}
@@ -135,33 +122,28 @@ const App: React.FC = () => {
                 onCartClick={() => setIsCartOpen(true)}
             />
             
-            {/* Área de Contenido Principal - Forzamos Blanco */}
-            <main className="flex-grow bg-white relative z-10 w-full">
-                <div className="bg-white min-h-[500px]">
-                    {content}
-                </div>
+            <main className="flex-grow bg-white w-full relative">
+                {content}
             </main>
 
-            {/* Footer */}
             <Footer onNavigate={handleNavigate} />
-            
-            {/* Elementos Flotantes e Inferiores */}
             <FloatingWhatsApp />
             <BottomNavBar onNavigate={handleNavigate} currentView={view.current} currentCategory={view.payload || 'all'} />
 
-            {/* Modales y Overlays */}
-            <CartSidebar
-                isOpen={isCartOpen}
-                onClose={() => setIsCartOpen(false)}
-                cartItems={cartItems}
-                currency={currency}
-                onUpdateQuantity={handleUpdateQuantity}
-                onRemoveItem={handleRemoveItem}
-                onCheckout={() => { setIsCartOpen(false); handleNavigate('checkout'); }}
-                isCheckingOut={false}
-                checkoutError={null}
-                onNavigate={handleNavigate}
-            />
+            {isCartOpen && (
+                <CartSidebar
+                    isOpen={isCartOpen}
+                    onClose={() => setIsCartOpen(false)}
+                    cartItems={cartItems}
+                    currency={currency}
+                    onUpdateQuantity={handleUpdateQuantity}
+                    onRemoveItem={handleRemoveItem}
+                    onCheckout={() => { setIsCartOpen(false); handleNavigate('checkout'); }}
+                    isCheckingOut={false}
+                    checkoutError={null}
+                    onNavigate={handleNavigate}
+                />
+            )}
 
             {quickViewProduct && (
                 <QuickViewModal
@@ -177,18 +159,10 @@ const App: React.FC = () => {
             )}
             
             <style>{`
-                :root {
-                    --color-primary: #000000;
-                    --color-accent: #fbc5fa;
-                }
-                body { background-color: white !important; margin: 0; padding: 0; padding-bottom: 80px; }
-                @media (min-width: 768px) { body { padding-bottom: 0; } }
-                
-                /* Reset general para visibilidad */
-                #root { background-color: white; width: 100%; }
-                
-                /* Smooth Scroll */
-                html { scroll-behavior: smooth; }
+                :root { --color-accent: #fbc5fa; }
+                body { background-color: #ffffff !important; color: #000; }
+                .bg-accent { background-color: #fbc5fa !important; }
+                .text-accent { color: #fbc5fa !important; }
             `}</style>
         </div>
     );

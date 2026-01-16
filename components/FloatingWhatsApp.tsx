@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const WhatsAppIcon = () => (
@@ -8,14 +7,17 @@ const WhatsAppIcon = () => (
 );
 
 const FloatingWhatsApp: React.FC = () => {
+    const message = "Hola Vellaperfumeria, me gustaría informarme sobre vuestros productos premium. Sé que hay un regalo de la casa por cortesía y envío gratis desde 35€.";
+    const encodedMessage = encodeURIComponent(message);
+    
     return (
         <a 
-            href="https://wa.me/34661202616" 
+            href={`https://wa.me/34661202616?text=${encodedMessage}`} 
             target="_blank" 
             rel="noopener noreferrer"
             className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-3 rounded-full shadow-xl hover:bg-[#128C7E] transition-all duration-300 transform hover:scale-110 flex items-center justify-center border-2 border-white"
             aria-label="Contactar por WhatsApp"
-            title="¡Escríbenos por WhatsApp!"
+            title="¡Regalo de cortesía y envío gratis desde 35€!"
         >
             <WhatsAppIcon />
         </a>

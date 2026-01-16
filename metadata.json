@@ -1,6 +1,6 @@
 {
-  "name": "Vellaperfumeria Store UI - Luxury Edition",
-  "description": "Tienda de cosmética y bienestar premium con catálogo extendido de 300+ productos y asistente IA.",
+  "name": "Vella Premium Clothing - Boutique de Lujo",
+  "description": "Boutique exclusiva de moda premium, sastrería y accesorios de alta gama.",
   "requestFramePermissions": [
     "camera"
   ]

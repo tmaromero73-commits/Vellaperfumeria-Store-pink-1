@@ -30,20 +30,19 @@ const AsistenteIAPage: React.FC = () => {
     useEffect(() => {
         const initChat = async () => {
             try {
-                const apiKey = process.env.API_KEY;
-                if (!apiKey) throw new Error("API Key missing");
-
-                const ai = new GoogleGenAI({ apiKey });
+                // Initialize GoogleGenAI directly with process.env.API_KEY as per guidelines.
+                const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
                 const newChat = ai.chats.create({
                     model: 'gemini-3-flash-preview',
                     config: {
-                        systemInstruction: 'Eres el concierge de lujo de Vellaperfumeria. Tu tono es sofisticado, experto y muy servicial. Ayudas a los clientes a elegir entre los 400 productos de nuestro catálogo. Recomiendas rutinas faciales, tonos de maquillaje y fragancias europeas.',
+                        systemInstruction: 'Eres el concierge de lujo de Vellaperfumeria. Tu tono es sofisticado, experto y muy servicial. Ayudas a los clientes a elegir entre los productos de nuestro catálogo. Recomiendas rutinas faciales, tonos de maquillaje y fragancias europeas. Mantén tus respuestas concisas y elegantes.',
                     },
                 });
                 setChat(newChat);
+                setMessages([{ role: 'model', text: 'Bienvenida a Vellaperfumeria. Soy tu concierge de belleza personal. ¿En qué puedo asesorarte hoy?' }]);
             } catch (e) {
-                console.error("Gemini Error:", e);
-                setError("El servicio de IA está experimentando alta demanda. Inténtalo de nuevo.");
+                console.error("Gemini Init Error:", e);
+                setError("El servicio de IA no está disponible.");
             }
         };
         initChat();
@@ -62,63 +61,82 @@ const AsistenteIAPage: React.FC = () => {
         setMessages(prev => [...prev, userMsg, { role: 'model', text: '' }]);
         setInput('');
         setIsProcessing(true);
+        setError(null);
 
         try {
             const responseStream = await chat.sendMessageStream({ message: messageText });
             for await (const chunk of responseStream) {
                 const c = chunk as GenerateContentResponse;
+                const text = c.text || '';
                 setMessages(prev => {
                     const newMessages = [...prev];
-                    newMessages[newMessages.length - 1].text += (c.text || '');
-                    return newMessages;
+                    const lastMsg = newMessages[newMessages.length - 1];
+                    if (lastMsg && lastMsg.role === 'model') {
+                        lastMsg.text += text;
+                    }
+                    return [...newMessages];
                 });
             }
         } catch (e) {
-            setError("Error de conexión con la IA.");
+            console.error("Chat error", e);
+            setError("Error al procesar la consulta.");
+            setMessages(prev => prev.slice(0, -1));
         } finally {
             setIsProcessing(false);
         }
     };
     
     return (
-        <div className="container mx-auto px-6 py-12">
-            <div className="max-w-3xl mx-auto flex flex-col h-[75vh] bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-                <div className="bg-black p-6 flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><SparklesIcon /></div>
-                    <div>
-                        <h2 className="text-white font-black uppercase text-sm tracking-widest">AI Beauty Concierge</h2>
-                        <p className="text-[#fbc5fa] text-[10px] uppercase font-bold tracking-widest">Expertise en Vellaperfumeria</p>
+        <div className="container mx-auto px-6 py-12 bg-white">
+            <div className="max-w-4xl mx-auto flex flex-col h-[70vh] bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden">
+                <div className="bg-black p-8 flex items-center justify-between">
+                    <div className="flex items-center gap-5">
+                        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center ring-2 ring-[#fbc5fa]/30">
+                            <SparklesIcon />
+                        </div>
+                        <div>
+                            <h2 className="text-white font-black uppercase text-xs tracking-[0.3em]">Beauty Concierge AI</h2>
+                            <p className="text-[#fbc5fa] text-[9px] uppercase font-bold tracking-widest mt-1">Soporte VIP Premium</p>
+                        </div>
                     </div>
                 </div>
 
-                <div ref={chatContainerRef} className="flex-grow p-8 overflow-y-auto space-y-6 bg-gray-50/50">
+                <div ref={chatContainerRef} className="flex-grow p-8 overflow-y-auto space-y-8 bg-white">
                     {messages.map((msg, idx) => (
                         <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-gray-200' : 'bg-black'}`}>
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-white border' : 'bg-black'}`}>
                                 {msg.role === 'user' ? <UserIcon /> : <SparklesIcon />}
                             </div>
-                            <div className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed ${
-                                msg.role === 'user' ? 'bg-black text-white rounded-tr-none' : 'bg-white text-gray-800 rounded-tl-none border shadow-sm'
+                            <div className={`max-w-[85%] p-5 rounded-[2rem] text-sm leading-relaxed ${
+                                msg.role === 'user' 
+                                    ? 'bg-black text-white rounded-tr-none' 
+                                    : 'bg-white text-black rounded-tl-none border border-gray-100'
                             }`}>
-                                {msg.text || (isProcessing && idx === messages.length - 1 ? 'Analizando...' : '')}
+                                {msg.text || (isProcessing && idx === messages.length - 1 ? '...' : '')}
                             </div>
                         </div>
                     ))}
-                    {error && <p className="text-red-500 text-xs text-center font-bold">{error}</p>}
+                    {error && (
+                        <div className="text-center text-red-500 text-xs font-bold uppercase">{error}</div>
+                    )}
                 </div>
 
-                <div className="p-6 bg-white border-t">
+                <div className="p-8 bg-white border-t border-gray-50">
                     <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(input); }} className="flex gap-4">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="¿Qué producto buscas hoy?"
-                            className="flex-grow px-6 py-4 bg-gray-100 rounded-full focus:ring-2 focus:ring-black transition-all outline-none"
+                            placeholder="¿Cómo podemos ayudarte?"
+                            className="flex-grow px-8 py-5 bg-gray-50 rounded-full focus:ring-2 focus:ring-black outline-none text-sm"
                             disabled={isProcessing}
                         />
-                        <button type="submit" disabled={isProcessing} className="bg-black text-white font-bold rounded-full px-8 py-4 hover:bg-[#fbc5fa] hover:text-black transition-all disabled:opacity-50">
-                            Enviar
+                        <button 
+                            type="submit" 
+                            disabled={isProcessing || !input.trim() || !chat} 
+                            className="bg-black text-white font-black rounded-full px-10 py-5 hover:bg-[#fbc5fa] hover:text-black transition-all uppercase text-[10px]"
+                        >
+                            {isProcessing ? '...' : 'Enviar'}
                         </button>
                     </form>
                 </div>

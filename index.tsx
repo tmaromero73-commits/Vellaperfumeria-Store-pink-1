@@ -6,16 +6,10 @@ const rootElement = document.getElementById('root');
 
 if (rootElement) {
     try {
-        // Limpiamos contenido previo por seguridad
-        rootElement.innerHTML = ''; 
         const root = ReactDOM.createRoot(rootElement);
-        root.render(
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        );
+        root.render(<App />);
     } catch (error) {
-        console.error("Error al montar la aplicación:", error);
-        rootElement.innerHTML = '<div style="padding: 20px; text-align: center;">Hubo un error al cargar la tienda. Por favor, recarga la página.</div>';
+        console.error("Error mounting application:", error);
+        rootElement.innerHTML = '<div style="padding: 40px; text-align: center; font-family: sans-serif;"><h2>Error al cargar la tienda</h2><p>Por favor, intenta recargar la página.</p></div>';
     }
 }

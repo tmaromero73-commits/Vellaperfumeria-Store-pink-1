@@ -18,6 +18,7 @@ const SortIcon = () => (
     </svg>
 );
 
+// Added 'women' and 'tailoring' categories to support consistent filtering.
 const categories = [
     { key: 'all', name: 'Todos los productos' },
     { key: 'skincare', name: 'Cuidado Facial' },
@@ -27,6 +28,8 @@ const categories = [
     { key: 'hair', name: 'Cuidado del Cabello' },
     { key: 'personal-care', name: 'Cuidado Personal' },
     { key: 'men', name: 'Hombre' },
+    { key: 'women', name: 'Mujer' },
+    { key: 'tailoring', name: 'Sastrería' },
     { key: 'accessories', name: 'Accesorios' },
 ];
 
