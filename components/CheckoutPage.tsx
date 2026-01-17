@@ -23,178 +23,139 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ cartItems, currency, onNavi
     const subtotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
     const total = subtotal;
 
+    const isAddressComplete = address.name && address.street && address.city && address.phone;
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    const handleWhatsAppOrder = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleWhatsAppOrder = () => {
+        // Pedido directo vía WhatsApp sin requerir dirección previa en el formulario
+        let message = "Confirmación de Pedido - Vella Perfumería Boutique:\n\n";
+        if (address.name) message += `*CLIENTE:* ${address.name}\n`;
         
-        if (!address.name || !address.street || !address.city || !address.phone) {
-            alert("Por favor, completa los datos de envío para procesar tu pedido por WhatsApp.");
-            return;
-        }
-
-        let message = "Confirmación de Pedido Vella Perfumería:\n\n";
-        message += `*CLIENTE:* ${address.name}\n`;
-        message += `*DIRECCIÓN:* ${address.street}, ${address.city} (${address.postalCode})\n`;
-        message += `*TELÉFONO:* ${address.phone}\n\n`;
-        
-        message += "*PRODUCTOS:*\n";
+        message += "*SELECCIÓN:* \n";
         cartItems.forEach(item => {
-            message += `• ${item.product.name} x${item.quantity}`;
+            message += `• ${item.product.name} (Ref: ${item.product.id}) x${item.quantity}`;
             if (item.selectedVariant) {
                 message += ` [${Object.entries(item.selectedVariant).map(([k, v]) => `${k}: ${v}`).join(', ')}]`;
             }
             message += ` - ${formatCurrency(item.product.price * item.quantity, currency)}\n`;
         });
-        
-        message += `\n*TOTAL A PAGAR: ${formatCurrency(total, currency)}*\n\nSolicito instrucciones para el pago y mi envío de cortesía gratuito.`;
+
+        message += `\n*SOLICITUD:* Incluir Servicio Premium de Guantes Blancos y Detalles de Cortesía.\n`;
+        message += `\n*TOTAL ESTIMADO: ${formatCurrency(total, currency)}*\n\nPor favor, contactad conmigo para ultimar los detalles del envío y pago.`;
         
         const encodedMessage = encodeURIComponent(message);
         window.open(`https://wa.me/34661202616?text=${encodedMessage}`, '_blank');
     };
 
+    const handleProceedToPayment = () => {
+        if (!isAddressComplete) {
+            alert("Para proceder al pago automático necesitamos tu dirección. Si prefieres atención personalizada, usa el botón de WhatsApp.");
+            return;
+        }
+        alert("Redirigiendo a pasarela de pago segura de Vella Perfumería...");
+    };
+
     if (cartItems.length === 0) {
         return (
-            <div className="container mx-auto px-4 py-32 text-center bg-white">
-                <h2 className="text-3xl font-serif mb-8 uppercase tracking-tighter">Tu cesta está vacía</h2>
-                <button 
-                    onClick={() => onNavigate('products', 'all')}
-                    className="bg-black text-white px-12 py-5 font-bold uppercase tracking-[0.4em] text-[10px] hover:bg-gray-800 transition-colors"
-                >
-                    Explorar Colección
-                </button>
+            <div className="container mx-auto px-4 py-40 text-center bg-white">
+                <h2 className="text-4xl font-serif mb-8 uppercase tracking-tighter">Tu cesta está vacía</h2>
+                <button onClick={() => onNavigate('products', 'all')} className="bg-black text-white px-16 py-6 font-black uppercase tracking-[0.4em] text-[10px] shadow-2xl">Volver a la Tienda</button>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto px-6 py-20 max-w-6xl">
+        <div className="container mx-auto px-6 py-20 max-w-7xl">
             <div className="grid md:grid-cols-12 gap-16">
                 
-                {/* Shipping Details Form */}
+                {/* Detalle y Formulario Opcional */}
                 <div className="md:col-span-7">
-                    <h1 className="text-4xl font-serif font-black mb-12 border-b border-gray-100 pb-8 uppercase tracking-tighter">Finalizar Pedido</h1>
+                    <h1 className="text-5xl font-serif font-black mb-12 border-b border-gray-100 pb-10 uppercase tracking-tighter">Finalizar Pedido</h1>
                     
-                    <form id="shipping-form" className="space-y-6">
-                        <h2 className="text-[10px] font-black uppercase tracking-[0.4em] mb-8 text-gray-400">Datos de Envío</h2>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-[9px] font-black uppercase tracking-widest text-black">Nombre Completo</label>
-                                <input 
-                                    type="text" 
-                                    required
-                                    className="w-full border-b border-gray-200 py-3 focus:border-black focus:outline-none text-sm font-medium transition-all"
-                                    placeholder="Tu nombre..."
-                                    value={address.name}
-                                    onChange={e => setAddress({...address, name: e.target.value})}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[9px] font-black uppercase tracking-widest text-black">Teléfono de Contacto</label>
-                                <input 
-                                    type="tel" 
-                                    required
-                                    className="w-full border-b border-gray-200 py-3 focus:border-black focus:outline-none text-sm font-medium transition-all"
-                                    placeholder="600 000 000"
-                                    value={address.phone}
-                                    onChange={e => setAddress({...address, phone: e.target.value})}
-                                />
-                            </div>
+                    <form className="space-y-8 mb-20">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-[11px] font-black uppercase tracking-[0.4em] text-gray-400">Datos de Envío Boutique</h2>
+                            <span className="text-[8px] uppercase tracking-widest text-[#fbc5fa] font-black italic">(Opcional para pedidos WhatsApp)</span>
                         </div>
-
-                        <div className="space-y-2">
-                            <label className="text-[9px] font-black uppercase tracking-widest text-black">Calle y Número</label>
-                            <input 
-                                type="text" 
-                                required
-                                className="w-full border-b border-gray-200 py-3 focus:border-black focus:outline-none text-sm font-medium transition-all"
-                                placeholder="Dirección completa..."
-                                value={address.street}
-                                onChange={e => setAddress({...address, street: e.target.value})}
-                            />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <input type="text" placeholder="Nombre completo" className="w-full border-b border-gray-100 py-3 text-sm outline-none focus:border-black transition-all" value={address.name} onChange={e => setAddress({...address, name: e.target.value})} />
+                            <input type="tel" placeholder="Teléfono" className="w-full border-b border-gray-100 py-3 text-sm outline-none focus:border-black transition-all" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} />
                         </div>
-
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-[9px] font-black uppercase tracking-widest text-black">Ciudad</label>
-                                <input 
-                                    type="text" 
-                                    required
-                                    className="w-full border-b border-gray-200 py-3 focus:border-black focus:outline-none text-sm font-medium transition-all"
-                                    placeholder="Tu ciudad..."
-                                    value={address.city}
-                                    onChange={e => setAddress({...address, city: e.target.value})}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[9px] font-black uppercase tracking-widest text-black">Código Postal</label>
-                                <input 
-                                    type="text" 
-                                    required
-                                    className="w-full border-b border-gray-200 py-3 focus:border-black focus:outline-none text-sm font-medium transition-all"
-                                    placeholder="28001"
-                                    value={address.postalCode}
-                                    onChange={e => setAddress({...address, postalCode: e.target.value})}
-                                />
-                            </div>
-                        </div>
+                        <input type="text" placeholder="Dirección de entrega" className="w-full border-b border-gray-100 py-3 text-sm outline-none focus:border-black transition-all" value={address.street} onChange={e => setAddress({...address, street: e.target.value})} />
                     </form>
 
-                    <div className="mt-20">
-                        <h2 className="text-[10px] font-black uppercase tracking-[0.4em] mb-10 text-gray-400">Resumen de Cesta</h2>
-                        <div className="space-y-6">
-                            {cartItems.map((item) => (
-                                <div key={item.id} className="flex gap-6 pb-6 border-b border-gray-50 last:border-0">
-                                    <img src={item.product.imageUrl} alt={item.product.name} className="w-16 h-20 object-cover bg-gray-50 border border-gray-100" />
-                                    <div className="flex-grow flex flex-col justify-center">
-                                        <h3 className="font-bold text-black text-[11px] uppercase tracking-tight">{item.product.name}</h3>
-                                        <div className="flex justify-between items-center mt-2">
-                                            <p className="text-[10px] text-gray-500">Cant: {item.quantity}</p>
-                                            <p className="font-black text-black text-xs">{formatCurrency(item.product.price * item.quantity, currency)}</p>
+                    <div className="space-y-10">
+                        <h2 className="text-[11px] font-black uppercase tracking-[0.4em] mb-12 text-gray-400 border-b pb-4">Artículos en mi Selección</h2>
+                        {cartItems.map((item) => (
+                            <div key={item.id} className="flex gap-8 pb-8 border-b border-gray-50 group">
+                                <div className="w-24 h-32 overflow-hidden border border-gray-100 bg-gray-50 flex-shrink-0">
+                                    <img src={item.product.imageUrl} alt={item.product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                </div>
+                                <div className="flex-grow flex flex-col justify-center">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h3 className="font-black text-black text-[13px] uppercase tracking-tight mb-1">{item.product.name}</h3>
+                                            <p className="text-[9px] text-gray-400 font-bold tracking-widest uppercase">Cód: {item.product.id} • Cant: {item.quantity}</p>
                                         </div>
+                                        <p className="font-black text-black text-sm">{formatCurrency(item.product.price * item.quantity, currency)}</p>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 
-                {/* Summary & WhatsApp Button */}
+                {/* Resumen de Inversión en Belleza */}
                 <div className="md:col-span-5">
-                    <div className="bg-black text-white p-10 sticky top-32">
-                        <h2 className="text-[10px] font-black uppercase tracking-[0.4em] mb-10 text-[#fbc5fa]">Cerrar Pedido</h2>
+                    <div className="bg-black text-white p-12 sticky top-32 shadow-[0_50px_100px_rgba(0,0,0,0.6)]">
+                        <h2 className="text-[12px] font-black uppercase tracking-[0.5em] mb-12 text-[#fbc5fa] text-center border-b border-white/10 pb-6">Concierge Boutique</h2>
                         
-                        <div className="space-y-4 mb-10">
-                            <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-white/50">
+                        <div className="space-y-5 mb-12 border-b border-white/10 pb-10">
+                            <div className="flex justify-between text-[11px] font-bold uppercase text-white/40 tracking-widest">
                                 <span>Subtotal</span>
                                 <span className="text-white">{formatCurrency(subtotal, currency)}</span>
                             </div>
-                            <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-white/50">
-                                <span>Envío Premium</span>
-                                <span className="text-[#fbc5fa] font-black">Gratis</span>
+                            <div className="flex justify-between text-[11px] font-bold uppercase text-white/40 tracking-widest">
+                                <span>Envío con Guantes Blancos</span>
+                                <span className="text-[#fbc5fa]">Gratuito Boutique</span>
                             </div>
-                            <div className="flex justify-between text-2xl font-black uppercase tracking-tighter text-white pt-8 border-t border-white/20 mt-6">
-                                <span>Total</span>
+                            <div className="flex justify-between text-3xl font-black text-white pt-10 mt-6 tracking-tighter">
+                                <span className="uppercase">Total</span>
                                 <span>{formatCurrency(total, currency)}</span>
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-6">
+                            {/* Ruta Directa WhatsApp */}
                             <button 
-                                onClick={handleWhatsAppOrder}
-                                className="w-full bg-[#25D366] text-white font-black py-6 rounded-none text-[10px] shadow-2xl hover:bg-[#128C7E] transition-all flex justify-center items-center gap-3 uppercase tracking-[0.3em]"
+                                onClick={handleWhatsAppOrder} 
+                                className="w-full bg-[#25D366] text-white font-black py-7 text-[11px] hover:bg-[#128C7E] flex justify-center items-center gap-4 uppercase tracking-[0.4em] shadow-lg transform transition-all active:scale-95"
                             >
                                 <WhatsAppIcon />
-                                <span>Enviar pedido vía WhatsApp</span>
+                                <span>Pedir por WhatsApp Directo</span>
                             </button>
                             
-                            <div className="text-center mt-10">
-                                <p className="text-[8px] text-white/30 font-bold uppercase tracking-[0.2em] leading-relaxed">
-                                    Al hacer clic, serás redirigido a WhatsApp para completar el pago y confirmar la dirección de envío con nuestro concierge.
+                            {/* Ruta Pago Estándar */}
+                            <button 
+                                onClick={handleProceedToPayment} 
+                                className={`w-full py-7 text-[11px] font-black uppercase tracking-[0.4em] transition-all transform ${isAddressComplete ? 'bg-white text-black hover:bg-[#fbc5fa] shadow-xl active:scale-95' : 'bg-white/5 text-white/20 cursor-not-allowed border border-white/10'}`}
+                            >
+                                Proceder al Pago Seguro
+                            </button>
+
+                            <div className="pt-8 text-center space-y-6">
+                                <p className="text-[9px] text-white/40 uppercase tracking-[0.4em] leading-relaxed font-bold">
+                                    Garantía Vella Perfumería:<br/>
+                                    <span className="text-[#fbc5fa]">Entrega cuidada y detalles de cortesía incluidos</span>
                                 </p>
+                                <img 
+                                    src="https://raw.githubusercontent.com/vella-perfumeria/assets/main/logo_vp_v1.png" 
+                                    className="h-16 mx-auto opacity-30 brightness-200 grayscale contrast-200"
+                                    alt="VP Concierge Signature"
+                                />
                             </div>
                         </div>
                     </div>
