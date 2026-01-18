@@ -1,7 +1,9 @@
 {
-  "name": "Vella Premium Clothing - Boutique de Lujo",
-  "description": "Boutique exclusiva de moda premium, sastrería y accesorios de alta gama.",
+  "name": "Vella Perfumería Boutique - Campaña 1 2026",
+  "description": "Plataforma premium de alta perfumería y cosmética avanzada con asesoramiento IA y catálogo interactivo.",
   "requestFramePermissions": [
-    "camera"
+    "camera",
+    "microphone",
+    "geolocation"
   ]
 }

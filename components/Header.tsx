@@ -3,141 +3,147 @@ import React, { useState } from 'react';
 import type { View } from './types';
 import type { Currency } from './currency';
 
-const InstagramIcon = () => (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919A118.663 118.663 0 0112 2.163zm0 1.442c-3.143 0-3.509.011-4.72.067-2.694.123-3.997 1.433-4.12 4.12C3.109 9.12 3.098 9.486 3.098 12c0 2.514.011 2.88.067 4.72.123 2.686 1.427 3.996 4.12 4.12 1.21.055 1.577.067 4.72.067 3.143 0 3.509-.011 4.72-.067 2.694-.123 3.997-1.433 4.12-4.12.056-1.84.067-2.206.067-4.72 0-2.514-.011-2.88-.067-4.72-.123-2.686-1.427-3.996-4.12-4.12-1.21-.055-1.577.067-4.72-.067zM12 8.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zm0 1.44a2.31 2.31 0 110 4.62 2.31 2.31 0 010-4.62zM18.88 6.54a1.32 1.32 0 100-2.64 1.32 1.32 0 000 2.64z" />
+const MenuIcon = () => (
+    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
     </svg>
 );
 
-const PhoneIcon = () => (
-    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+const CartIcon = () => (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
 );
 
-const Header: React.FC<{
+const ChevronDownIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+);
+
+const MenuLink: React.FC<{ onClick?: () => void, children: React.ReactNode, className?: string }> = ({ onClick, children, className = "" }) => (
+    <button onClick={onClick} className={`text-[10px] font-black text-white hover:text-[#fbc5fa] transition-all duration-300 uppercase tracking-[0.25em] h-full px-8 flex items-center gap-2 ${className}`}>
+        {children}
+    </button>
+);
+
+interface HeaderProps {
     onNavigate: (view: View, payload?: any) => void;
     currency: Currency;
     cartCount: number;
     onCartClick: () => void;
-}> = ({ onNavigate, cartCount, onCartClick }) => {
-    const [activeMenu, setActiveMenu] = useState<string | null>(null);
+}
 
-    const categories = [
-        { key: 'perfume', label: 'Fragancias', sub: 'Giordani Gold' },
-        { key: 'makeup', label: 'Maquillaje', sub: 'The One' },
-        { key: 'skincare', label: 'Cuidado Facial', sub: 'Novage+' },
-        { key: 'wellness', label: 'Bienestar', sub: 'Wellosophy' },
-        { key: 'personal-care', label: 'Corporal', sub: 'Esencia' },
-        { key: 'accessories', label: 'Accesorios', sub: 'Servicio VIP' }
-    ];
+const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) => {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const handleHomeClick = () => {
+        window.location.href = 'https://vellaperfumeria.com';
+    };
 
     return (
-        <header className="w-full z-[100] relative bg-white">
-            {/* Promo Bar - Rosa Orquídea Claro */}
-            <div className="bg-[#fbc5fa] py-3 text-black w-full text-[10px] font-black uppercase tracking-[0.2em] flex flex-wrap justify-center items-center gap-6 sm:gap-12 shadow-sm border-b border-black/5">
-                <div className="flex items-center gap-2">
-                    <InstagramIcon />
-                    <span className="tracking-widest">@vellaperfumeria</span>
-                </div>
-                <span className="hidden md:inline text-[9px] font-black opacity-70 italic tracking-widest">Regalo de Cortesía + Envío Gratis desde 35€</span>
-                <div className="flex items-center gap-2">
-                    <PhoneIcon />
-                    <span className="tracking-widest">+34 661 202 616</span>
-                </div>
+        <header className="sticky top-0 z-[100] w-full flex flex-col bg-[#050505] shadow-2xl">
+            {/* Promo Bar - Full Width Orchid Pink */}
+            <div className="bg-[#fbc5fa] py-2 text-black text-[8px] font-black text-center uppercase tracking-[0.4em] w-full border-b border-black/5">
+                INSTAGRAM: @VELLAPERFUMERIA | WHATSAPP: 661 202 616 | ENVÍO GRATIS +35€ | REGALO DE CORTESÍA INCLUIDO
             </div>
 
-            {/* Logo Section - Logo Maestro VP Centrado */}
-            <div className="py-10 md:py-14 bg-white flex flex-col items-center relative">
-                <button onClick={() => onNavigate('home')} className="flex flex-col items-center group transition-all duration-700">
-                    <img 
-                        src="https://raw.githubusercontent.com/vella-perfumeria/assets/main/logo_vp_v1.png" 
-                        alt="Logo Vella Perfumería VP" 
-                        className="h-32 md:h-44 object-contain mb-4 transition-all duration-1000 group-hover:scale-105"
-                        style={{ background: 'transparent' }}
-                        onError={(e) => {
-                            e.currentTarget.src = "https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png";
-                        }}
-                    />
-                    <h1 className="text-3xl md:text-5xl font-serif font-black tracking-tighter text-black uppercase group-hover:tracking-widest transition-all duration-1000">
-                        VELLA PERFUMERIA
-                    </h1>
-                </button>
-                
-                {/* Carrito Flotante Boutique */}
-                <div className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2">
-                    <button onClick={onCartClick} className="relative group p-4 bg-black rounded-full shadow-2xl transition-all hover:scale-110 active:scale-95">
-                        <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-[#fbc5fa] text-black text-[10px] font-black w-7 h-7 rounded-full flex items-center justify-center ring-2 ring-white">
-                                {cartCount}
-                            </span>
-                        )}
+            {/* Logo Area - Full Width Cinema Black */}
+            <div className="py-6 h-28 relative flex items-center border-b border-white/5 w-full bg-[#050505]">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                    <button onClick={handleHomeClick} className="hover:opacity-90 transition-opacity">
+                        <img 
+                            src="https://i0.wp.com/vellaperfumeria.com/wp-content/uploads/2025/06/1000003724-removebg-preview.png" 
+                            alt="Vella Perfumería Boutique" 
+                            className="h-16 md:h-24 w-auto object-contain brightness-110" 
+                        />
                     </button>
                 </div>
-            </div>
 
-            {/* BARRA DE MENÚ NEGRO - ANCHURA COMPLETA */}
-            <nav className="bg-black w-full relative h-16 shadow-2xl flex justify-center border-b border-white/10 overflow-visible">
-                <div className="container mx-auto h-full flex justify-center">
-                    <div className="flex items-center justify-center h-full overflow-x-auto no-scrollbar whitespace-nowrap px-4 w-full">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat.key}
-                                onMouseEnter={() => setActiveMenu(cat.key)}
-                                onMouseLeave={() => setActiveMenu(null)}
-                                onClick={() => onNavigate('products', cat.key)}
-                                className={`px-6 md:px-10 text-white text-[11px] font-black uppercase tracking-[0.2em] h-full flex flex-col items-center justify-center transition-all relative group hover:bg-white/5`}
-                            >
-                                <span className="relative z-10 group-hover:text-[#fbc5fa] transition-colors">{cat.label}</span>
-                                <span className="text-[7px] text-white/40 tracking-[0.2em] mt-1 block uppercase font-bold">{cat.sub}</span>
-                                <span className={`absolute bottom-0 left-0 w-full h-1 bg-[#fbc5fa] transform origin-left transition-transform duration-500 ${activeMenu === cat.key ? 'scale-x-100' : 'scale-x-0'}`}></span>
-                            </button>
-                        ))}
+                <div className="w-full px-8 flex justify-between items-center h-full">
+                    <div className="flex-1 md:hidden">
+                        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white">
+                            <MenuIcon />
+                        </button>
+                    </div>
+                    
+                    <div className="flex-1 md:block hidden"></div>
+
+                    <div className="flex-1 flex justify-end items-center gap-6">
+                        <button onClick={onCartClick} className="relative p-3 bg-white text-black rounded-full hover:bg-[#fbc5fa] transition-all shadow-xl group">
+                            <CartIcon />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-[#fbc5fa] text-black text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-black">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                {/* DROPDOWN NEGRO - VISIBLE AL HOVER */}
-                {activeMenu && (
-                    <div 
-                        className="absolute top-full left-0 w-full bg-black z-[150] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border-t border-white/5 animate-dropdown-fade py-12"
-                        onMouseEnter={() => setActiveMenu(activeMenu)}
-                        onMouseLeave={() => setActiveMenu(null)}
-                    >
-                        <div className="container mx-auto px-10 grid grid-cols-1 md:grid-cols-3 gap-16 text-white">
-                            <div className="space-y-6">
-                                <h4 className="text-[#fbc5fa] text-[12px] font-black uppercase tracking-[0.4em] mb-4">Descubrir {activeMenu}</h4>
-                                <ul className="space-y-4 text-[10px] uppercase font-bold tracking-[0.2em] text-white/50">
-                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('products', activeMenu)}>Novedades Campaña 2026</li>
-                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('ofertas')}>Sets de Regalo Boutique</li>
-                                    <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('ia')}>Asesoramiento Experto IA</li>
-                                </ul>
-                            </div>
-                            
-                            <div className="hidden md:flex flex-col items-center justify-center border-x border-white/5 px-12 text-center">
-                                <p className="text-[11px] italic text-white/40 leading-relaxed font-medium max-w-xs">
-                                    "Cada detalle cuenta. Desde la formulación europea hasta el servicio de guantes blancos en tu entrega."
-                                </p>
-                            </div>
-
-                            <div className="flex flex-col items-center md:items-end justify-center">
-                                <button 
-                                    onClick={() => onNavigate('catalog')} 
-                                    className="bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] px-12 py-5 hover:bg-[#fbc5fa] transition-all shadow-xl"
-                                >
-                                    Ver Catálogo Digital
-                                </button>
-                                <p className="text-[8px] text-white/20 uppercase tracking-[0.4em] mt-5 font-bold">Vella Signature Experience</p>
+            {/* Nav Bar - Cinema Black Full Width Stretch */}
+            <div className="hidden md:block w-full bg-black h-12 border-b border-white/10 shadow-inner overflow-x-auto no-scrollbar">
+                <div className="w-full h-full flex justify-center">
+                    <nav className="flex justify-center items-center h-full whitespace-nowrap">
+                        <MenuLink onClick={handleHomeClick}>Inicio Boutique</MenuLink>
+                        
+                        <div className="group h-full relative">
+                            <MenuLink className="cursor-default">Selección Luxe <ChevronDownIcon /></MenuLink>
+                            {/* Full width dropdown stretch across the screen */}
+                            <div className="fixed top-[152px] left-0 w-full bg-[#0a0a0a] text-white shadow-[0_50px_100px_rgba(0,0,0,0.95)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-16 grid grid-cols-4 gap-12 border-t border-white/10 z-[150]">
+                                <div className="space-y-8">
+                                    <h4 className="font-black text-[11px] uppercase tracking-widest text-[#fbc5fa] border-b border-white/10 pb-4 italic">Alta Perfumería</h4>
+                                    <ul className="text-[10px] space-y-4 text-gray-400 font-bold uppercase tracking-widest">
+                                        <li><button onClick={() => onNavigate('products', 'perfume')} className="hover:text-white transition-colors">Para Ella: Fragancias</button></li>
+                                        <li><button onClick={() => onNavigate('products', 'men')} className="hover:text-white transition-colors">Para Él: Selección VIP</button></li>
+                                        <li><button onClick={() => onNavigate('products', 'perfume')} className="hover:text-white transition-colors">Brumas de Autor</button></li>
+                                    </ul>
+                                </div>
+                                <div className="space-y-8">
+                                    <h4 className="font-black text-[11px] uppercase tracking-widest text-[#fbc5fa] border-b border-white/10 pb-4 italic">Skincare Pro</h4>
+                                    <ul className="text-[10px] space-y-4 text-gray-400 font-bold uppercase tracking-widest">
+                                        <li><button onClick={() => onNavigate('products', 'skincare')} className="hover:text-white transition-colors">NovAge+ Science</button></li>
+                                        <li><button onClick={() => onNavigate('products', 'skincare')} className="hover:text-white transition-colors">Diamond Cellular</button></li>
+                                        <li><button onClick={() => onNavigate('products', 'skincare')} className="hover:text-white transition-colors">Royal Velvet</button></li>
+                                    </ul>
+                                </div>
+                                <div className="col-span-2 grid grid-cols-2 gap-10">
+                                    <div className="relative overflow-hidden rounded-2xl group/img cursor-pointer bg-[#050505] border border-white/10" onClick={() => onNavigate('catalog')}>
+                                        <img src="https://media-cdn.oriflame.com/contentImage?externalMediaId=eb8edbeb-1ff0-427f-878c-8b23062b1aa6&name=Promo_split_single_1&inputFormat=jpg" className="w-full h-48 object-cover opacity-50 group-hover/img:scale-110 transition-transform duration-1000" alt="Catálogo" />
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-black/40">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.5em] border-2 border-[#fbc5fa] px-6 py-3 bg-black/60 text-[#fbc5fa]">Catálogo Interactivo 2026</span>
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#050505] p-8 rounded-2xl border border-white/10 flex flex-col justify-center text-center">
+                                        <h5 className="font-black text-[11px] uppercase text-[#fbc5fa] mb-4 tracking-widest italic">Concierge VIP</h5>
+                                        <p className="text-[10px] text-gray-500 leading-relaxed mb-6 font-bold uppercase tracking-tighter">Asesoramiento avanzado con nuestra IA de Belleza.</p>
+                                        <button onClick={() => onNavigate('ia')} className="text-[10px] font-black underline text-white hover:text-[#fbc5fa] transition-colors uppercase tracking-[0.3em]">IA BEAUTY ASSIST</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            </nav>
+
+                        <MenuLink onClick={() => onNavigate('catalog')}>Journal Digital</MenuLink>
+                        <MenuLink onClick={() => onNavigate('ofertas')}>Ofertas VIP</MenuLink>
+                        <MenuLink onClick={() => onNavigate('ia')} className="bg-[#00a45d] text-white px-8 !h-7 py-0 my-auto rounded-full hover:bg-white hover:text-black transition-all ml-6">AI Concierge</MenuLink>
+                    </nav>
+                </div>
+            </div>
+
+            {/* Mobile Nav Overlay */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden fixed inset-0 bg-black z-[200] p-10 flex flex-col gap-8 animate-fade-in overflow-y-auto">
+                    <button onClick={() => setIsMobileMenuOpen(false)} className="self-end text-white p-2">
+                         <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                    <button onClick={handleHomeClick} className="text-white text-3xl font-black uppercase tracking-widest text-left border-b border-white/10 pb-6">Inicio Boutique</button>
+                    <button onClick={() => {onNavigate('catalog'); setIsMobileMenuOpen(false)}} className="text-white text-3xl font-black uppercase tracking-widest text-left border-b border-white/10 pb-6">Catálogo 2026</button>
+                    <button onClick={() => {onNavigate('products', 'all'); setIsMobileMenuOpen(false)}} className="text-white text-3xl font-black uppercase tracking-widest text-left border-b border-white/10 pb-6">Tienda Luxe</button>
+                    <button onClick={() => {onNavigate('ia'); setIsMobileMenuOpen(false)}} className="text-[#00a45d] text-3xl font-black uppercase tracking-widest text-left">IA Concierge</button>
+                </div>
+            )}
             <style>{`
-                @keyframes dropdown-fade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-                .animate-dropdown-fade { animation: dropdown-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
                 .no-scrollbar::-webkit-scrollbar { display: none; }
                 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>

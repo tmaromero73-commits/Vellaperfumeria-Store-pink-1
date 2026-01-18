@@ -1,5 +1,4 @@
 
-// Variant types, used in Product
 export interface VariantOption {
     value: string;
     colorCode?: string;
@@ -11,7 +10,6 @@ export interface ProductVariants {
     [key: string]: VariantOption[];
 }
 
-// Product type
 export interface Product {
     id: number;
     name: string;
@@ -22,20 +20,14 @@ export interface Product {
     description: string;
     howToUse?: string;
     stock: number;
-    // Categories specific to Oriflame lines
-    category: 'skincare' | 'makeup' | 'perfume' | 'wellness' | 'personal-care' | 'hair' | 'accessories';
+    category: 'skincare' | 'makeup' | 'perfume' | 'wellness' | 'personal-care' | 'hair' | 'accessories' | 'men' | 'women' | 'gifts';
     subCategory?: string;
-    productType?: string;
-    tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'ULTIMAS UNIDADES' | 'PREMIUM';
-    statusLabel?: string;
+    tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'ULTIMAS UNIDADES' | 'PREMIUM' | 'CONCIERGE';
     rating?: number;
     reviewCount?: number;
     variants?: ProductVariants;
-    beautyPoints?: number;
-    isShippingSaver?: boolean;
 }
 
-// Cart item type
 export interface CartItem {
     id: string;
     product: Product;
@@ -43,5 +35,4 @@ export interface CartItem {
     selectedVariant: Record<string, string> | null;
 }
 
-// App view type
-export type View = 'home' | 'products' | 'productDetail' | 'ofertas' | 'ia' | 'catalog' | 'about' | 'contact' | 'blog' | 'blogPost' | 'checkout';
+export type View = 'home' | 'products' | 'productDetail' | 'ofertas' | 'ia' | 'catalog' | 'blog' | 'blogPost' | 'checkout';

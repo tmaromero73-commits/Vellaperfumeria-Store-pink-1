@@ -15,108 +15,83 @@ const ProductList: React.FC<{
     onQuickView: (product: Product) => void;
 }> = ({ onNavigate, onProductSelect, onAddToCart, onQuickAddToCart, currency, onQuickView }) => {
     
-    // Filtros para la Home basados en el catálogo de 800+
-    const topPerfumes = allProducts.filter(p => p.category === 'perfume').slice(0, 8);
-    const skincareFeatured = allProducts.filter(p => p.category === 'skincare').slice(0, 8);
-    const makeupTrending = allProducts.filter(p => p.category === 'makeup').slice(0, 4);
+    // Mostramos la totalidad de los productos solicitados sin restricciones de número
+    const products = allProducts;
 
     return (
         <div className="space-y-40 pb-40 bg-white">
             
-            {/* Main Hero Slider */}
             <HeroBanner onNavigate={onNavigate} />
 
-            {/* BRAND VALUE SECTION */}
-            <div className="container mx-auto px-6 text-center">
-                <div className="max-w-4xl mx-auto border-y border-black/5 py-16">
-                    <span className="text-[#fbc5fa] text-[12px] font-black uppercase tracking-[0.5em] mb-8 block">Nuestra Promesa</span>
-                    <h2 className="text-4xl md:text-6xl font-serif font-black tracking-tighter mb-10 text-black">BELLEZA SUECA DESDE 1967</h2>
-                    <p className="text-lg md:text-xl text-gray-500 font-medium leading-relaxed italic">
-                        "En Vellaperfumeria, creemos en la sinergia entre la pureza de los ingredientes naturales y la potencia de la biotecnología europea. Cada fragancia y tratamiento es un tributo a la excelencia."
-                    </p>
-                </div>
-            </div>
-
-            {/* SECTION: PERFUMERÍA DE LUJO */}
-            <section className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-                    <div className="space-y-4">
-                        <span className="text-[11px] text-[#fbc5fa] font-black uppercase tracking-[0.4em]">Haute Parfumerie</span>
-                        <h3 className="text-5xl lg:text-7xl font-serif font-black text-black uppercase tracking-tighter leading-none">FRAGANCIAS <br/> ICÓNICAS</h3>
-                    </div>
-                    <button 
-                        onClick={() => onNavigate('products', 'perfume')} 
-                        className="text-[11px] font-black uppercase text-black hover:text-[#fbc5fa] transition-all border-b-2 border-black pb-2 tracking-[0.4em] w-fit"
-                    >
-                        Descubrir Todas
-                    </button>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 lg:gap-16">
-                    {topPerfumes.map(product => (
-                        <ProductCard key={product.id} product={product} currency={currency} onAddToCart={onAddToCart} onQuickAddToCart={onQuickAddToCart} onProductSelect={onProductSelect} onQuickView={onQuickView} />
-                    ))}
-                </div>
-            </section>
-
-            {/* EXCLUSIVE BANNER: NOVAGE+ */}
-            <div className="w-full bg-black py-32">
-                <div className="container mx-auto px-6">
-                    <div className="grid md:grid-cols-2 gap-20 items-center">
-                        <div className="relative group overflow-hidden border border-white/10">
-                            <img 
-                                src="https://media-cdn.oriflame.com/contentImage?externalMediaId=eb8edbeb-1ff0-427f-878c-8b23062b1aa6&name=Promo_split_single_1&inputFormat=jpg" 
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 transform group-hover:scale-110" 
-                                alt="Novage+ Innovation" 
-                            />
+            {/* SECCIÓN NARRATIVA: LA HISTORIA DE REGALAR CON CARIÑO (JAN & VALENTINA) */}
+            <div className="container mx-auto px-8 py-20 bg-white">
+                <div className="grid md:grid-cols-2 gap-24 items-center">
+                    <div className="space-y-12 order-2 md:order-1">
+                        <div className="space-y-6">
+                            <span className="text-[#fbc5fa] font-black uppercase text-[12px] tracking-[0.6em] block italic">Campaña 1 - Momentos Compartidos</span>
+                            <h2 className="text-5xl md:text-[8rem] font-serif font-black uppercase tracking-tighter leading-[0.85] text-black italic">La Historia <br/>de Regalar <br/>con Cariño</h2>
                         </div>
-                        <div className="text-white space-y-12">
-                            <span className="text-[#fbc5fa] text-[11px] font-black uppercase tracking-[0.6em]">Innovación Molecular</span>
-                            <h2 className="text-6xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] uppercase">NOVAGE+ <br/> REVOLUTION</h2>
-                            <p className="text-xl text-white/60 font-medium leading-relaxed">
-                                Descubre el poder de la tecnología bio-activadora. 4 pasos diseñados para transformar tu piel en solo 2 semanas con resultados clínicamente probados.
+                        <div className="prose prose-lg text-gray-600 space-y-8 font-medium leading-relaxed max-w-xl">
+                            <p>
+                                Jan y Valentina protagonizan una historia de gratitud y afecto que inspira cada rincón de nuestra Boutique. Sus actos de amor cotidianos se transforman en rituales de belleza compartidos que trascienden el tiempo y celebran la conexión humana.
                             </p>
-                            <button 
-                                onClick={() => onNavigate('products', 'skincare')} 
-                                className="bg-white text-black font-black py-6 px-16 rounded-none hover:bg-[#fbc5fa] transition-all tracking-[0.4em] text-[11px] shadow-2xl"
-                            >
-                                Ver Sistemas de Cuidado
-                            </button>
+                            <p>
+                                En Vella Perfumería Boutique, entendemos que un regalo es un capítulo de vuestra propia historia. Por eso, hemos seleccionado lo más excelso de la cosmética sueca para que cada detalle transmita el cuidado y la sofisticación que Jan y Valentina representan.
+                            </p>
+                            <p className="italic text-black font-black text-2xl border-l-8 border-[#fbc5fa] pl-10 py-6 bg-gray-50 rounded-r-xl">
+                                "La verdadera belleza reside en el <br/>gesto de dar con el corazón".
+                            </p>
+                        </div>
+                        <button 
+                            onClick={() => onNavigate('catalog')}
+                            className="bg-black text-white font-black py-8 px-24 rounded-none hover:bg-[#fbc5fa] hover:text-black transition-all uppercase tracking-[0.5em] text-[13px] shadow-[0_40px_80px_rgba(0,0,0,0.15)] transform hover:-translate-y-1"
+                        >
+                            Ver Selección de Jan & Valentina
+                        </button>
+                    </div>
+                    <div className="order-1 md:order-2">
+                        <div className="relative group overflow-hidden rounded-[5rem] shadow-2xl border border-gray-100">
+                            <img 
+                                src="https://media-cdn.oriflame.com/contentImage?externalMediaId=86cb5734-1101-4601-8161-e170f0cfbdd0&name=Promo_split_single_3&inputFormat=jpg" 
+                                className="w-full brightness-95 group-hover:brightness-100 transition-all duration-[2.5s] transform group-hover:scale-110" 
+                                alt="Jan & Valentina - El Arte de Regalar"
+                            />
+                            <div className="absolute bottom-16 left-16 bg-white/95 backdrop-blur-md p-14 rounded-[2.5rem] border border-gray-100 hidden lg:block animate-fade-in shadow-2xl">
+                                <h4 className="text-[11px] font-black uppercase tracking-[0.5em] text-gray-500 mb-5 italic">Oferta Sugarspray Exclusive</h4>
+                                <p className="text-4xl font-black text-black leading-tight">Solo 10.99€</p>
+                                <p className="text-[10px] text-gray-400 mt-4 uppercase tracking-[0.3em] font-bold">Por cada 20€ de compra en Boutique</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* SECTION: SKINCARE */}
-            <section className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-                    <div className="space-y-4">
-                        <span className="text-[11px] text-[#fbc5fa] font-black uppercase tracking-[0.4em]">Expert Treatment</span>
-                        <h3 className="text-5xl lg:text-7xl font-serif font-black text-black uppercase tracking-tighter leading-none">CUIDADO <br/> AVANZADO</h3>
+            {/* THE GALLERY - CATÁLOGO MAESTRO COMPLETO SIN LÍMITES */}
+            <div className="bg-white py-48 border-y border-gray-100">
+                <div className="container mx-auto px-8">
+                    <div className="flex flex-col md:flex-row items-end justify-between mb-36 border-b-4 border-gray-50 pb-20 gap-16">
+                        <div className="space-y-4">
+                            <span className="text-[13px] font-black text-gray-400 uppercase tracking-[1em] mb-4 block italic">Colección Campaña 1 - 2026</span>
+                            <h2 className="text-7xl md:text-[10rem] font-serif font-black text-black uppercase tracking-tighter leading-none italic">The Gallery</h2>
+                        </div>
+                        <button onClick={() => onNavigate('products', 'all')} className="text-black font-black uppercase text-[18px] tracking-[0.6em] hover:text-[#fbc5fa] transition-all border-b-[10px] border-black pb-6">Explorar Todo el Catálogo →</button>
                     </div>
-                    <button onClick={() => onNavigate('products', 'skincare')} className="text-[11px] font-black uppercase text-black hover:text-[#fbc5fa] transition-all border-b-2 border-black pb-2 tracking-[0.4em] w-fit">Ver Catálogo Facial</button>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 lg:gap-16">
-                    {skincareFeatured.map(product => (
-                        <ProductCard key={product.id} product={product} currency={currency} onAddToCart={onAddToCart} onQuickAddToCart={onQuickAddToCart} onProductSelect={onProductSelect} onQuickView={onQuickView} />
-                    ))}
-                </div>
-            </section>
-
-             {/* MAKEUP HIGHLIGHT */}
-             <section className="bg-gray-50 py-40">
-                <div className="container mx-auto px-6">
-                    <div className="text-center max-w-4xl mx-auto mb-24">
-                        <span className="text-[#fbc5fa] text-[11px] font-black uppercase tracking-[0.6em] mb-6 block">The Art of Color</span>
-                        <h3 className="text-6xl lg:text-8xl font-serif font-black text-black uppercase tracking-tighter mb-10 leading-none">GIORDANI GOLD</h3>
-                        <p className="text-xl text-gray-500 font-medium italic">"Lujo italiano con ingredientes antiedad para un acabado radiante y profesional."</p>
-                    </div>
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-                        {makeupTrending.map(product => (
-                            <ProductCard key={product.id} product={product} currency={currency} onAddToCart={onAddToCart} onQuickAddToCart={onQuickAddToCart} onProductSelect={onProductSelect} onQuickView={onQuickView} />
+                    
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-24">
+                        {products.map(product => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                currency={currency}
+                                onAddToCart={onAddToCart}
+                                onQuickAddToCart={onQuickAddToCart}
+                                onProductSelect={onProductSelect}
+                                onQuickView={onQuickView}
+                            />
                         ))}
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
     );
 };
