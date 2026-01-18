@@ -16,7 +16,10 @@ const CartIcon = () => (
 );
 
 const MenuLink: React.FC<{ onClick?: () => void, children: React.ReactNode, className?: string }> = ({ onClick, children, className = "" }) => (
-    <button onClick={onClick} className={`text-[10px] font-black text-white hover:text-[#fbc5fa] transition-all duration-300 uppercase tracking-[0.25em] h-full px-8 flex items-center whitespace-nowrap ${className}`}>
+    <button 
+        onClick={onClick} 
+        className={`text-[10px] md:text-[11px] font-black text-white hover:text-[#fbc5fa] transition-all duration-300 uppercase tracking-[0.25em] h-full px-6 md:px-8 flex items-center whitespace-nowrap ${className}`}
+    >
         {children}
     </button>
 );
@@ -36,29 +39,35 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
     };
 
     return (
-        <header className="sticky top-0 z-[100] w-full flex flex-col shadow-sm">
+        <header className="sticky top-0 z-[100] w-full flex flex-col shadow-md bg-white">
             {/* Promo Bar */}
             <div className="bg-[#fbc5fa] py-2 text-black text-[8px] font-black text-center uppercase tracking-[0.4em] w-full">
                 INSTAGRAM: @VELLAPERFUMERIA | WHATSAPP: 661 202 616 | REGALO DE CORTESÍA INCLUIDO
             </div>
 
-            {/* White Section - Logo Perfectly Centered */}
-            <div className="bg-white py-6 md:py-10 border-b border-gray-100 flex flex-col items-center justify-center relative w-full h-28 md:h-36">
-                <div className="absolute left-8 md:hidden">
+            {/* Logo Section - Fondo Blanco para Respetar Colores Originales */}
+            <div className="w-full bg-white h-24 md:h-36 flex items-center justify-between px-6 md:px-12 relative border-b border-gray-50">
+                <div className="flex-1 md:hidden">
                     <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-black p-2">
                         <MenuIcon />
                     </button>
                 </div>
 
-                <button onClick={handleHomeClick} className="hover:opacity-80 transition-opacity flex justify-center">
-                    <img 
-                        src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
-                        alt="Vella Perfumería Boutique" 
-                        className="h-16 md:h-28 w-auto object-contain" 
-                    />
-                </button>
+                {/* Logo Centrado */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <button 
+                        onClick={handleHomeClick} 
+                        className="pointer-events-auto hover:opacity-80 transition-opacity h-[70%] md:h-[80%]"
+                    >
+                        <img 
+                            src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
+                            alt="Vella Perfumería Boutique" 
+                            className="h-full w-auto object-contain"
+                        />
+                    </button>
+                </div>
 
-                <div className="absolute right-8 flex items-center gap-4">
+                <div className="flex-1 flex justify-end items-center gap-4">
                      <button onClick={onCartClick} className="relative p-3 bg-black text-white rounded-full hover:bg-[#fbc5fa] hover:text-black transition-all shadow-xl group">
                         <CartIcon />
                         {cartCount > 0 && (
@@ -70,9 +79,9 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                 </div>
             </div>
 
-            {/* Black Section - Full Width Menu with Horizontal Scroll */}
-            <div className="w-full bg-black h-14 border-b border-white/10 overflow-x-auto no-scrollbar">
-                <div className="w-full h-full flex justify-center min-w-max px-4">
+            {/* Menu Bar - Fondo Negro, Ancho Completo */}
+            <div className="w-full bg-black h-12 md:h-14 overflow-x-auto no-scrollbar border-b border-white/10">
+                <div className="flex justify-center min-w-max h-full mx-auto">
                     <nav className="flex items-center h-full">
                         <MenuLink onClick={handleHomeClick}>Inicio Boutique</MenuLink>
                         <MenuLink onClick={() => onNavigate('products', 'perfume')}>Perfumería</MenuLink>
@@ -80,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                         <MenuLink onClick={() => onNavigate('products', 'makeup')}>Maquillaje Pro</MenuLink>
                         <MenuLink onClick={() => onNavigate('catalog')}>Catálogo Digital</MenuLink>
                         <MenuLink onClick={() => onNavigate('ofertas')}>Ofertas VIP</MenuLink>
-                        <MenuLink onClick={() => onNavigate('ia')} className="text-[#fbc5fa]">Beauty Assistant IA</MenuLink>
+                        <MenuLink onClick={() => onNavigate('ia')} className="text-[#fbc5fa]">Beauty Concierge IA</MenuLink>
                     </nav>
                 </div>
             </div>
@@ -97,10 +106,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                     <button onClick={() => {onNavigate('ia'); setIsMobileMenuOpen(false)}} className="text-[#fbc5fa] text-3xl font-black uppercase tracking-widest text-left">Asesor IA</button>
                 </div>
             )}
-            <style>{`
-                .no-scrollbar::-webkit-scrollbar { display: none; }
-                .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-            `}</style>
         </header>
     );
 };

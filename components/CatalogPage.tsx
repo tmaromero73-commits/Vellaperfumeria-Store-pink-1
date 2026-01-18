@@ -36,7 +36,7 @@ const CatalogPage: React.FC<{
                 </div>
             </div>
 
-            {/* Selección Destacada del Catálogo */}
+            {/* Selección Destacada */}
             <div className="container mx-auto px-6 py-32 bg-white border-t border-gray-50">
                 <div className="text-center mb-20">
                     <span className="text-[#fbc5fa] font-black uppercase text-[10px] tracking-[0.6em] block mb-4 italic">The Selection</span>
