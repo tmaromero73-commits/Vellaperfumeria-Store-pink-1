@@ -23,7 +23,7 @@ const BottomNavBar: React.FC<BottomNavBarProps> = ({ onNavigate, currentView }) 
     return (
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-[200] h-20">
             <nav className="flex justify-around items-center h-full px-4">
-                {/* External Link to Homepage */}
+                {/* Botón Inicio Externo Corregido */}
                 <button
                     onClick={() => window.location.href = 'https://vellaperfumeria.com'}
                     className="flex flex-col items-center justify-center h-full text-white/50 hover:text-[#fbc5fa] transition-colors"
@@ -32,21 +32,21 @@ const BottomNavBar: React.FC<BottomNavBarProps> = ({ onNavigate, currentView }) 
                     <span className="text-[8px] font-black uppercase tracking-widest mt-1">Inicio</span>
                 </button>
 
-                {/* Central Boutique Logo */}
+                {/* Botón Logo Central Boutique */}
                 <button
                     onClick={() => onNavigate('home')}
                     className="flex flex-col items-center justify-center -mt-8"
                 >
-                    <div className="bg-white p-3 rounded-full shadow-2xl border-4 border-black ring-4 ring-black/20">
+                    <div className="bg-white p-3 rounded-full shadow-2xl border-4 border-black ring-4 ring-black/30">
                         <img 
                             src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
                             className="h-10 w-10 object-contain" 
-                            alt="Vella"
+                            alt="Logo Vella"
                         />
                     </div>
                 </button>
 
-                {/* Direct Access to Interactive Catalog */}
+                {/* Botón Catálogo Directo */}
                 <button
                     onClick={() => onNavigate('catalog')}
                     className={`flex flex-col items-center justify-center h-full transition-colors ${currentView === 'catalog' ? 'text-[#fbc5fa]' : 'text-white/50'}`}

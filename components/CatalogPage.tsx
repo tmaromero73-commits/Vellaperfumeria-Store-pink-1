@@ -16,16 +16,16 @@ const CatalogPage: React.FC<{
 }> = ({ onAddToCart, onQuickAddToCart, onProductSelect, onQuickView, currency }) => {
     return (
         <div className="w-full min-h-screen bg-white flex flex-col">
-            {/* Catalog Header */}
+            {/* Header del Catálogo */}
             <div className="container mx-auto px-6 py-12 text-center bg-white">
-                <h1 className="text-5xl md:text-7xl font-serif font-black uppercase tracking-tighter text-black mb-4 italic">Catálogo Interactivo</h1>
+                <h1 className="text-5xl md:text-7xl font-serif font-black uppercase tracking-tighter text-black mb-4 italic leading-tight">Catálogo Interactivo</h1>
                 <div className="w-24 h-1 bg-[#fbc5fa] mx-auto mb-4"></div>
-                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Campaña 1 • Oriflame 2026</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Campaña 1 • Oriflame 2026 • Colección Exclusiva</p>
             </div>
 
-            {/* Full Width Visualizer */}
-            <div className="w-full bg-white flex-grow flex justify-center py-6">
-                <div className="w-full max-w-[1920px] aspect-[3/4] md:aspect-[16/9] shadow-2xl border border-gray-100 overflow-hidden bg-gray-50">
+            {/* Visualizador Full Frame */}
+            <div className="flex-grow bg-white py-6 px-4 md:px-12">
+                <div className="w-full h-[85vh] shadow-[0_50px_100px_rgba(0,0,0,0.1)] border border-gray-100 rounded-3xl overflow-hidden bg-gray-50 relative">
                     <iframe
                         src={INTERACTIVE_CATALOG_URL}
                         title="Catálogo Vella Perfumería 2026"
@@ -36,12 +36,13 @@ const CatalogPage: React.FC<{
                 </div>
             </div>
 
-            {/* Collection Selection */}
-            <div className="container mx-auto px-6 py-24 bg-white">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-black italic underline decoration-[#fbc5fa] decoration-8 underline-offset-8">Lo más exclusivo de este Catálogo</h2>
+            {/* Selección Destacada del Catálogo */}
+            <div className="container mx-auto px-6 py-32 bg-white border-t border-gray-50">
+                <div className="text-center mb-20">
+                    <span className="text-[#fbc5fa] font-black uppercase text-[10px] tracking-[0.6em] block mb-4 italic">The Selection</span>
+                    <h2 className="text-4xl md:text-5xl font-serif font-black uppercase tracking-tighter text-black italic">Lo más deseado de Campaña 1</h2>
                 </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
                     {allProducts.slice(0, 12).map(product => (
                         <ProductCard
                             key={product.id}
@@ -54,12 +55,12 @@ const CatalogPage: React.FC<{
                         />
                     ))}
                 </div>
-                <div className="mt-20 text-center">
+                <div className="mt-24 text-center">
                     <button 
                         onClick={() => window.location.href = 'https://vellaperfumeria.com'}
-                        className="bg-black text-white px-16 py-6 font-black uppercase tracking-[0.5em] text-[10px] hover:bg-[#fbc5fa] hover:text-black transition-all shadow-2xl"
+                        className="bg-black text-white px-16 py-7 font-black uppercase tracking-[0.5em] text-[11px] hover:bg-[#fbc5fa] hover:text-black transition-all shadow-2xl rounded-full"
                     >
-                        Volver a Inicio VellaPerfumeria
+                        Volver a VellaPerfumeria.com
                     </button>
                 </div>
             </div>

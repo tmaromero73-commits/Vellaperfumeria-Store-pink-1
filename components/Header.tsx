@@ -42,19 +42,19 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                 INSTAGRAM: @VELLAPERFUMERIA | WHATSAPP: 661 202 616 | REGALO DE CORTESÍA INCLUIDO
             </div>
 
-            {/* White Section - Centered Logo */}
-            <div className="bg-white py-6 md:py-8 border-b border-gray-100 flex flex-col items-center justify-center relative w-full h-28 md:h-36">
+            {/* White Section - Logo Perfectly Centered */}
+            <div className="bg-white py-6 md:py-10 border-b border-gray-100 flex flex-col items-center justify-center relative w-full h-28 md:h-36">
                 <div className="absolute left-8 md:hidden">
                     <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-black p-2">
                         <MenuIcon />
                     </button>
                 </div>
 
-                <button onClick={handleHomeClick} className="hover:opacity-80 transition-opacity flex justify-center w-full">
+                <button onClick={handleHomeClick} className="hover:opacity-80 transition-opacity flex justify-center">
                     <img 
                         src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
                         alt="Vella Perfumería Boutique" 
-                        className="h-16 md:h-24 w-auto object-contain" 
+                        className="h-16 md:h-28 w-auto object-contain" 
                     />
                 </button>
 
@@ -70,8 +70,8 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                 </div>
             </div>
 
-            {/* Black Full Width Menu with Horizontal Scroll */}
-            <div className="w-full bg-black h-12 border-b border-white/10 overflow-x-auto no-scrollbar">
+            {/* Black Section - Full Width Menu with Horizontal Scroll */}
+            <div className="w-full bg-black h-14 border-b border-white/10 overflow-x-auto no-scrollbar">
                 <div className="w-full h-full flex justify-center min-w-max px-4">
                     <nav className="flex items-center h-full">
                         <MenuLink onClick={handleHomeClick}>Inicio Boutique</MenuLink>
@@ -85,6 +85,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                 </div>
             </div>
 
+            {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
                 <div className="md:hidden fixed inset-0 bg-black z-[200] p-10 flex flex-col gap-8 animate-fade-in overflow-y-auto">
                     <button onClick={() => setIsMobileMenuOpen(false)} className="self-end text-white p-2">
