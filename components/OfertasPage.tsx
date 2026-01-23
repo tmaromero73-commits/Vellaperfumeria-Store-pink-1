@@ -66,11 +66,11 @@ const OfertasPage: React.FC<{
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-12 py-10">
             <div className="text-center mb-12">
-                <span className="inline-block py-1 px-3 rounded-full bg-[#fbc5fa]/20 text-black text-xs font-bold tracking-wide mb-3 border border-[#fbc5fa]/30">
+                <span className="inline-block py-1 px-3 rounded-full bg-[#fbc5fa]/20 text-black text-[9px] font-bold tracking-wide mb-3 border border-[#fbc5fa]/30">
                     OFERTAS EXCLUSIVAS 2026
                 </span>
-                <h1 className="text-4xl font-extrabold text-black tracking-tight font-serif uppercase italic">Boutique de Oportunidades</h1>
-                <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+                <h1 className="text-3xl font-serif font-black text-black tracking-tight uppercase italic">Boutique de Oportunidades</h1>
+                <p className="mt-3 text-base text-gray-600 max-w-xl mx-auto">
                     Selecciones de alta gama con precios preferenciales por tiempo limitado.
                 </p>
             </div>
@@ -89,9 +89,9 @@ const OfertasPage: React.FC<{
                             className="w-full h-64 md:h-80 object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div className="absolute bottom-0 left-0 p-6 z-20 w-full text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                            <h3 className="text-2xl font-bold mb-1 leading-tight uppercase italic">{banner.title}</h3>
-                            <p className="text-gray-200 text-xs mb-4 font-black uppercase tracking-widest opacity-90">{banner.subtitle}</p>
-                            <button className="bg-[#fbc5fa] text-black text-[9px] font-black py-2 px-4 rounded-full uppercase tracking-wider hover:bg-white transition-colors">
+                            <h3 className="text-xl font-bold mb-1 leading-tight uppercase italic">{banner.title}</h3>
+                            <p className="text-gray-200 text-[10px] mb-4 font-black uppercase tracking-widest opacity-90">{banner.subtitle}</p>
+                            <button className="bg-[#fbc5fa] text-black text-[8px] font-black py-2 px-4 rounded-full uppercase tracking-wider hover:bg-white transition-colors">
                                 {banner.actionText}
                             </button>
                         </div>
@@ -101,8 +101,8 @@ const OfertasPage: React.FC<{
 
             <div id="promo-products" className="scroll-mt-24">
                 <div className="flex items-center justify-between mb-12 border-b border-gray-100 pb-6">
-                    <h2 className="text-2xl font-black text-black uppercase tracking-tighter italic">Selección en Promoción</h2>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{promoProducts.length} Artículos</span>
+                    <h2 className="text-xl font-black text-black uppercase tracking-tighter italic">Selección en Promoción</h2>
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{promoProducts.length} Artículos</span>
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

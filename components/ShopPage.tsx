@@ -41,15 +41,17 @@ const ShopPage: React.FC<{
 
     return (
         <div className="bg-white min-h-screen pb-40">
-            <div className="bg-white border-b border-gray-100 py-20">
+            <div className="bg-white border-b border-gray-100 py-16">
                 <div className="container mx-auto px-10">
-                    <h1 className="text-6xl md:text-[11rem] font-serif font-black uppercase italic tracking-tighter mb-14 leading-none text-black">{currentCategoryName}</h1>
-                    <div className="flex gap-6 overflow-x-auto no-scrollbar py-2">
+                    <h1 className="text-4xl md:text-7xl font-serif font-black uppercase italic tracking-tighter mb-10 leading-none text-black">
+                        {currentCategoryName}
+                    </h1>
+                    <div className="flex gap-4 overflow-x-auto no-scrollbar py-2">
                         {categories.map(cat => (
                             <button
                                 key={cat.key}
                                 onClick={() => setActiveCategory(cat.key)}
-                                className={`flex-shrink-0 px-14 py-6 text-[10px] font-black uppercase tracking-[0.3em] border-2 transition-all ${activeCategory === cat.key ? 'bg-black text-white border-black' : 'border-gray-100 text-gray-400 hover:border-black hover:text-black'}`}
+                                className={`flex-shrink-0 px-8 py-4 text-[9px] font-black uppercase tracking-[0.3em] border-2 transition-all ${activeCategory === cat.key ? 'bg-black text-white border-black' : 'border-gray-100 text-gray-400 hover:border-black hover:text-black'}`}
                             >
                                 {cat.name}
                             </button>
@@ -58,8 +60,8 @@ const ShopPage: React.FC<{
                 </div>
             </div>
 
-            <div className="container mx-auto px-10 py-24">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-14 gap-y-40">
+            <div className="container mx-auto px-10 py-20">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-28">
                     {visibleProducts.map((product, idx) => (
                         <ProductCard
                             key={`${product.id}-${idx}`}
@@ -74,12 +76,12 @@ const ShopPage: React.FC<{
                 </div>
                 
                 {displayLimit < filteredProducts.length && (
-                    <div className="mt-48 flex justify-center">
+                    <div className="mt-32 flex justify-center">
                         <button 
                             onClick={() => setDisplayLimit(prev => Math.min(prev + 30, filteredProducts.length))}
-                            className="bg-black text-white px-28 py-10 text-[12px] font-black uppercase tracking-[0.6em] hover:bg-[#fbc5fa] hover:text-black transition-all rounded-full shadow-2xl transform hover:scale-105"
+                            className="bg-black text-white px-20 py-8 text-[10px] font-black uppercase tracking-[0.6em] hover:bg-[#fbc5fa] hover:text-black transition-all rounded-full shadow-2xl transform hover:scale-105"
                         >
-                            Mostrar más de {currentCategoryName} ({filteredProducts.length - displayLimit} restantes)
+                            Ver más artículos
                         </button>
                     </div>
                 )}

@@ -19,7 +19,6 @@ const EnvoltoriosPage: React.FC<EnvoltoriosPageProps> = ({ currency, onAddToCart
 
     return (
         <div className="bg-white min-h-screen">
-            {/* HERO BANNER - SIN CAPAS OSCURAS PARA MANTENER VISIBILIDAD DE MODELO */}
             <section className="relative w-full h-[85vh] flex items-center justify-center bg-white overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img 
@@ -31,42 +30,41 @@ const EnvoltoriosPage: React.FC<EnvoltoriosPageProps> = ({ currency, onAddToCart
                 </div>
 
                 <div className="relative z-10 p-4 w-full flex justify-center">
-                    <div className="max-w-4xl w-full bg-[#004851] border-[1px] border-[#d7b552] p-10 md:p-20 text-center shadow-[0_50px_100px_rgba(0,0,0,0.5)] animate-fade-in-up">
+                    <div className="max-w-3xl w-full bg-[#004851] border-[1px] border-[#d7b552] p-10 md:p-16 text-center shadow-[0_50px_100px_rgba(0,0,0,0.5)] animate-fade-in-up">
                         
-                        <div className="mx-auto mb-10 w-24 md:w-32">
+                        <div className="mx-auto mb-8 w-20 md:w-24">
                             <img src={logoUrl} className="w-full h-auto brightness-0 invert" alt="VP Logo" />
                         </div>
 
-                        <span className="text-[10px] md:text-[12px] font-bold text-[#d7b552] uppercase tracking-[0.5em] mb-6 block italic">
+                        <span className="text-[9px] md:text-[11px] font-bold text-[#d7b552] uppercase tracking-[0.5em] mb-6 block italic">
                             EXPERIENCIA DE REGALO FESTIVE
                         </span>
                         
-                        <h1 className="text-5xl md:text-[8rem] font-serif font-black text-white uppercase tracking-tighter mb-8 italic leading-[0.8] select-none">
+                        <h1 className="text-4xl md:text-6xl font-serif font-black text-white uppercase tracking-tighter mb-8 italic leading-tight select-none">
                             PRESENTACIÓN <br/> <span className="text-[#d7b552]">MAGISTRAL</span>
                         </h1>
                         
-                        <p className="text-white/70 text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] max-w-2xl mx-auto leading-relaxed mb-12 border-t border-white/10 pt-10">
+                        <p className="text-white/70 text-[9px] md:text-[12px] font-black uppercase tracking-[0.4em] max-w-lg mx-auto leading-relaxed mb-10 border-t border-white/10 pt-8">
                             Bolsas y cajas de terciopelo diseñadas para la eternidad. El regalo comienza con la mirada.
                         </p>
 
-                        <button className="bg-[#d7b552] text-black py-5 px-16 text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] hover:bg-white transition-all transform hover:scale-105">
+                        <button className="bg-[#d7b552] text-black py-4 px-12 text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-white transition-all transform hover:scale-105">
                             VER SELECCIÓN
                         </button>
                     </div>
                 </div>
             </section>
 
-            {/* SELECTION AREA */}
-            <section className="container mx-auto px-10 py-32 bg-white">
-                <div className="flex flex-col items-center mb-24 text-center">
-                    <span className="text-[9px] font-black uppercase tracking-[0.5em] text-[#d7b552] mb-4 block">Colección 2026</span>
-                    <h2 className="text-5xl md:text-8xl font-serif font-black uppercase italic tracking-tighter text-black leading-none">
+            <section className="container mx-auto px-10 py-24 bg-white">
+                <div className="flex flex-col items-center mb-20 text-center">
+                    <span className="text-[8px] font-black uppercase tracking-[0.5em] text-[#d7b552] mb-3 block">Colección 2026</span>
+                    <h2 className="text-4xl md:text-6xl font-serif font-black uppercase italic tracking-tighter text-black leading-tight">
                         El Arte de Dar
                     </h2>
-                    <div className="w-24 h-2 bg-[#004851] mt-10"></div>
+                    <div className="w-20 h-1 bg-[#004851] mt-8"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-28 max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-24 max-w-6xl mx-auto">
                     {wrappingProducts.length > 0 ? (
                         wrappingProducts.map(product => (
                             <ProductCard
@@ -86,14 +84,6 @@ const EnvoltoriosPage: React.FC<EnvoltoriosPageProps> = ({ currency, onAddToCart
                     )}
                 </div>
             </section>
-            
-            <style>{`
-                @keyframes fade-in-up {
-                    from { opacity: 0; transform: translateY(50px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fade-in-up { animation: fade-in-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-            `}</style>
         </div>
     );
 };

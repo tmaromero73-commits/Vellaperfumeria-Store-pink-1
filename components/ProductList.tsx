@@ -31,18 +31,17 @@ const ProductList: React.FC<ProductListProps> = ({
         <div className="w-full bg-white">
             <HeroCarousel onNavigate={onNavigate} />
             
-            {/* SECCIÓN DE NOVEDADES - ANCHURA COMPLETA */}
-            <section className="w-full py-32 bg-[#ffffff]">
+            <section className="w-full py-24 bg-[#ffffff]">
                 <div className="w-full px-6 md:px-20">
-                    <div className="flex flex-col items-center mb-28 text-center">
-                        <span className="text-[11px] font-black uppercase tracking-[0.6em] text-[#fbc5fa] mb-6 block">SELECCIÓN BOUTIQUE 2026</span>
-                        <h2 className="text-6xl md:text-[9rem] font-serif font-black uppercase italic tracking-tighter text-black leading-[0.75] mb-12">
+                    <div className="flex flex-col items-center mb-20 text-center">
+                        <span className="text-[9px] font-black uppercase tracking-[0.6em] text-[#fbc5fa] mb-4 block">SELECCIÓN BOUTIQUE 2026</span>
+                        <h2 className="text-4xl md:text-6xl font-serif font-black uppercase italic tracking-tighter text-black leading-tight mb-8">
                             Momentos <br/> Compartidos
                         </h2>
-                        <div className="w-32 h-2 bg-black"></div>
+                        <div className="w-20 h-1 bg-black"></div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-12 gap-y-32">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-24">
                         {featuredProducts.map((product) => (
                             <ProductCard
                                 key={product.id}
@@ -56,10 +55,10 @@ const ProductList: React.FC<ProductListProps> = ({
                         ))}
                     </div>
 
-                    <div className="mt-48 flex justify-center">
+                    <div className="mt-32 flex justify-center">
                         <button 
                             onClick={() => onNavigate('products', 'all')}
-                            className="bg-black text-white px-24 py-8 text-[12px] font-black uppercase tracking-[0.5em] hover:bg-[#fbc5fa] hover:text-black transition-all shadow-2xl transform hover:scale-105"
+                            className="bg-black text-white px-16 py-6 text-[10px] font-black uppercase tracking-[0.5em] hover:bg-[#fbc5fa] hover:text-black transition-all shadow-2xl transform hover:scale-105"
                         >
                             Explorar Catálogo Completo
                         </button>
