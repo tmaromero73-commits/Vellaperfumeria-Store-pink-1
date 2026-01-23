@@ -1,8 +1,8 @@
 
 import React, { useEffect, useMemo, useRef } from 'react';
-import type { CartItem, View } from './types';
-import type { Currency } from './currency';
-import { formatCurrency } from './currency';
+import type { CartItem, View } from './types.ts';
+import type { Currency } from './currency.ts';
+import { formatCurrency } from './currency.ts';
 
 interface CartSidebarProps {
     isOpen: boolean;

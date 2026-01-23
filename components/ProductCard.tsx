@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { type Currency, formatCurrency } from './currency';
-import type { Product } from './types';
+import { type Currency, formatCurrency } from './currency.ts';
+import type { Product } from './types.ts';
 
 export const ProductCard: React.FC<{
     product: Product;
@@ -10,84 +10,65 @@ export const ProductCard: React.FC<{
     onQuickAddToCart: (product: Product, buttonElement: HTMLButtonElement | null, selectedVariant: Record<string, string> | null) => void;
     onProductSelect: (product: Product) => void;
     onQuickView: (product: Product) => void;
-}> = ({ product, currency, onAddToCart, onQuickView }) => {
+}> = ({ product, currency, onAddToCart, onQuickView, onProductSelect }) => {
     const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
     const isDiscounted = product.regularPrice && product.regularPrice > product.price;
 
     const variantKey = product.variants ? Object.keys(product.variants)[0] : null;
-    const variantOptions = variantKey ? product.variants![variantKey] : [];
-
-    const handleCardAction = (e: React.MouseEvent) => {
-        // Al hacer clic, añadimos directamente para agilizar la compra
-        if (variantOptions.length > 0 && !selectedVariant) {
-            onQuickView(product); // Si requiere variante, abrimos vista rápida
-        } else {
-            onAddToCart(product, null, selectedVariant ? { [variantKey!]: selectedVariant } : null);
-        }
-    };
 
     return (
         <div 
-            className="group flex flex-col h-full bg-white transition-all duration-500 cursor-pointer overflow-hidden border border-transparent hover:border-gray-100 shadow-sm hover:shadow-xl"
-            onClick={handleCardAction}
+            className="group flex flex-col h-full bg-white transition-all duration-700 cursor-pointer overflow-hidden border border-black/5 hover:border-black/20 shadow-none hover:shadow-[0_40px_80px_rgba(0,0,0,0.12)] relative"
         >
-            <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 flex items-center justify-center">
+            <div className="relative aspect-[3/4] overflow-hidden bg-white flex items-center justify-center p-8">
                 <img 
                     src={product.imageUrl} 
                     alt={product.name} 
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" 
+                    className="w-full h-full object-contain transition-transform duration-[2000ms] group-hover:scale-110 luminous-effect" 
                 />
                 
                 {product.tag && (
-                    <div className="absolute top-4 left-4 z-10">
-                        <span className="bg-black text-white text-[8px] font-black px-4 py-1 uppercase tracking-widest">{product.tag}</span>
+                    <div className="absolute top-6 left-6 z-10">
+                        <span className="bg-black text-white text-[9px] font-black px-6 py-2 uppercase tracking-widest shadow-lg">{product.tag}</span>
                     </div>
                 )}
 
-                {/* Overlay de Cesta */}
-                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-end pb-4 px-4">
-                    <div className="bg-white/95 backdrop-blur-sm p-4 w-full shadow-2xl flex flex-col gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                        {variantOptions.length > 0 && (
-                            <div className="w-full overflow-x-auto no-scrollbar py-1" onClick={(e) => e.stopPropagation()}>
-                                <div className="flex gap-2 min-w-max pb-1">
-                                    {variantOptions.map(option => (
-                                        <button
-                                            key={option.variationId || option.value}
-                                            onClick={(e) => { 
-                                                e.stopPropagation(); 
-                                                setSelectedVariant(option.value); 
-                                            }}
-                                            className={`px-3 py-1.5 text-[9px] font-black border transition-all whitespace-nowrap uppercase tracking-tighter ${selectedVariant === option.value ? 'bg-black text-white border-black' : 'border-gray-200 text-gray-500 hover:border-black bg-white'}`}
-                                        >
-                                            {option.value}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        <span className="text-[10px] font-black uppercase text-center tracking-widest text-black">
-                           Añadir a la Cesta
-                        </span>
-                    </div>
+                {/* BOTONES DE ACCIÓN - MÁXIMA NITIDEZ */}
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-all flex flex-col items-center justify-end pb-10 gap-4 px-10 opacity-0 group-hover:opacity-100">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onAddToCart(product, null, selectedVariant ? { [variantKey!]: selectedVariant } : null);
+                        }}
+                        className="w-full bg-black text-white text-[11px] font-black uppercase tracking-[0.4em] py-5 shadow-2xl hover:bg-[#fbc5fa] hover:text-black transition-all transform translate-y-4 group-hover:translate-y-0"
+                    >
+                        Añadir
+                    </button>
+                    
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onQuickView(product);
+                        }}
+                        className="w-full bg-white text-black text-[11px] font-black uppercase tracking-[0.4em] py-5 shadow-2xl hover:bg-black hover:text-white transition-all border-2 border-black transform translate-y-4 group-hover:translate-y-0"
+                    >
+                        Detalles
+                    </button>
                 </div>
             </div>
 
-            <div className="flex flex-col p-4 pt-6">
-                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mb-1">{product.brand}</span>
-                <h3 className="text-[12px] font-black text-black leading-snug mb-3 font-serif tracking-tight uppercase min-h-[2.5rem]">
+            <div className="flex flex-col p-8 bg-white" onClick={() => onQuickView(product)}>
+                <span className="text-[10px] text-[#fbc5fa] font-black uppercase tracking-[0.5em] mb-2">{product.brand}</span>
+                <h3 className="text-[16px] font-black text-black leading-tight mb-4 font-serif tracking-tight uppercase min-h-[3rem] italic">
                     {product.name}
                 </h3>
 
-                <div className="flex items-center gap-3">
-                    <p className="text-sm font-black text-black">{formatCurrency(product.price, currency)}</p>
-                    {isDiscounted && <p className="text-[11px] text-gray-300 line-through font-medium">{formatCurrency(product.regularPrice!, currency)}</p>}
+                <div className="flex items-center gap-6">
+                    <p className="text-xl font-black text-black">{formatCurrency(product.price, currency)}</p>
+                    {isDiscounted && <p className="text-[14px] text-black/30 line-through font-bold">{formatCurrency(product.regularPrice!, currency)}</p>}
                 </div>
             </div>
-            <style>{`
-                .no-scrollbar::-webkit-scrollbar { display: none; }
-                .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-            `}</style>
         </div>
     );
 };

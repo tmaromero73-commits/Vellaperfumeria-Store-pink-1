@@ -3,62 +3,54 @@ import React from 'react';
 import type { View } from './types';
 
 const Footer: React.FC<{ onNavigate: (view: View, payload?: any) => void }> = ({ onNavigate }) => {
+    // Logotipo del emblema circular unificado
+    const logoUrl = "https://i.ibb.co/6yX8z6n/vella-logo-new.png";
+
     return (
-        <footer className="bg-[#000000] text-white py-20 md:py-32 border-t border-white/5 w-full">
+        <footer className="bg-black text-white py-24 border-t border-white/5 w-full">
             <div className="container mx-auto px-6 flex flex-col items-center">
                 
-                {/* Logo Section - Colores Originales sobre Fondo Negro */}
-                <div className="flex flex-col items-center mb-20 w-full">
+                <div className="flex flex-col items-center mb-16 w-full">
                     <button 
-                        onClick={() => window.location.href = 'https://vellaperfumeria.com'} 
-                        className="transition-transform hover:scale-105 flex justify-center w-full"
+                        onClick={() => onNavigate('home')} 
+                        className="transition-all hover:scale-110 duration-500 flex items-center justify-center"
                     >
-                        {/* Contenedor blanco sutil para asegurar que el logo sea visible con sus colores originales */}
-                        <div className="bg-white/95 p-6 md:p-10 rounded-2xl shadow-[0_20px_50px_rgba(251,197,250,0.2)]">
-                            <img 
-                                src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
-                                alt="Vella Perfumería Boutique" 
-                                className="h-20 md:h-32 w-auto object-contain block"
-                                style={{ display: 'block' }}
-                            />
-                        </div>
+                        <img 
+                            src={logoUrl} 
+                            alt="Vella Perfumería Boutique" 
+                            className="h-24 md:h-32 w-auto object-contain brightness-0 invert"
+                        />
                     </button>
-                    <div className="w-24 h-[2px] bg-[#fbc5fa] mt-12 opacity-50"></div>
+                    <div className="w-24 h-1 bg-[#fbc5fa] mt-10 opacity-30"></div>
                 </div>
 
-                {/* Footer Navigation Menu */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-5xl text-center md:text-left border-t border-white/5 pt-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-6xl text-center pt-10">
                     <div>
-                        <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-[#fbc5fa] mb-8 italic">Explorar Boutique</h3>
-                        <ul className="space-y-4 text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">
-                            <li><button onClick={() => window.location.href = 'https://vellaperfumeria.com'} className="hover:text-white transition-colors">VellaPerfumeria.com</button></li>
-                            <li><button onClick={() => onNavigate('catalog')} className="hover:text-white transition-colors">Catálogo Digital</button></li>
-                            <li><button onClick={() => onNavigate('products', 'all')} className="hover:text-white transition-colors">Tienda Online</button></li>
+                        <h3 className="text-[13px] font-black uppercase tracking-[0.4em] text-[#fbc5fa] mb-8 italic">Boutique</h3>
+                        <ul className="space-y-4 text-[11px] uppercase tracking-[0.3em] text-white/50 font-bold">
+                            <li><button onClick={() => onNavigate('home')} className="hover:text-white transition-colors">Inicio</button></li>
+                            <li><button onClick={() => onNavigate('catalog')} className="hover:text-white transition-colors">Catálogo Interactivo</button></li>
+                            <li><button onClick={() => onNavigate('ofertas')} className="hover:text-white transition-colors">Ofertas VIP</button></li>
                         </ul>
                     </div>
-
                     <div>
-                        <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-[#fbc5fa] mb-8 italic">Atención VIP</h3>
-                        <ul className="space-y-4 text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">
-                            <li><button onClick={() => onNavigate('ia')} className="hover:text-white transition-colors">Beauty Concierge IA</button></li>
-                            <li><button onClick={() => onNavigate('ofertas')} className="hover:text-white transition-colors">Ofertas Premium</button></li>
-                            <li><a href="https://wa.me/34661202616" target="_blank" className="hover:text-white transition-colors">WhatsApp 661 202 616</a></li>
+                        <h3 className="text-[13px] font-black uppercase tracking-[0.4em] text-[#fbc5fa] mb-8 italic">Servicio VIP</h3>
+                        <ul className="space-y-4 text-[11px] uppercase tracking-[0.3em] text-white/50 font-bold">
+                            <li><a href="https://wa.me/34661202616" target="_blank" className="hover:text-white transition-colors">Atención Concierge</a></li>
+                            <li><button onClick={() => onNavigate('ia')} className="hover:text-white transition-colors">Asistente IA</button></li>
                         </ul>
                     </div>
-
                     <div>
-                        <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-[#fbc5fa] mb-8 italic">Legal e Info</h3>
-                        <ul className="space-y-4 text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold">
-                            <li><a href="https://instagram.com/vellaperfumeria" target="_blank" className="hover:text-white transition-colors">Instagram</a></li>
-                            <li><button onClick={() => onNavigate('blog')} className="hover:text-white transition-colors">Nuestro Blog</button></li>
-                            <li>Política de Privacidad</li>
+                        <h3 className="text-[13px] font-black uppercase tracking-[0.4em] text-[#fbc5fa] mb-8 italic">Social</h3>
+                        <ul className="space-y-4 text-[11px] uppercase tracking-[0.3em] text-white/50 font-bold">
+                            <li><a href="https://instagram.com/vellaperfumeria" target="_blank" className="hover:text-white transition-colors">@VELLAPERFUMERIA</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="mt-24 pt-12 border-t border-white/5 w-full text-center">
-                    <p className="text-[9px] font-black uppercase tracking-[0.8em] text-white/20">
-                        &copy; 2026 VELLA PERFUMERIA • LUXURY ORIFLAME BOUTIQUE
+                <div className="mt-24 pt-10 border-t border-white/10 w-full text-center">
+                    <p className="text-[10px] font-black uppercase tracking-[0.6em] text-white/30">
+                        &copy; 2026 VELLA PERFUMERIA • LUXURY BEAUTY BOUTIQUE • TODOS LOS DERECHOS RESERVADOS
                     </p>
                 </div>
             </div>

@@ -3,7 +3,6 @@ export interface VariantOption {
     value: string;
     colorCode?: string;
     imageUrl?: string;
-    variationId?: number;
 }
 
 export interface ProductVariants {
@@ -18,13 +17,12 @@ export interface Product {
     regularPrice?: number;
     imageUrl: string;
     description: string;
-    howToUse?: string;
+    ingredients?: string;
+    usage?: string;
     stock: number;
-    category: 'skincare' | 'makeup' | 'perfume' | 'wellness' | 'personal-care' | 'hair' | 'accessories' | 'men' | 'women' | 'gifts';
-    subCategory?: string;
-    tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'ULTIMAS UNIDADES' | 'PREMIUM' | 'CONCIERGE';
-    rating?: number;
-    reviewCount?: number;
+    category: 'skincare' | 'makeup' | 'perfume' | 'bodycare' | 'accessories' | 'envoltorios';
+    // Added 'FESTIVE' to the tag union type to fix assignment errors in products.ts
+    tag?: 'NOVEDAD' | 'SET' | 'OFERTA' | 'PREMIUM' | 'REGALO' | 'FESTIVE';
     variants?: ProductVariants;
 }
 
@@ -35,4 +33,4 @@ export interface CartItem {
     selectedVariant: Record<string, string> | null;
 }
 
-export type View = 'home' | 'products' | 'productDetail' | 'ofertas' | 'ia' | 'catalog' | 'blog' | 'blogPost' | 'checkout';
+export type View = 'home' | 'products' | 'productDetail' | 'ofertas' | 'ia' | 'catalog' | 'blog' | 'blogPost' | 'checkout' | 'envoltorios';

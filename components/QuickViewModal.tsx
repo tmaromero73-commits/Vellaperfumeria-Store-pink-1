@@ -19,7 +19,9 @@ interface QuickViewModalProps {
 
 const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, currency, onClose, onAddToCart, onProductSelect }) => {
     const modalRef = useRef<HTMLDivElement>(null);
-    const [selectedVariant, setSelectedVariant] = useState<Record<string, string> | null>(null);
+    const variantKey = product.variants ? Object.keys(product.variants)[0] : null;
+    const variantOptions = variantKey ? product.variants![variantKey] : [];
+    const [selectedVariant, setSelectedVariant] = useState<string | null>(variantOptions.length > 0 ? variantOptions[0].value : null);
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -33,40 +35,57 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, currency, onCl
 
     return (
         <div 
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-[250] p-4"
+            className="fixed inset-0 bg-black/90 flex items-center justify-center z-[250] p-4 backdrop-blur-md"
             onClick={onClose}
         >
             <div
                 ref={modalRef}
-                className="bg-white rounded-[2rem] shadow-2xl w-full max-w-4xl mx-auto flex flex-col md:flex-row p-6 md:p-8 relative overflow-hidden"
+                className="bg-white rounded-[3rem] shadow-2xl w-full max-w-5xl mx-auto flex flex-col md:flex-row p-8 md:p-12 relative overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                <button onClick={onClose} className="absolute top-6 right-6 text-gray-400 hover:text-black p-2 z-10 bg-white/50 rounded-full">
+                <button onClick={onClose} className="absolute top-10 right-10 text-gray-300 hover:text-black p-3 z-10 bg-white/80 rounded-full transition-all">
                     <CloseIcon />
                 </button>
                 
-                <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-4">
-                    <img src={product.imageUrl} alt={product.name} className="max-h-[300px] md:max-h-[400px] object-contain" />
+                <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-50 rounded-[2rem] p-6">
+                    <img src={product.imageUrl} alt={product.name} className="max-h-[350px] md:max-h-[500px] object-contain transition-transform duration-1000 hover:scale-110" />
                 </div>
                 
-                <div className="w-full md:w-1/2 flex flex-col pl-0 md:pl-10 mt-6 md:mt-0">
-                    <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2">{product.brand}</span>
-                    <h2 className="text-2xl md:text-3xl font-black mb-4 leading-tight uppercase tracking-tighter text-black">{product.name}</h2>
-                    <p className="text-xl md:text-2xl font-black text-black mb-6">{formatCurrency(product.price, currency)}</p>
-                    <p className="text-gray-600 text-sm mb-8 leading-relaxed line-clamp-4 md:line-clamp-none">{product.description}</p>
+                <div className="w-full md:w-1/2 flex flex-col pl-0 md:pl-16 mt-10 md:mt-0">
+                    <span className="text-[10px] text-[#fbc5fa] font-black uppercase tracking-[0.5em] mb-4">{product.brand}</span>
+                    <h2 className="text-3xl md:text-5xl font-serif font-black mb-6 leading-none uppercase tracking-tighter text-black italic">{product.name}</h2>
+                    <p className="text-2xl md:text-3xl font-black text-black mb-8">{formatCurrency(product.price, currency)}</p>
+                    <p className="text-gray-500 text-sm mb-10 leading-relaxed font-medium">{product.description}</p>
                     
+                    {variantKey && (
+                        <div className="mb-10">
+                            <h4 className="text-[10px] font-black uppercase tracking-widest mb-4 text-gray-400">Seleccionar {variantKey}:</h4>
+                            <div className="flex flex-wrap gap-3">
+                                {variantOptions.map(opt => (
+                                    <button 
+                                        key={opt.value}
+                                        onClick={() => setSelectedVariant(opt.value)}
+                                        className={`px-6 py-3 text-[9px] font-black uppercase tracking-widest border transition-all ${selectedVariant === opt.value ? 'bg-black text-white border-black' : 'border-gray-200 text-gray-400 hover:border-black'}`}
+                                    >
+                                        {opt.value}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     <div className="mt-auto space-y-4">
                         <button
-                            onClick={() => onAddToCart(product, null, selectedVariant)}
-                            className="w-full bg-black text-white font-black py-5 rounded-full hover:bg-[#fbc5fa] hover:text-black transition-all shadow-xl uppercase tracking-widest text-[10px]"
+                            onClick={() => onAddToCart(product, null, selectedVariant ? { [variantKey!]: selectedVariant } : null)}
+                            className="w-full bg-black text-white font-black py-6 rounded-full hover:bg-[#fbc5fa] hover:text-black transition-all shadow-2xl uppercase tracking-[0.4em] text-[10px]"
                         >
-                            Añadir al carrito
+                            Añadir a mi Cesta
                         </button>
                         <button 
                             onClick={() => onProductSelect(product)}
-                            className="w-full border-2 border-black text-black font-black py-5 rounded-full hover:bg-black hover:text-white transition-all uppercase tracking-widest text-[10px]"
+                            className="w-full border-2 border-black text-black font-black py-6 rounded-full hover:bg-black hover:text-white transition-all uppercase tracking-[0.4em] text-[10px]"
                         >
-                            Ver detalles
+                            Ver Experiencia Completa
                         </button>
                     </div>
                 </div>

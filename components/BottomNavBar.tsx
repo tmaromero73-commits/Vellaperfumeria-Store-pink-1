@@ -20,6 +20,9 @@ interface BottomNavBarProps {
 }
 
 const BottomNavBar: React.FC<BottomNavBarProps> = ({ onNavigate, currentView }) => {
+    // Logotipo unificado (Emblema dorado)
+    const logoUrl = "https://i.ibb.co/6yX8z6n/vella-logo-new.png";
+
     return (
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-[200] h-16">
             <nav className="flex justify-around items-center h-full px-4">
@@ -37,10 +40,10 @@ const BottomNavBar: React.FC<BottomNavBarProps> = ({ onNavigate, currentView }) 
                     onClick={() => onNavigate('home')}
                     className="flex flex-col items-center justify-center -mt-6"
                 >
-                    <div className="bg-white p-2 rounded-full shadow-2xl border-4 border-black ring-2 ring-white/10">
+                    <div className="bg-white p-1 rounded-full shadow-2xl border-4 border-black ring-2 ring-white/10">
                         <img 
-                            src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
-                            className="h-8 w-8 object-contain" 
+                            src={logoUrl} 
+                            className="h-10 w-10 object-contain" 
                             alt="Logo Vella"
                         />
                     </div>

@@ -1,77 +1,49 @@
 
-import React, { useState } from 'react';
-import type { View } from './types';
-import type { Currency } from './currency';
+import React from 'react';
+import type { View } from './types.ts';
 
-const MenuIcon = () => (
-    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-    </svg>
-);
+const Header: React.FC<{ onNavigate: (v: View, p?: any) => void; cartCount: number; onCartClick: () => void; }> = ({ onNavigate, cartCount, onCartClick }) => {
+    // Logotipo del emblema circular unificado
+    const logoUrl = "https://i.ibb.co/6yX8z6n/vella-logo-new.png"; 
 
-const CartIcon = () => (
-    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-    </svg>
-);
-
-const MenuLink: React.FC<{ onClick?: () => void, children: React.ReactNode, className?: string }> = ({ onClick, children, className = "" }) => (
-    <button 
-        onClick={onClick} 
-        className={`text-[10px] md:text-[11px] font-black text-white hover:text-[#fbc5fa] transition-all duration-300 uppercase tracking-[0.25em] h-full px-6 md:px-8 flex items-center whitespace-nowrap ${className}`}
-    >
-        {children}
-    </button>
-);
-
-interface HeaderProps {
-    onNavigate: (view: View, payload?: any) => void;
-    currency: Currency;
-    cartCount: number;
-    onCartClick: () => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-    const handleHomeClick = () => {
-        window.location.href = 'https://vellaperfumeria.com';
-    };
+    const navItems = [
+        { label: 'INICIO BOUTIQUE', view: 'home' as View },
+        { label: 'PERFUMERÍA VIP', view: 'products' as View, payload: 'perfume' },
+        { label: 'TRATAMIENTO FACIAL', view: 'products' as View, payload: 'skincare' },
+        { label: 'MAQUILLAJE PRO', view: 'products' as View, payload: 'makeup' },
+        { label: 'CATÁLOGO DIGITAL', view: 'catalog' as View },
+        { label: 'OFERTAS', view: 'ofertas' as View },
+        { label: 'CONCIERGE IA', view: 'ia' as View }
+    ];
 
     return (
-        <header className="sticky top-0 z-[100] w-full flex flex-col shadow-md bg-white">
-            {/* Promo Bar */}
-            <div className="bg-[#fbc5fa] py-2 text-black text-[8px] font-black text-center uppercase tracking-[0.4em] w-full">
-                INSTAGRAM: @VELLAPERFUMERIA | WHATSAPP: 661 202 616 | REGALO DE CORTESÍA INCLUIDO
+        <header className="sticky top-0 z-[100] w-full flex flex-col bg-white">
+            {/* TOP BAR ROSA PASTEL - ANUNCIO */}
+            <div className="bg-[#fbc5fa] py-2 px-4 md:px-20 w-full flex items-center justify-center text-black font-black uppercase text-[7px] md:text-[9px] tracking-[0.4em] border-b border-white/10">
+                <span className="animate-pulse">INSTAGRAM: @VELLAPERFUMERIA | WHATSAPP: 661 202 616 | ENVÍO DE CORTESÍA INCLUIDO</span>
             </div>
 
-            {/* Logo Section - Fondo Blanco para Respetar Colores Originales */}
-            <div className="w-full bg-white h-24 md:h-36 flex items-center justify-between px-6 md:px-12 relative border-b border-gray-50">
-                <div className="flex-1 md:hidden">
-                    <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-black p-2">
-                        <MenuIcon />
-                    </button>
-                </div>
-
-                {/* Logo Centrado */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <button 
-                        onClick={handleHomeClick} 
-                        className="pointer-events-auto hover:opacity-80 transition-opacity h-[70%] md:h-[80%]"
-                    >
+            {/* AREA DE LOGO - ESPACIOSA Y BLANCA */}
+            <div className="w-full h-24 md:h-36 flex items-center px-4 md:px-20 justify-between bg-white relative">
+                <div className="w-1/4"></div>
+                
+                <div className="flex flex-col items-center">
+                    <button onClick={() => onNavigate('home')} className="flex flex-col items-center group">
                         <img 
-                            src="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" 
+                            src={logoUrl} 
+                            className="h-16 md:h-28 w-auto object-contain transition-all duration-700 group-hover:scale-105 drop-shadow-xl" 
                             alt="Vella Perfumería Boutique" 
-                            className="h-full w-auto object-contain"
                         />
                     </button>
                 </div>
 
-                <div className="flex-1 flex justify-end items-center gap-4">
-                     <button onClick={onCartClick} className="relative p-3 bg-black text-white rounded-full hover:bg-[#fbc5fa] hover:text-black transition-all shadow-xl group">
-                        <CartIcon />
+                <div className="w-1/4 flex justify-end">
+                    <button onClick={onCartClick} className="relative p-2.5 bg-black rounded-full text-white shadow-2xl hover:bg-[#fbc5fa] hover:text-black transition-all transform active:scale-95">
+                        <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
                         {cartCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-[#fbc5fa] text-black text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">
+                            <span className="absolute -top-1 -right-1 bg-[#fbc5fa] text-black text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full ring-2 ring-white">
                                 {cartCount}
                             </span>
                         )}
@@ -79,33 +51,48 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, cartCount, onCartClick }) =
                 </div>
             </div>
 
-            {/* Menu Bar - Fondo Negro, Ancho Completo */}
-            <div className="w-full bg-black h-12 md:h-14 overflow-x-auto no-scrollbar border-b border-white/10">
-                <div className="flex justify-center min-w-max h-full mx-auto">
-                    <nav className="flex items-center h-full">
-                        <MenuLink onClick={handleHomeClick}>Inicio Boutique</MenuLink>
-                        <MenuLink onClick={() => onNavigate('products', 'perfume')}>Perfumería</MenuLink>
-                        <MenuLink onClick={() => onNavigate('products', 'skincare')}>Tratamiento Facial</MenuLink>
-                        <MenuLink onClick={() => onNavigate('products', 'makeup')}>Maquillaje Pro</MenuLink>
-                        <MenuLink onClick={() => onNavigate('catalog')}>Catálogo Digital</MenuLink>
-                        <MenuLink onClick={() => onNavigate('ofertas')}>Ofertas VIP</MenuLink>
-                        <MenuLink onClick={() => onNavigate('ia')} className="text-[#fbc5fa]">Beauty Concierge IA</MenuLink>
-                    </nav>
-                </div>
-            </div>
+            {/* BARRA DE NAVEGACIÓN NEGRA - FULL WIDTH */}
+            <nav className="w-full bg-[#0a0a0a] flex justify-center h-12 md:h-16 relative shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+                <div className="flex items-center h-full w-full justify-center overflow-x-auto no-scrollbar max-w-full gap-2 md:gap-10 px-6">
+                    {navItems.map((item, idx) => (
+                        <div key={idx} className="group h-full flex items-center">
+                            <button 
+                                onClick={() => onNavigate(item.view, item.payload)}
+                                className="px-3 md:px-6 text-[7px] md:text-[11px] font-black uppercase tracking-[0.35em] text-white/70 hover:text-white transition-all whitespace-nowrap h-full relative"
+                            >
+                                {item.label}
+                                <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#fbc5fa] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></span>
+                            </button>
 
-            {/* Mobile Menu Overlay */}
-            {isMobileMenuOpen && (
-                <div className="md:hidden fixed inset-0 bg-black z-[200] p-10 flex flex-col gap-8 animate-fade-in overflow-y-auto">
-                    <button onClick={() => setIsMobileMenuOpen(false)} className="self-end text-white p-2">
-                         <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                    <button onClick={handleHomeClick} className="text-white text-3xl font-black uppercase tracking-widest text-left border-b border-white/10 pb-6">Inicio</button>
-                    <button onClick={() => {onNavigate('catalog'); setIsMobileMenuOpen(false)}} className="text-white text-3xl font-black uppercase tracking-widest text-left border-b border-white/10 pb-6">Catálogo 2026</button>
-                    <button onClick={() => {onNavigate('products', 'all'); setIsMobileMenuOpen(false)}} className="text-white text-3xl font-black uppercase tracking-widest text-left border-b border-white/10 pb-6">Tienda Luxe</button>
-                    <button onClick={() => {onNavigate('ia'); setIsMobileMenuOpen(false)}} className="text-[#fbc5fa] text-3xl font-black uppercase tracking-widest text-left">Asesor IA</button>
+                            {/* MEGA MENÚ DESPLEGABLE - FONDO NEGRO FULL WIDTH */}
+                            <div className="mega-menu p-10 md:p-24 z-[110] border-t border-white/5 shadow-[0_100px_150px_rgba(0,0,0,0.95)] bg-[#0a0a0a]">
+                                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+                                    <div className="md:col-span-6 border-r border-white/10 pr-16 hidden md:block text-left">
+                                        <h3 className="text-[#fbc5fa] text-5xl md:text-8xl font-serif font-black italic uppercase tracking-tighter mb-6 leading-none">
+                                            {item.label}
+                                        </h3>
+                                        <p className="text-white/30 text-[11px] uppercase tracking-[0.5em] font-bold leading-relaxed max-w-md">
+                                            Edición Boutique Campaña 1. Curaduría europea exclusiva para Vella Boutique. Alta cosmética y perfumería de autor.
+                                        </p>
+                                    </div>
+                                    <div className="md:col-span-6 grid grid-cols-2 gap-y-12 gap-x-16 text-left">
+                                        <div className="space-y-4">
+                                            <span className="text-[#fbc5fa] text-[10px] font-black tracking-widest uppercase block mb-4 border-b border-white/10 pb-2">Explorar</span>
+                                            <button className="text-[13px] font-black uppercase tracking-[0.4em] text-white hover:text-[#fbc5fa] block transition-colors">Novedades 2026</button>
+                                            <button className="text-[13px] font-black uppercase tracking-[0.4em] text-white hover:text-[#fbc5fa] block transition-colors">Sets Premium</button>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <span className="text-[#fbc5fa] text-[10px] font-black tracking-widest uppercase block mb-4 border-b border-white/10 pb-2">Servicios</span>
+                                            <button className="text-[13px] font-black uppercase tracking-[0.4em] text-white hover:text-[#fbc5fa] block transition-colors">WhatsApp VIP</button>
+                                            <button className="text-[13px] font-black uppercase tracking-[0.4em] text-white hover:text-[#fbc5fa] block transition-colors">Asesoría IA</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            )}
+            </nav>
         </header>
     );
 };

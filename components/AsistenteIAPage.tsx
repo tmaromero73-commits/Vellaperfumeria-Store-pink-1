@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
@@ -24,13 +25,14 @@ const AsistenteIAPage: React.FC = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [chat, setChat] = useState<Chat | null>(null);
-
+    
+    // Logotipo unificado (Emblema dorado)
+    const logoUrl = "https://i.ibb.co/6yX8z6n/vella-logo-new.png";
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const initChat = async () => {
             try {
-                // Initialize GoogleGenAI directly with process.env.API_KEY as per guidelines.
                 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
                 const newChat = ai.chats.create({
                     model: 'gemini-3-flash-preview',
@@ -91,10 +93,10 @@ const AsistenteIAPage: React.FC = () => {
             <div className="max-w-4xl mx-auto flex flex-col h-[70vh] bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden">
                 <div className="bg-black p-8 flex items-center justify-between">
                     <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center ring-2 ring-[#fbc5fa]/30">
-                            <SparklesIcon />
+                        <div className="w-16 h-16 flex items-center justify-center">
+                            <img src={logoUrl} className="h-full w-auto object-contain brightness-0 invert" alt="Vella IA" />
                         </div>
-                        <div>
+                        <div className="border-l border-white/20 pl-5">
                             <h2 className="text-white font-black uppercase text-xs tracking-[0.3em]">Beauty Concierge AI</h2>
                             <p className="text-[#fbc5fa] text-[9px] uppercase font-bold tracking-widest mt-1">Soporte VIP Premium</p>
                         </div>
@@ -104,8 +106,12 @@ const AsistenteIAPage: React.FC = () => {
                 <div ref={chatContainerRef} className="flex-grow p-8 overflow-y-auto space-y-8 bg-white">
                     {messages.map((msg, idx) => (
                         <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-white border' : 'bg-black'}`}>
-                                {msg.role === 'user' ? <UserIcon /> : <SparklesIcon />}
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-white border' : 'bg-black p-2'}`}>
+                                {msg.role === 'user' ? (
+                                    <UserIcon />
+                                ) : (
+                                    <img src={logoUrl} className="w-full h-auto object-contain brightness-0 invert" alt="V" />
+                                )}
                             </div>
                             <div className={`max-w-[85%] p-5 rounded-[2rem] text-sm leading-relaxed ${
                                 msg.role === 'user' 

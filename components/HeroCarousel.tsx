@@ -1,141 +1,108 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import type { View } from './types';
+import type { View } from './types.ts';
 
-interface HeroSlide {
-    imageUrl: string;
-    title?: string;
-    subtitle?: string;
-    buttonText?: string;
-    view?: View;
-    showBanner: boolean;
-    bannerType?: 'standard' | 'colonial' | 'transparent';
-}
-
-const slides: HeroSlide[] = [
+const slides = [
     {
-        // Diapositiva 1: Modelo Pelirroja + Banner Blue Colonial (SIN ROJO)
-        imageUrl: 'https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&w=2000&q=90',
+        // BANNER "CAPTURA REAL": MODELO PANTALONES ROJOS
+        bgImageUrl: 'https://media-cdn.oriflame.com/contentImage?externalMediaId=26e2e50c-e27f-4444-9b5f-55734208940d&name=Promo_Hero_Pants_Red&inputFormat=jpg',
+        productImageUrl: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F38534%2F38534_1.png',
         title: 'LUJO EN CADA DETALLE',
-        subtitle: 'DESCUBRE EL RELOJ WILLWOOD Y LOS NUEVOS ENVOLTORIOS PREMIUM • CAMPAÑA 1 - 2026',
+        subtitle: 'DESCUBRE EL ARTE DE REGALAR CON CARIÑO • CAMPAÑA 1 - 2026',
         buttonText: 'VER NOVEDADES',
-        view: 'catalog',
-        showBanner: true,
-        bannerType: 'colonial'
+        view: 'products' as View,
+        bgPos: 'center 5%'
     },
     {
-        // Diapositiva 2: Novage+ Innovation
-        imageUrl: 'https://images.unsplash.com/photo-1556228852-6d45a7d8a341?auto=format&fit=crop&w=2000&q=90',
-        showBanner: false,
-    },
-    {
-        // Diapositiva 3: All or Nothing Amplified Focus
-        imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2000&q=90',
+        // BANNER 2: MODELO YOGA ATARDECER
+        bgImageUrl: 'https://media-cdn.oriflame.com/contentImage?externalMediaId=5e76d99b-d7b4-498c-843e-c68e7c10d321&name=yoga-sunset&inputFormat=jpg',
+        productImageUrl: 'https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F46060%2F46060_1.png',
         title: 'ALL OR NOTHING AMPLIFIED',
-        subtitle: 'SIENTE EL PODER DE LA FRAGANCIA FLORAL AMBARINA • AHORA 62.99€',
+        subtitle: 'SIENTE EL PODER DE LA FRAGANCIA FLORAL AMBARINA • AHORA 62,99€',
         buttonText: 'COMPRAR AHORA',
-        view: 'products',
-        showBanner: true,
-        bannerType: 'transparent'
-    },
+        view: 'products' as View,
+        bgPos: 'center center'
+    }
 ];
 
 const HeroCarousel: React.FC<{ onNavigate: (view: View) => void }> = ({ onNavigate }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = useCallback(() => {
-        setCurrentIndex(prevIndex => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
+        setCurrentIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
     }, []);
 
-    const prevSlide = () => {
-        setCurrentIndex(prevIndex => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
-    };
-
     useEffect(() => {
-        const slideInterval = setInterval(nextSlide, 8000);
-        return () => clearInterval(slideInterval);
+        const interval = setInterval(nextSlide, 10000);
+        return () => clearInterval(interval);
     }, [nextSlide]);
     
     return (
-        <div className="w-full relative h-[85vh] overflow-hidden bg-white">
+        <div className="w-full relative h-[90vh] md:h-screen overflow-hidden bg-white">
             {slides.map((slide, index) => (
                 <div
                     key={index}
-                    className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[2000ms] ease-out ${index === currentIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
-                    style={{ backgroundImage: `url(${slide.imageUrl})` }}
+                    className={`absolute inset-0 w-full h-full transition-all duration-[2000ms] ${index === currentIndex ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'}`}
                 >
-                    {slide.showBanner && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/5">
+                    {/* FONDO: TOTALMENTE NÍTIDO (ESPECIFICACIÓN CAPTURA REAL) */}
+                    <div 
+                        className="absolute inset-0 w-full h-full bg-cover bg-no-repeat transition-transform duration-[12000ms]"
+                        style={{ 
+                            backgroundImage: `url(${slide.bgImageUrl})`,
+                            backgroundPosition: slide.bgPos, 
+                            transform: index === currentIndex ? 'scale(1.1)' : 'scale(1)'
+                        }}
+                    >
+                    </div>
+
+                    {/* TARJETA CENTRAL "BOUTIQUE TEAL" (#004851) */}
+                    <div className="absolute inset-0 flex items-center justify-center p-4 md:p-10">
+                        <div className="relative w-full max-w-[780px] bg-[#004851] border-[1px] border-[#d7b552] p-10 md:p-20 text-center shadow-[0_50px_100px_rgba(0,0,0,0.6)] animate-hero-card">
                             
-                            {/* BLUE COLONIAL BANNER - NO RED, GOLD ACCENTS */}
-                            <div className={`relative px-10 py-16 max-w-4xl w-full mx-6 transition-all duration-1000 transform ${index === currentIndex ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'} ${
-                                slide.bannerType === 'colonial' 
-                                ? 'bg-gradient-to-br from-[#002d40]/90 to-[#005c7a]/90 border-4 border-[#d4af37] shadow-[0_0_80px_rgba(0,0,0,0.6)] backdrop-blur-md' 
-                                : 'bg-black/40 backdrop-blur-xl border border-white/20 shadow-2xl'
-                            }`}>
-                                
-                                {/* Golden Sparkles / Accents (CSS) */}
-                                {slide.bannerType === 'colonial' && (
-                                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                                        <div className="absolute top-4 right-8 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
-                                        <div className="absolute bottom-10 left-10 w-1 h-1 bg-white rounded-full animate-pulse"></div>
-                                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,_rgba(212,175,55,0.4)_1px,_transparent_1px)] bg-[length:30px_30px]"></div>
-                                    </div>
-                                )}
-
-                                <div className="relative z-10 flex flex-col items-center">
-                                    {/* Imagen de los Envoltorios de Regalo - Sin rastro de rojo */}
-                                    <div className="mb-8 relative">
-                                        <img 
-                                            src="https://media-cdn.oriflame.com/contentImage?externalMediaId=86cb5734-1101-4601-8161-e170f0cfbdd0&name=Promo_split_single_3&inputFormat=jpg" 
-                                            alt="Envoltorios Premium Vella"
-                                            className="h-36 md:h-52 object-contain rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-white/20"
-                                        />
-                                        <div className="absolute -bottom-4 -right-4 bg-[#d4af37] text-black text-[9px] font-black px-4 py-2 uppercase tracking-widest shadow-lg">
-                                            CALIDAD SUECA
-                                        </div>
-                                    </div>
-
-                                    <span className="text-[10px] font-black tracking-[0.7em] uppercase mb-4 block text-[#fbc5fa]">
-                                        ORIFLAME • SWEDEN
-                                    </span>
-                                    
-                                    <h2 className="text-3xl md:text-6xl font-serif font-black mb-6 leading-none tracking-tighter uppercase text-center text-white">
-                                        {slide.title}
-                                    </h2>
-                                    
-                                    <p className="text-[9px] md:text-xs tracking-[0.45em] font-bold mb-10 uppercase text-center max-w-2xl leading-relaxed text-white/80">
-                                        {slide.subtitle}
-                                    </p>
-                                    
-                                    <button
-                                        onClick={() => slide.view && onNavigate(slide.view)}
-                                        className="py-5 px-16 transition-all duration-700 transform hover:scale-105 tracking-[0.5em] text-[10px] font-black shadow-2xl bg-[#d4af37] text-black hover:bg-white"
-                                    >
-                                        {slide.buttonText}
-                                    </button>
+                            <div className="relative mx-auto mb-12 w-40 h-40 md:w-56 md:h-56 flex items-center justify-center">
+                                <img 
+                                    src={slide.productImageUrl} 
+                                    className="w-full h-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)] scale-110" 
+                                    alt="Featured Product" 
+                                />
+                                {/* ETIQUETA ORO ESQUINA INFERIOR DERECHA */}
+                                <div className="absolute bottom-2 right-0 bg-[#d7b552] px-5 py-2 text-[8px] md:text-[10px] font-black text-black uppercase tracking-[0.2em] shadow-2xl border border-black/10">
+                                    CALIDAD SUECA
                                 </div>
                             </div>
+
+                            <div className="mb-8">
+                                <span className="text-[11px] md:text-[13px] font-bold text-[#d7b552] uppercase tracking-[0.6em] italic">
+                                    ORIFLAME • LUXURY SELECTION
+                                </span>
+                            </div>
+                            
+                            <h2 className="text-4xl md:text-[8.5rem] font-serif font-black text-white uppercase tracking-tighter mb-10 leading-[0.75] italic drop-shadow-2xl">
+                                {slide.title}
+                            </h2>
+                            
+                            <p className="text-white/80 text-[10px] md:text-[15px] font-black uppercase tracking-[0.4em] mb-14 max-w-lg mx-auto leading-relaxed border-t border-white/10 pt-10">
+                                {slide.subtitle}
+                            </p>
+                            
+                            <button
+                                onClick={() => onNavigate(slide.view)}
+                                className="bg-[#d7b552] text-black py-5 px-16 md:px-32 text-[10px] md:text-[13px] font-black uppercase tracking-[0.5em] hover:bg-white transition-all transform hover:scale-105 shadow-2xl"
+                            >
+                                {slide.buttonText}
+                            </button>
                         </div>
-                    )}
+                    </div>
                 </div>
             ))}
             
-            {/* Arrows */}
-            <button onClick={prevSlide} className="absolute left-10 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors z-20">
-                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 19l-7-7 7-7" /></svg>
-            </button>
-            <button onClick={nextSlide} className="absolute right-10 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors z-20">
-                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 5l7 7-7 7" /></svg>
-            </button>
-
-            {/* Pagination Lines */}
-            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex space-x-10">
-                {slides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => setCurrentIndex(index)}
-                        className={`w-12 h-[2px] transition-all duration-1000 ${index === currentIndex ? 'bg-white' : 'bg-white/10'}`}
+            {/* INDICADORES */}
+            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-40 flex gap-4">
+                {slides.map((_, i) => (
+                    <button 
+                        key={i} 
+                        onClick={() => setCurrentIndex(i)}
+                        className={`w-12 h-0.5 transition-all duration-500 ${i === currentIndex ? 'bg-[#d7b552]' : 'bg-white/20'}`}
                     />
                 ))}
             </div>

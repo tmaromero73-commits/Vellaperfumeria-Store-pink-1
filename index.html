@@ -1,18 +1,18 @@
 
 <!DOCTYPE html>
-<html lang="es-ES">
+<html lang="es-ES" style="color-scheme: light;">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="https://vellaperfumeria.com/wp-content/uploads/2024/06/vellaperfumeralogo.png" />
+    <link rel="icon" type="image/png" href="https://i.ibb.co/hR9p1fB/perfumeria-vp-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vella Perfumería - Oriflame Luxury Boutique</title>
+    <title>Vella Boutique - Perfumería de Lujo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@19",
-    "react-dom": "https://esm.sh/react-dom@19",
-    "react-dom/client": "https://esm.sh/react-dom@19/client",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
     "@google/genai": "https://esm.sh/@google/genai",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/"
@@ -22,32 +22,55 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@100..900&display=swap');
         
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; margin: 0; padding: 0; }
+        
         body, html { 
             background-color: #ffffff !important; 
-            margin: 0; 
-            padding: 0; 
             min-height: 100%;
             width: 100%;
             overflow-x: hidden;
             color: #000000;
             font-family: 'Montserrat', sans-serif;
         }
-        h1, h2, h3, .font-serif {
-            font-family: 'Playfair Display', serif;
-        }
+
         #root { 
-            background-color: #ffffff !important;
+            background-color: #ffffff !important; 
+            width: 100%;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #ffffff; }
-        ::-webkit-scrollbar-thumb { background: #000000; border-radius: 10px; }
+
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
         
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Animación de la tarjeta central del Hero */
+        @keyframes slide-up-premium {
+            from { opacity: 0; transform: translateY(80px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-hero-card { animation: slide-up-premium 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+
+        /* Mega Menu de Anchura Completa */
+        .mega-menu {
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            transform: translateY(15px);
+            opacity: 0;
+            visibility: hidden;
+            width: 100vw;
+            left: 0;
+            position: absolute;
+            background-color: #000000;
+        }
+        .group:hover .mega-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Nitidez de imágenes */
+        .pure-image { filter: brightness(1.05) contrast(1.02) !important; }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #ffffff; }
+        ::-webkit-scrollbar-thumb { background: #000000; }
     </style>
 </head>
 <body>

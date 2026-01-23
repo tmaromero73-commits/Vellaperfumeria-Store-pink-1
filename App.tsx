@@ -1,23 +1,24 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import type { View, Product, CartItem } from './components/types';
-import type { Currency } from './currency';
-import { blogPosts } from './components/blogData';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ProductList from './components/ProductList';
-import ShopPage from './components/ShopPage';
-import ProductDetailPage from './components/ProductDetailPage';
-import CartSidebar from './components/CartSidebar';
-import OfertasPage from './components/OfertasPage';
-import AsistenteIAPage from './components/AsistenteIAPage';
-import CatalogPage from './components/CatalogPage';
-import BlogPage from './components/BlogPage';
-import BlogPostPage from './components/BlogPostPage';
-import QuickViewModal from './components/QuickViewModal';
-import CheckoutPage from './components/CheckoutPage';
-import FloatingWhatsApp from './components/FloatingWhatsApp';
-import BottomNavBar from './components/BottomNavBar';
+import type { View, Product, CartItem } from './components/types.ts';
+import type { Currency } from './components/currency.ts';
+import { blogPosts } from './components/blogData.ts';
+import Header from './components/Header.tsx';
+import Footer from './components/Footer.tsx';
+import ProductList from './components/ProductList.tsx';
+import ShopPage from './components/ShopPage.tsx';
+import ProductDetailPage from './components/ProductDetailPage.tsx';
+import CartSidebar from './components/CartSidebar.tsx';
+import OfertasPage from './components/OfertasPage.tsx';
+import AsistenteIAPage from './components/AsistenteIAPage.tsx';
+import CatalogPage from './components/CatalogPage.tsx';
+import BlogPage from './components/BlogPage.tsx';
+import BlogPostPage from './components/BlogPostPage.tsx';
+import QuickViewModal from './components/QuickViewModal.tsx';
+import CheckoutPage from './components/CheckoutPage.tsx';
+import FloatingWhatsApp from './components/FloatingWhatsApp.tsx';
+import BottomNavBar from './components/BottomNavBar.tsx';
+import EnvoltoriosPage from './components/EnvoltoriosPage.tsx';
 
 type AppView = {
     current: View;
@@ -102,10 +103,11 @@ const App: React.FC = () => {
                 case 'productDetail': return <ProductDetailPage product={view.payload} currency={currency} onAddToCart={handleAddToCart} />;
                 case 'ofertas': return <OfertasPage currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
                 case 'ia': return <AsistenteIAPage />;
-                case 'catalog': return <CatalogPage onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} currency={currency} />;
+                case 'catalog': return <CatalogPage onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} currency={currency} onNavigate={handleNavigate} />;
                 case 'blog': return <BlogPage posts={blogPosts} onSelectPost={(p) => handleNavigate('blogPost', p)} />;
                 case 'blogPost': return <BlogPostPage post={view.payload} allPosts={blogPosts} onSelectPost={(p) => handleNavigate('blogPost', p)} onBack={() => handleNavigate('blog')} />;
                 case 'checkout': return <CheckoutPage cartItems={cartItems} currency={currency} onClearCart={() => setCartItems([])} onNavigate={handleNavigate} />;
+                case 'envoltorios': return <EnvoltoriosPage currency={currency} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} onProductSelect={handleProductSelect} onQuickView={setQuickViewProduct} />;
                 default: return <ProductList onNavigate={handleNavigate} onProductSelect={handleProductSelect} onAddToCart={handleAddToCart} onQuickAddToCart={handleQuickAddToCart} currency={currency} onQuickView={setQuickViewProduct} />;
             }
         } catch (e) {
@@ -117,7 +119,6 @@ const App: React.FC = () => {
         <div className="flex flex-col min-h-screen bg-white font-sans text-black antialiased">
             <Header
                 onNavigate={handleNavigate}
-                currency={currency}
                 cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
                 onCartClick={() => setIsCartOpen(true)}
             />
