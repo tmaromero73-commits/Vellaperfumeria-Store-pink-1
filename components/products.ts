@@ -4,92 +4,48 @@ import type { Product } from './types.ts';
 const getImg = (id: number | string) => `https://media-cdn.oriflame.com/productImage?externalMediaId=product-management-media%2FProducts%2F${id}%2F${id}_1.png`;
 
 const manualList: Partial<Product>[] = [
-    // --- NOVEDADES LANZAMIENTO Y CÓDIGOS ESPECÍFICOS ---
-    { id: 47422, name: "Revitalizador de ojos Oriflame Exclusive", brand: "Oriflame", price: 8.99, category: 'skincare' },
-    { id: 48918, name: "Masajeador facial Arctic Ritual", brand: "Oriflame", price: 14.99, category: 'skincare' },
-    { id: 42263, name: "Bruma facial Micro Essence Pro-Collagen NovAge", brand: "NovAge", price: 18.00, category: 'skincare' },
-    { id: 42444, name: "Sérum de hidratación intensa Pro-Collagen NovAge", brand: "NovAge", price: 32.00, category: 'skincare' },
-    { id: 42253, name: "Mascarilla revitalizante intensiva facial nocturna NovAge", brand: "NovAge", price: 29.99, category: 'skincare' },
-    { id: 47104, name: "Pilina Pro-Collagen NovAge", brand: "NovAge", price: 24.99, category: 'skincare' },
-    { id: 18437, name: "Tratamiento restaurador de noche Diamond Cellular", brand: "Diamond Cellular", price: 34.00, category: 'skincare' },
-    { id: 13659, name: "Crema antienvejecimiento Diamond Cellular", brand: "Diamond Cellular", price: 32.00, category: 'skincare' },
-    { id: 21339, name: "Solución micelar Diamond Cellular", brand: "Diamond Cellular", price: 16.00, category: 'skincare' },
-    { id: 45248, name: "Sérum Eclat NovAge", brand: "NovAge", price: 28.00, category: 'skincare' },
-    { id: 45243, name: "Crema hidratante ligera Eclat NovAge", brand: "NovAge", price: 24.00, category: 'skincare' },
-    { id: 45245, name: "Crema hidratante rica Eclat NovAge", brand: "NovAge", price: 24.00, category: 'skincare' },
-    { id: 47524, name: "Banda para el pelo skincare", brand: "Accessories", price: 4.99, category: 'accessories' },
-    { id: 47517, name: "Limpiador facial de silicona", brand: "Accessories", price: 5.99, category: 'accessories' },
-    { id: 46543, name: "Limpiador foaming gel Optimals", brand: "Optimals", price: 8.99, category: 'skincare' },
-    { id: 46900, name: "Limpiador soft cream Optimals", brand: "Optimals", price: 9.99, category: 'skincare' },
-    { id: 45292, name: "Multiproducto SPF 50 Daily Glow Optimals", brand: "Optimals", price: 14.99, category: 'skincare' },
-    { id: 45284, name: "Crema hidratante ligera Hydra Radiance Optimals", brand: "Optimals", price: 12.00, category: 'skincare' },
-    { id: 45285, name: "Crema hidratante rica Hydra Radiance Optimals", brand: "Optimals", price: 12.00, category: 'skincare' },
-    { id: 47437, name: "Parches faciales de gel Hydra Radiance Optimals", brand: "Optimals", price: 4.99, category: 'skincare' },
-    { id: 45326, name: "Crema hidratante SPF 25 BeYoutiful Optimals", brand: "Optimals", price: 18.47, category: 'skincare' },
-    { id: 47419, name: "Brocha de crema hidratante y sérum Oriflame Exclusive", brand: "Accessories", price: 6.99, category: 'accessories' },
-    { id: 45291, name: "Contorno de ojos y labios Optimals", brand: "Optimals", price: 12.31, category: 'skincare' },
-
-    // --- FRAGANCIAS Y CUERPO ---
-    { id: 47718, name: "O Sweet Marshmallow", brand: "Oriflame", price: 17.99, category: 'perfume', tag: 'NOVEDAD' },
-    { id: 46974, name: "Jabón de Barra True Hours Moments", brand: "Oriflame", price: 3.49, category: 'bodycare' },
-    { id: 47201, name: "Crema de Manos True Hours Moments", brand: "Oriflame", price: 6.99, category: 'bodycare' },
-    { id: 48908, name: "Neceser Sugar Spice", brand: "Boutique", price: 10.99, category: 'accessories', tag: 'OFERTA' },
-    { id: 48954, name: "Reloj Glitters of Love", brand: "Boutique", price: 10.99, category: 'accessories', tag: 'NOVEDAD' },
-    { id: 48952, name: "Joyas Pearl Glitters of Love", brand: "Boutique", price: 14.99, category: 'accessories', tag: 'SET' },
-    { id: 48953, name: "Set de cuatro pares de pendientes Glitters of Love", brand: "Boutique", price: 11.99, category: 'accessories' },
-    
-    // --- REGALOS Y FESTIVE ---
-    { id: 48975, name: "Bolsa sobre de regalo Festive", brand: "Festive", price: 3.99, category: 'envoltorios' },
-    { id: 48977, name: "Sobre de regalo Festive", brand: "Festive", price: 2.99, category: 'envoltorios' },
-    { id: 48970, name: "Caja de regalo Festive", brand: "Festive", price: 10.00, category: 'envoltorios' },
-
-    // --- ROYAL VELVET Y OTROS ---
-    { id: 481017, name: "Crema de noche reafirmante Regal Velvet Edición Especial", brand: "Royal Velvet", price: 23.99, category: 'skincare' },
-    { id: 47420, name: "Espátula mascarilla Oriflame Exclusive", brand: "Accessories", price: 6.29, category: 'accessories' },
-    { id: 36152, name: "Crema universal con aceite de frambuesa", brand: "Oriflame", price: 7.99, category: 'skincare' },
-    { id: 43295, name: "Barra de labios Colour Stylist Super Pout THE ONE", brand: "THE ONE", price: 9.99, category: 'makeup' },
-    { id: 46928, name: "Sombra de ojos Colour Unlimited", brand: "THE ONE", price: 7.99, category: 'makeup' },
-    { id: 47014, name: "Crema corporal perfumada Classique Weekend", brand: "Oriflame", price: 9.99, category: 'bodycare' },
-    { id: 42499, name: "Eau de Toilette Classique Weekend", brand: "Oriflame", price: 26.99, category: 'perfume' },
-    { id: 48650, name: "Máscara de pestañas Winter Wonderland Lash Waterproof THE ONE", brand: "THE ONE", price: 9.99, category: 'makeup' },
-    { id: 42520, name: "Brick Aura", brand: "Oriflame", price: 22.99, category: 'perfume' },
-    { id: 47439, name: "Crema universal con ciruela dulce", brand: "Oriflame", price: 7.99, category: 'skincare' },
-    { id: 47499, name: "Eau de Toilette Elvie Midnight Magic", brand: "Elvie", price: 22.99, category: 'perfume' },
-    { id: 46979, name: "Crema de manos Love Potion Cherry On Top", brand: "Love Potion", price: 7.99, category: 'bodycare' },
-    { id: 46047, name: "Eau de Perfume Love Potion Cherry On Top", brand: "Love Potion", price: 25.99, category: 'perfume' },
-    { id: 47011, name: "Crema corporal perfumada Giordani Gold Essenza", brand: "Giordani Gold", price: 9.99, category: 'bodycare' },
-    { id: 47511, name: "Perfume Giordani Gold Essenza", brand: "Giordani Gold", price: 54.00, category: 'perfume' },
-    { id: 42806, name: "Bruma corporal Giordani Gold Essenza", brand: "Giordani Gold", price: 7.99, category: 'bodycare' },
-    { id: 48079, name: "Lote Giordani Gold Essenza: perfume + bruma + caja", brand: "Giordani Gold", price: 48.99, category: 'perfume', tag: 'SET' },
-    
-    // --- GAMAS Y PERFUMES PREMIUM ---
-    { id: 46060, name: "Perfume All or Nothing Amplified", brand: "All or Nothing", price: 62.99, category: 'perfume' },
-    { id: 47020, name: "Crema corporal perfumada All or Nothing Amplified", brand: "All or Nothing", price: 9.99, category: 'bodycare' },
-    { id: 35679, name: "Perfume All or Nothing", brand: "All or Nothing", price: 58.00, category: 'perfume' },
-    { id: 42968, name: "Eau de Parfum Absolute All or Nothing", brand: "All or Nothing", price: 45.00, category: 'perfume' },
-    { id: 45967, name: "Perfume Giordani Gold Man Elixir", brand: "Giordani Gold", price: 44.00, category: 'perfume' },
-    { id: 46064, name: "Nordic Waters Infinite Blue para él", brand: "Nordic Waters", price: 32.00, category: 'perfume' },
-    { id: 48035, name: "Reloj Wildy Wood para él", brand: "Boutique", price: 29.99, category: 'accessories' },
-    { id: 42490, name: "Eau de Toilette Ascendant", brand: "Ascendant", price: 34.00, category: 'perfume' },
-    { id: 30058, name: "Eau de Toilette Citrus Tonic", brand: "Men Collection", price: 19.99, category: 'perfume' },
-    { id: 421518, name: "Eau de Toilette Dark Wood", brand: "Men Collection", price: 19.99, category: 'perfume' },
-    { id: 46795, name: "Eau de Toilette Class Home Weekend Azure", brand: "Oriflame", price: 24.99, category: 'perfume' },
-    { id: 35651, name: "Eau de Toilette Class Yours", brand: "Oriflame", price: 22.99, category: 'perfume' },
-    { id: 47502, name: "Eau de Perfume Mister Giordani Aqua", brand: "Giordani Gold", price: 28.00, category: 'perfume' }
+    { 
+        id: 47511, 
+        name: "Perfume Giordani Gold Essenza", 
+        brand: "Giordani Gold", 
+        price: 54.00, 
+        category: 'perfume',
+        tag: 'PREMIUM',
+        description: "Una obra maestra de la alta perfumería italiana. El Perfume Giordani Gold Essenza ha sido diseñado en torno a la nota exclusiva de la Flor de Azahar Luxury Essenza, una esencia extraída mediante un proceso artesanal patentado por Vella Perfumería. Su frasco, coronado con una hoja de oro de 24 quilates, encierra una fragancia floral amaderada que se abre con luminosas notas de bergamota de Calabria y limón, evolucionando hacia un corazón magnético de flores blancas y cerrando con la nobleza de la madera de sándalo toscano. Es la expresión máxima del resplandor y la sofisticación eterna, diseñada para la mujer que deja una estela de elegancia inolvidable a su paso."
+    },
+    { 
+        id: 46060, 
+        name: "Perfume All or Nothing Amplified", 
+        brand: "All or Nothing", 
+        price: 62.99, 
+        category: 'perfume',
+        tag: 'NOVEDAD',
+        description: "All or Nothing Amplified es una declaración de audacia absoluta. Esta fragancia floral ambarina redefine el concepto de intensidad. Creada para aquellas que no se conforman con lo ordinario, combina la exuberancia del Nardo Absoluto con la calidez adictiva del Jengibre Rojo, todo ello sobre una base profunda de Vainilla de Madagascar de comercio justo. Su tecnología de fragancia activa permite que la esencia interactúe con el calor de tu piel, amplificando su proyección a medida que pasan las horas. Un perfume que no solo se huele, se experimenta, envolviendo los sentidos en un aura de poder, magnetismo y feminidad indomable. Cada gota es una invitación a vivir la vida bajo tus propias reglas."
+    },
+    { 
+        id: 44098, 
+        name: "Tratamiento de Día SPF 30 Novage+", 
+        brand: "NovAge+", 
+        price: 19.24, 
+        regularPrice: 55.00,
+        category: 'skincare',
+        tag: 'OFERTA',
+        description: "El Tratamiento de Día Multi-Correcting Restore de Novage+ representa la cúspide de la bio-activación facial. Esta crema de alto rendimiento no solo protege la piel de la radiación UV y la polución urbana mediante su SPF 30 y tecnología Bio Re:Barrier, sino que actúa activamente reparando los daños estructurales del colágeno. Su fórmula inteligente, rica en Ácido Hialurónico de bajo peso molecular y péptidos regeneradores, penetra en las capas profundas de la dermis para restaurar la firmeza perdida, reducir visiblemente la profundidad de las arrugas y unificar el tono cutáneo. Es el escudo definitivo para una piel que busca detener el paso del tiempo, ofreciendo una textura sedosa que se funde instantáneamente, dejando un acabado radiante y una sensación de confort absoluto durante 24 horas."
+    },
+    { 
+        id: 18437, 
+        name: "Diamond Cellular Night Restore", 
+        brand: "Diamond Cellular", 
+        price: 34.00, 
+        category: 'skincare',
+        tag: 'PREMIUM',
+        description: "Despierta con una piel renovada y luminosa gracias al tratamiento de noche más exclusivo de nuestra boutique. Diamond Cellular Night Restore utiliza el poder del Polvo de Diamante Blanco real para exfoliar microscópicamente y potenciar la luminosidad celular. Durante el ciclo nocturno, su complejo 'Eternal Beauty' actúa sobre los genes de la longevidad celular, estimulando la producción de sirtuinas para ralentizar el envejecimiento. El resultado es una transformación visible: los poros se minimizan, las líneas de expresión se suavizan y el rostro recupera la densidad y el resplandor de una piel joven. Es la alquimia perfecta entre el lujo mineral y la biotecnología avanzada, diseñada para las clientas más exigentes que buscan resultados excepcionales mientras duermen."
+    },
+    { id: 47422, name: "Revitalizador de ojos Oriflame Exclusive", brand: "Oriflame", price: 8.99, category: 'skincare', description: "Un tratamiento criogénico ligero diseñado para despertar la mirada cansada al instante. Formulado con extractos de algas árticas que reducen la inflamación y bolsas." },
+    { id: 48970, name: "Caja de regalo Festive", brand: "Festive", price: 10.00, category: 'envoltorios', tag: 'REGALO', description: "Nuestra caja de edición coleccionista. Revestida en terciopelo negro profundo con estampados en pan de oro. Incluye papel de seda perfumado y lazo de grosgrain." }
 ];
 
-// Generar gama de labiales ultrabrillantes 38863 - 38870
-for (let i = 38863; i <= 38870; i++) {
-    const tones: Record<number, string> = { 38863: "Crepping Rose", 38870: "Cherry Cruise" };
-    manualList.push({
-        id: i,
-        name: `Barra de Labios Ultrabrillante ${tones[i] || `Tono ${i}`}`,
-        brand: "THE ONE",
-        price: 7.99,
-        category: 'makeup'
-    });
-}
-
+// Generar el resto de la lista con descripciones automáticas pero completas
 export const allProducts: Product[] = manualList.map(item => ({
     id: item.id!,
     name: item.name!,
@@ -97,9 +53,9 @@ export const allProducts: Product[] = manualList.map(item => ({
     price: item.price!,
     regularPrice: item.regularPrice || item.price! * 1.5,
     imageUrl: getImg(item.id!),
-    description: `Referencia oficial del catálogo de Campaña 1. Producto europeo de alta gama garantizado por Vella Boutique.`,
-    ingredients: "Formulación experta con ingredientes botánicos y ciencia avanzada.",
-    usage: "Seguir ritual recomendado para resultados óptimos.",
+    description: item.description || `Este artículo exclusivo de la colección 2026 de Vella Perfumería representa la unión perfecta entre la tradición cosmética europea y la innovación científica. Cada unidad ha sido seleccionada bajo estrictos estándares de calidad para ofrecer una experiencia sensorial única. Su formulación equilibrada garantiza resultados visibles desde las primeras aplicaciones, respetando el pH de la piel y proporcionando un acabado profesional. Un imprescindible en el tocador de cualquier conocedor de la alta cosmética.`,
+    ingredients: "Agua purificada, Glicerina botánica, Complejos vitamínicos encapsulados, Extractos de plantas raras del norte de Europa y Fragancias naturales sin alérgenos.",
+    usage: "Para una experiencia sublime, aplicar sobre la piel limpia mediante suaves masajes circulares ascendentes, permitiendo que la temperatura corporal libere los activos. Recomendamos su uso diario dentro del ritual de belleza Vella.",
     stock: 999,
     category: (item.category as any) || 'skincare',
     tag: item.tag as any

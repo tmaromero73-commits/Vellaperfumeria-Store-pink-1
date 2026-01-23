@@ -26,7 +26,7 @@ const AsistenteIAPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [chat, setChat] = useState<Chat | null>(null);
     
-    // Logotipo unificado (Emblema dorado)
+    // Logotipo oficial vellaperfumeria.com
     const logoUrl = "https://i.ibb.co/6yX8z6n/vella-logo-new.png";
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -37,14 +37,20 @@ const AsistenteIAPage: React.FC = () => {
                 const newChat = ai.chats.create({
                     model: 'gemini-3-flash-preview',
                     config: {
-                        systemInstruction: 'Eres el concierge de lujo de Vellaperfumeria. Tu tono es sofisticado, experto y muy servicial. Ayudas a los clientes a elegir entre los productos de nuestro catálogo. Recomiendas rutinas faciales, tonos de maquillaje y fragancias europeas. Mantén tus respuestas concisas y elegantes.',
+                        systemInstruction: `Eres el Beauty Concierge Senior de vellaperfumeria.com. 
+                        Tu tono debe ser extremadamente sofisticado, culto, detallista y servicial, propio de una boutique de lujo europea. 
+                        Cuando un cliente te pregunte, debes dar respuestas EXTENSAS y BIEN ESTRUCTURADAS. 
+                        No te limites a responder brevemente; explica la pirámide olfativa de los perfumes, los beneficios bioquímicos de los cosméticos NovAge y la exclusividad de Giordani Gold. 
+                        Trata al cliente de 'Usted' o con un trato de cortesía elevado. 
+                        Menciona siempre que estás a su disposición para cualquier detalle adicional sobre nuestro catálogo interactivo de la Campaña 1 2026. 
+                        Si preguntan por ofertas, destaca que en vellaperfumeria.com el lujo es accesible pero selecto.`,
                     },
                 });
                 setChat(newChat);
-                setMessages([{ role: 'model', text: 'Bienvenida a Vellaperfumeria. Soy tu concierge de belleza personal. ¿En qué puedo asesorarte hoy?' }]);
+                setMessages([{ role: 'model', text: 'Bienvenida a vellaperfumeria.com. Es un honor saludarle. Soy su Beauty Concierge personal y estoy aquí para guiarle a través de nuestra exclusiva selección de Campaña 1. ¿En qué puedo asistirle hoy para elevar su ritual de belleza?' }]);
             } catch (e) {
                 console.error("Gemini Init Error:", e);
-                setError("El servicio de IA no está disponible.");
+                setError("El servicio de IA Concierge no está disponible en este momento.");
             }
         };
         initChat();
@@ -81,7 +87,7 @@ const AsistenteIAPage: React.FC = () => {
             }
         } catch (e) {
             console.error("Chat error", e);
-            setError("Error al procesar la consulta.");
+            setError("Disculpe las molestias, ha ocurrido un error al procesar su consulta.");
             setMessages(prev => prev.slice(0, -1));
         } finally {
             setIsProcessing(false);
@@ -89,64 +95,80 @@ const AsistenteIAPage: React.FC = () => {
     };
     
     return (
-        <div className="container mx-auto px-6 py-12 bg-white">
-            <div className="max-w-4xl mx-auto flex flex-col h-[70vh] bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden">
-                <div className="bg-black p-8 flex items-center justify-between">
-                    <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 flex items-center justify-center">
+        <div className="container mx-auto px-6 py-16 bg-white">
+            <div className="max-w-5xl mx-auto flex flex-col h-[75vh] bg-white rounded-[3rem] shadow-2xl border border-gray-100 overflow-hidden relative">
+                
+                {/* Header de la IA con Branding Fuerte */}
+                <div className="bg-[#0a0a0a] p-10 flex items-center justify-between border-b border-white/10">
+                    <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 flex items-center justify-center bg-white/5 rounded-full p-2 border border-white/10">
                             <img src={logoUrl} className="h-full w-auto object-contain brightness-0 invert" alt="Vella IA" />
                         </div>
-                        <div className="border-l border-white/20 pl-5">
-                            <h2 className="text-white font-black uppercase text-xs tracking-[0.3em]">Beauty Concierge AI</h2>
-                            <p className="text-[#fbc5fa] text-[9px] uppercase font-bold tracking-widest mt-1">Soporte VIP Premium</p>
+                        <div className="border-l border-white/20 pl-6">
+                            <h2 className="text-white font-black uppercase text-sm tracking-[0.4em] italic">Beauty Concierge AI</h2>
+                            <p className="text-[#fbc5fa] text-[9px] uppercase font-bold tracking-[0.3em] mt-1.5 opacity-80">vellaperfumeria.com • Soporte Prioritario</p>
+                        </div>
+                    </div>
+                    <div className="hidden sm:block">
+                        <div className="flex gap-2">
+                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span className="text-white/30 text-[9px] font-black uppercase tracking-widest">Servicio VIP Online</span>
                         </div>
                     </div>
                 </div>
 
-                <div ref={chatContainerRef} className="flex-grow p-8 overflow-y-auto space-y-8 bg-white">
+                {/* Contenedor de Mensajes */}
+                <div ref={chatContainerRef} className="flex-grow p-10 overflow-y-auto space-y-10 bg-white custom-scrollbar">
                     {messages.map((msg, idx) => (
-                        <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-white border' : 'bg-black p-2'}`}>
+                        <div key={idx} className={`flex items-start gap-6 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${msg.role === 'user' ? 'bg-gray-100' : 'bg-[#0a0a0a] p-2.5 border border-white/10'}`}>
                                 {msg.role === 'user' ? (
                                     <UserIcon />
                                 ) : (
                                     <img src={logoUrl} className="w-full h-auto object-contain brightness-0 invert" alt="V" />
                                 )}
                             </div>
-                            <div className={`max-w-[85%] p-5 rounded-[2rem] text-sm leading-relaxed ${
+                            <div className={`max-w-[75%] p-8 rounded-[2.5rem] text-sm md:text-base leading-[1.8] font-medium transition-all ${
                                 msg.role === 'user' 
-                                    ? 'bg-black text-white rounded-tr-none' 
-                                    : 'bg-white text-black rounded-tl-none border border-gray-100'
+                                    ? 'bg-[#0a0a0a] text-white rounded-tr-none shadow-xl' 
+                                    : 'bg-[#f9f9f9] text-gray-800 rounded-tl-none border border-gray-100'
                             }`}>
-                                {msg.text || (isProcessing && idx === messages.length - 1 ? '...' : '')}
+                                {msg.text || (isProcessing && idx === messages.length - 1 ? 'Redactando su asesoramiento...' : '')}
                             </div>
                         </div>
                     ))}
                     {error && (
-                        <div className="text-center text-red-500 text-xs font-bold uppercase">{error}</div>
+                        <div className="text-center text-red-500 text-[10px] font-black uppercase tracking-[0.3em] bg-red-50 p-4 rounded-xl">{error}</div>
                     )}
                 </div>
 
-                <div className="p-8 bg-white border-t border-gray-50">
-                    <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(input); }} className="flex gap-4">
+                {/* Input de IA */}
+                <div className="p-10 bg-white border-t border-gray-100">
+                    <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(input); }} className="flex gap-6 max-w-4xl mx-auto">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="¿Cómo podemos ayudarte?"
-                            className="flex-grow px-8 py-5 bg-gray-50 rounded-full focus:ring-2 focus:ring-black outline-none text-sm"
+                            placeholder="Describa su necesidad de belleza o fragancia..."
+                            className="flex-grow px-10 py-6 bg-[#f9f9f9] rounded-full focus:ring-2 focus:ring-[#fbc5fa] border border-gray-100 outline-none text-base italic transition-all"
                             disabled={isProcessing}
                         />
                         <button 
                             type="submit" 
                             disabled={isProcessing || !input.trim() || !chat} 
-                            className="bg-black text-white font-black rounded-full px-10 py-5 hover:bg-[#fbc5fa] hover:text-black transition-all uppercase text-[10px]"
+                            className="bg-[#0a0a0a] text-white font-black rounded-full px-12 py-6 hover:bg-[#fbc5fa] hover:text-[#0a0a0a] transition-all uppercase text-[10px] tracking-[0.3em] shadow-2xl disabled:opacity-20"
                         >
-                            {isProcessing ? '...' : 'Enviar'}
+                            {isProcessing ? 'Procesando...' : 'Consultar'}
                         </button>
                     </form>
+                    <p className="text-center text-[8px] text-gray-300 font-bold uppercase tracking-[0.5em] mt-6">Atención exclusiva garantizada por vellaperfumeria.com</p>
                 </div>
             </div>
+            <style>{`
+                .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+            `}</style>
         </div>
     );
 };

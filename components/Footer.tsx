@@ -23,7 +23,7 @@ const Footer: React.FC<{ onNavigate: (view: View, payload?: any) => void }> = ({
                         <h2 className="text-white text-[12px] font-black uppercase tracking-[0.5em] mt-6 font-serif italic">Vella Perfumería</h2>
                         <p className="text-[#fbc5fa] text-[8px] font-bold uppercase tracking-[0.3em] mt-2">vellaperfumeria.com</p>
                     </button>
-                    <div className="w-24 h-[1px] bg-[#fbc5fa] mt-12 opacity-20"></div>
+                    <div className="w-24 h-[1px] bg-[#fbc5fa] mt-12 opacity-30"></div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-16 w-full max-w-6xl text-center pt-10">
@@ -45,14 +45,23 @@ const Footer: React.FC<{ onNavigate: (view: View, payload?: any) => void }> = ({
                     <div>
                         <h3 className="text-[12px] font-black uppercase tracking-[0.4em] text-[#fbc5fa] mb-8 italic">Comunidad</h3>
                         <ul className="space-y-4 text-[9px] uppercase tracking-[0.3em] text-white/40 font-bold">
-                            <li><a href="https://instagram.com/vellaperfumeria" target="_blank" className="hover:text-white transition-colors">Instagram</a></li>
+                            <li>
+                                <a href="https://instagram.com/beautieshopvella" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center justify-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+                                    Instagram
+                                </a>
+                            </li>
                             <li><a href="https://vellaperfumeria.com" target="_blank" className="hover:text-white transition-colors">Sitio Oficial</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="mt-24 pt-10 border-t border-white/5 w-full text-center">
-                    <p className="text-[9px] font-black uppercase tracking-[0.6em] text-white/20">
+                    <p className="text-[9px] font-black uppercase tracking-[0.6em] text-white/10">
                         &copy; 2026 VELLA PERFUMERIA • LUXURY BEAUTY BOUTIQUE • vellaperfumeria.com
                     </p>
                 </div>
